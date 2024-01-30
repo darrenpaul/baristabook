@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "brew-log",
+    "slug": "brew-log",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "brew-log-c9c8b.appspot.com",
+      "useFrameworks": "static"
+    },
+    "android": {
+      "package": "darrenpaul.brewlog"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "experiments": {
+      "tsconfigPaths": true
+    },
+    "plugins": ["expo-router"],
+    "scheme": "your-app-scheme"
+  }
+}
