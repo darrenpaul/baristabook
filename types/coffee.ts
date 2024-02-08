@@ -1,24 +1,48 @@
 export type CoffeeData = {
   name: string;
   roast: string;
-  purchase_from: string;
-  purchase_date: Date;
-  purchase_price: string;
   intensity: number;
-  notes: string;
+  flavours: string[];
+  store_name?: string;
+  store_url?: string;
+  purchase_date?: Date;
+  purchase_price?: number;
+  purchase_currency?: string;
+  image?: string;
+  notes?: string;
   user_id: string;
 };
 
 export type CoffeeResponseData = {
-  created_at: string;
   id: string;
-  image: string;
-  intensity: number;
+  created_at: string;
   name: string;
-  notes: string;
-  purchase_date: string;
-  purchase_from: string;
-  purchase_price: string;
   roast: string;
-  user_id: string;
+  store_name: string;
+  store_url: string;
+  purchase_date: Date;
+  purchase_price: number;
+  purchase_currency: string;
+  intensity: number;
+  flavours: string[];
+  image?: string;
+  notes?: string;
+  userId: string;
+};
+
+export type Coffee = {
+  id: string;
+  created_at: string;
+  name: string;
+  roast: string;
+  store_name: string;
+  store_url: string;
+  purchase_date: Date;
+  purchase_price: number;
+  purchase_currency: string;
+  intensity: number;
+  flavours: string[];
+  image?: string;
+  notes?: string;
+  userId: string;
 };

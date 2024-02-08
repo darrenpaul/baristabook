@@ -1,5 +1,5 @@
 import { recipeTable } from "@/constants/database";
-import { RecipeCreateData } from "@/types/recipe";
+import { RecipeCreate, Recipe } from "@/types/recipe";
 import { supabase } from "@/utils/supabase";
 
 export function fetchRecipes(userId: string) {
@@ -15,6 +15,10 @@ export function fetchRecipe(id: string, userId: string) {
     .single();
 }
 
-export function createRecipe(data: RecipeCreateData) {
+export function createRecipe(data: RecipeCreate) {
   return supabase.from(recipeTable).insert(data);
+}
+
+export function updateRecipe(id: string, data: RecipeCreate) {
+  return supabase.from(recipeTable).update(data).eq("id", id);
 }

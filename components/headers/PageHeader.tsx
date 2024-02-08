@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
+import * as Haptics from "expo-haptics";
 
 import appStyles from "@/constants/styles";
 
@@ -11,12 +12,14 @@ type HeaderProps = {
 export default function Component(props: HeaderProps) {
   const router = useRouter();
 
+  function handlePress() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    router.back();
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={appStyles.buttonSquare}
-        onPress={() => router.back()}
-      >
+      <TouchableOpacity style={appStyles.buttonSquare} onPress={handlePress}>
         <FontAwesome name="angle-left" size={24} color="white" />
       </TouchableOpacity>
 

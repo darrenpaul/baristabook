@@ -1,45 +1,15 @@
-export type RecipeCreateData = {
-  name: string;
-  brewer_id: string;
-  coffee_id: string;
-  grinder_id: string;
-  water_hardness: string;
-  grind_size: string;
-  grind_duration: number;
-  grind_weight: number;
-  grind_notes: string;
-  brew_pre_infusion_duration: number;
-  brew_duration: number;
-  brew_weight: number;
-  brew_temperature: number;
-  brew_pressure: number;
-  brew_flavour: string;
-  brew_rating: number;
-  brew_notes: string;
-  user_id: string;
-};
-
-export type RecipeResponseData = {
-  created_at: string;
-  id: string;
-  name: string;
-  brewer_id: string;
-  coffee_id: string;
-  grinder_id: string;
-  water_hardness: string;
-  grind_size: string;
-  grind_duration: number;
-  grind_weight: number;
-  grind_notes: string;
-  brew_pre_infusion_duration: number;
-  brew_duration: number;
-  brew_weight: number;
-  brew_temperature: number;
-  brew_pressure: number;
-  brew_flavour: string;
-  brew_rating: number;
-  brew_notes: string;
-  user_id: string;
+export type RecipeCoffee = {
+  coffee_name: string;
+  coffee_roast: string;
+  coffee_store: string;
+  coffee_store_url: string;
+  coffee_purchase_date: Date;
+  coffee_purchase_currency: string;
+  coffee_purchase_price: number;
+  coffee_intensity: number;
+  coffee_flavours: string[];
+  coffee_image?: string;
+  coffee_notes?: string;
 };
 
 export type RecipeEquipment = {
@@ -50,19 +20,65 @@ export type RecipeEquipment = {
 };
 
 export type RecipeGrind = {
-  size: string;
-  duration: number;
-  weight: number;
+  grind_size: string;
+  grind_duration: number;
+  grind_weight: number;
+  grind_notes: string;
+};
+
+export type RecipeGrinder = {
+  grinder_name: string;
+  grinder_notes: string;
+};
+
+export type RecipeBrewer = {
+  brewer_name: string;
+  brewer_method: string;
+  brewer_image?: string;
+  brewer_notes?: string;
+};
+
+export type RecipeInformation = {
+  name: string;
+  flavours: string[];
+  rating: number;
+  image: string;
   notes: string;
 };
 
-export type Recipe = {
-  pre_infusion_duration: number;
-  duration: number;
-  weight: number;
-  temperature: number;
-  pressure: number;
-  flavour: string;
-  rating: number;
-  notes: string;
+export type RecipeInstructions = {
+  instruction_pre_infusion_duration: number;
+  instruction_extraction_duration: number;
+  instruction_weight: number;
+  instruction_temperature: number;
+  instruction_pressure: number;
+  instruction_notes: string;
 };
+
+export type RecipeCreate = {
+  name: string;
+  water_hardness: string;
+  flavours: string[];
+  rating: number;
+  image: string;
+  notes: string;
+  user_id: string;
+} & RecipeCoffee &
+  RecipeGrinder &
+  RecipeBrewer &
+  RecipeGrind &
+  RecipeInstructions &
+  RecipeInformation;
+
+export type Recipe = {
+  id: string;
+  water_hardness: string;
+  user_id: string;
+  created_at: string;
+  updated_at: string;
+} & RecipeCoffee &
+  RecipeGrinder &
+  RecipeBrewer &
+  RecipeGrind &
+  RecipeInstructions &
+  RecipeInformation;

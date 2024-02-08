@@ -1,128 +1,88 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import * as Haptics from "expo-haptics";
-
 import appStyles from "@/constants/styles";
-import Dropdown from "@/components/dropdowns/Dropdown";
 import Slider from "@/components/Slider";
-import RatingForm from "@/components/forms/RatingForm";
-import { coffeeFlavours } from "@/constants/flavour-data";
-import { Recipe } from "@/types/recipe";
 import { BrewerResponseData } from "@/types/brewer";
 import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
 import { BrewMethod } from "@/types/brew-method";
+import { Instructions } from "@/types/instructions";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
-    title: "Recipe",
-    content: "recipe",
+    title: "Instructions",
+    content: "instructions",
   },
 ];
 
 type ComponentProps = {
-  recipe: Recipe;
-  setRecipeFn: Function;
-  brewer: BrewerResponseData;
+  instructions: Instructions;
+  setFn: Function;
+  brewer?: BrewerResponseData;
+  disabled?: boolean;
 };
 
 export default function Component(props: ComponentProps) {
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
-
+  const [activeSectionsValue, setActiveSections] = useState<number[]>([]);
   const [brewMethodValue, setBrewMethod] = useState<BrewMethod>();
-
-  const [preInfusionValue, setPreInfusionValue] = useState<number>(30);
-  const [durationValue, setDurationValue] = useState<number>(30);
-  const [weightValue, setWeightValue] = useState<number>(30);
-  const [temperatureValue, setTemperatureValue] = useState<number>(30);
-  const [pressureValue, setPressureValue] = useState<number>(30);
-  const [flavourValue, setFlavourValue] = useState<string>("");
-  const [ratingValue, setRatingValue] = useState<number>(5);
-  const [notes, setNotes] = useState<string>("");
+  const [preInfusionValue, setPreInfusion] = useState<number>(30);
+  const [extractionDurationValue, setExtractionDuration] = useState<number>(30);
+  const [weightValue, setWeight] = useState<number>(30);
+  const [temperatureValue, setTemperature] = useState<number>(30);
+  const [pressureValue, setPressure] = useState<number>(30);
+  const [notesValue, setNotes] = useState<string>("");
 
   useEffect(() => {
     /*
     Triggers when the user changes the brewer.
     This will find the brew config which matches that brewer.
     */
+    if (!props.brewer) return;
+
+    const brewerMethod = props.brewer.method;
     const brewMethod = coffeeBrewMethods.find(
-      (item) => item.value === props.brewer.method
+      (item) => item.value === brewerMethod
     );
     if (!brewMethod) return;
     setBrewMethod(brewMethod);
     if (typeof brewMethod.preInfusion === "number")
-      setPreInfusionValue(brewMethod.preInfusion);
+      setPreInfusion(brewMethod.preInfusion);
     if (typeof brewMethod.duration === "number")
-      setDurationValue(brewMethod.duration);
-    if (typeof brewMethod.weight === "number")
-      setWeightValue(brewMethod.weight);
+      setExtractionDuration(brewMethod.duration);
+    if (typeof brewMethod.weight === "number") setWeight(brewMethod.weight);
     if (typeof brewMethod.temperature === "number")
-      setTemperatureValue(brewMethod.temperature);
+      setTemperature(brewMethod.temperature);
     if (typeof brewMethod.pressure === "number")
-      setPressureValue(brewMethod.pressure);
+      setPressure(brewMethod.pressure);
   }, [props.brewer]);
 
   useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
+    props.setFn({
+      ...props.instructions,
       pre_infusion_duration: preInfusionValue,
-    });
-  }, [preInfusionValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
-      duration: durationValue,
-    });
-  }, [durationValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
+      extraction_duration: extractionDurationValue,
       weight: weightValue,
-    });
-  }, [weightValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
       temperature: temperatureValue,
-    });
-  }, [temperatureValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
       pressure: pressureValue,
+      notes: notesValue,
     });
-  }, [pressureValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
-      flavour: flavourValue,
-    });
-  }, [flavourValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
-      rating: ratingValue,
-    });
-  }, [ratingValue]);
-  useEffect(() => {
-    props.setRecipeFn({
-      ...props.recipe,
-      notes: notes,
-    });
-  }, [notes]);
+  }, [
+    preInfusionValue,
+    extractionDurationValue,
+    weightValue,
+    temperatureValue,
+    pressureValue,
+    notesValue,
+  ]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Recipe</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader
+        title="Instructions"
+        active={isActive}
+        disabled={props.disabled}
+      />
     );
   }
 
@@ -137,7 +97,7 @@ export default function Component(props: ComponentProps) {
         maxValue={brewMethodValue.preInfusionMax}
         measurement="s"
         value={preInfusionValue}
-        setFn={setPreInfusionValue}
+        setFn={setPreInfusion}
       />
     );
   }
@@ -146,13 +106,13 @@ export default function Component(props: ComponentProps) {
     if (!brewMethodValue) return;
     return (
       <Slider
-        key="duration"
-        title="Duration"
+        key="extractionDuration"
+        title="Extraction Duration"
         minValue={brewMethodValue.durationMin}
         maxValue={brewMethodValue.durationMax}
         measurement="s"
-        value={durationValue}
-        setFn={setDurationValue}
+        value={extractionDurationValue}
+        setFn={setExtractionDuration}
       />
     );
   }
@@ -168,7 +128,7 @@ export default function Component(props: ComponentProps) {
         maxValue={brewMethodValue.weightMax}
         measurement="g"
         value={weightValue}
-        setFn={setWeightValue}
+        setFn={setWeight}
       />
     );
   }
@@ -184,7 +144,7 @@ export default function Component(props: ComponentProps) {
         maxValue={brewMethodValue.temperatureMax}
         measurement="°C"
         value={temperatureValue}
-        setFn={setTemperatureValue}
+        setFn={setTemperature}
       />
     );
   }
@@ -200,7 +160,7 @@ export default function Component(props: ComponentProps) {
         maxValue={brewMethodValue.pressureMax}
         measurement="bar"
         value={pressureValue}
-        setFn={setPressureValue}
+        setFn={setPressure}
       />
     );
   }
@@ -232,27 +192,10 @@ export default function Component(props: ComponentProps) {
       <View style={appStyles.accordionContent}>
         {componentsToRender.map((renderFn) => renderFn())}
 
-        <Dropdown
-          value={flavourValue}
-          setFn={setFlavourValue}
-          items={coffeeFlavours}
-          icon="face-grin-tongue"
-          placeholder="Select Flavour Profile"
-        />
-
-        <RatingForm value={ratingValue} setFn={setRatingValue} />
-
-        <TouchableOpacity
-          style={appStyles.buttonSecondary}
-          onPress={() => Haptics.selectionAsync()}
-        >
-          <Text style={appStyles.buttonSecondaryText}>Image</Text>
-          <FontAwesome name="upload" size={20} color="black" />
-        </TouchableOpacity>
-
         <TextInput
           style={appStyles.areaInput}
           multiline
+          value={notesValue}
           numberOfLines={4}
           onChangeText={setNotes}
           placeholder="Notes"
@@ -264,11 +207,12 @@ export default function Component(props: ComponentProps) {
   return (
     <Accordion
       sections={SECTIONS}
-      activeSections={activeSections}
+      activeSections={activeSectionsValue}
       renderHeader={renderHeader}
       renderContent={renderContent}
       underlayColor="transparent"
-      onChange={(value) => setActiveSectionsValue(value)}
+      disabled={props.disabled}
+      onChange={(value) => setActiveSections(value)}
     />
   );
 }

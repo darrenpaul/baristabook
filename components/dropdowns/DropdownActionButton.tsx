@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import * as Haptics from "expo-haptics";
+import styles from "./styles";
+
 import appStyles from "@/constants/styles";
 
 type Item = { label: string; value: string | number };
@@ -20,6 +23,7 @@ export default function Component(props: DropdownActionButtonProps) {
 
   function handlePress() {
     if (props.buttonFn) {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       props.buttonFn();
     }
   }
@@ -66,30 +70,3 @@ export default function Component(props: DropdownActionButtonProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  dropdown: {
-    flexGrow: 1,
-    height: 50,
-    borderColor: "gray",
-    borderWidth: 0.5,
-    borderRadius: 8,
-    paddingHorizontal: 8,
-  },
-  dropdownFocused: {
-    borderColor: "blue",
-  },
-  icon: {
-    marginRight: 5,
-  },
-  placeholderStyle: {
-    fontSize: 16,
-  },
-  selectedTextStyle: {
-    fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
-  },
-});

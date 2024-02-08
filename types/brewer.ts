@@ -1,7 +1,8 @@
 export type BrewerCreateData = {
   name: string;
   method: string;
-  notes: string;
+  image?: string;
+  notes?: string;
   user_id: string;
 };
 
@@ -10,6 +11,7 @@ export type BrewerResponseData = {
   id: string;
   name: string;
   method: string;
-  notes: string;
+  image?: string;
+  notes?: string;
   user_id: string;
 };

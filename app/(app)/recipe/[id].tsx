@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  Text,
-} from "react-native";
+import { View, ScrollView, TouchableOpacity, Text } from "react-native";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -16,16 +10,29 @@ import PageHeader from "@/components/headers/PageHeader";
 import appStyles from "@/constants/styles";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { fetchRecipe } from "@/api/recipe";
-import { fetchCoffee } from "@/api/coffee";
-import { CoffeeResponseData } from "@/types/coffee";
+import RecipeCoffeeView from "@/components/recipe/RecipeCoffeeView";
+import RecipeGrinderView from "@/components/recipe/RecipeGrinderView";
+import RecipeBrewerView from "@/components/recipe/RecipeBrewerView";
+import RecipeInstructionsView from "@/components/recipe/RecipeInstructionsView";
+import PageLoader from "@/components/loaders/PageLoader";
+import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import EditRecipeModal from "@/components/modals/EditRecipeModal";
+import { recipeImagesBucket } from "@/constants/storage-buckets";
+import Rating from "@/components/Rating";
+import Image from "@/components/Image";
+import { Recipe } from "@/types/recipe";
+import { format } from "date-fns";
+import { dateFormat } from "@/constants/date";
+import RecipeListItem from "@/components/recipe/RecipeListItem";
+import RecipeView from "@/components/recipe/RecipeView";
 
 export default function Page() {
   const insets = useSafeAreaInsets();
 
-  const { id } = useLocalSearchParams();
+  const { id: recipeId } = useLocalSearchParams();
   const [session, setSession] = useState<Session | null>(null);
-  const [recipeValue, setRecipe] = useState({});
-  const [coffee, setCoffee] = useState<CoffeeResponseData>();
+  const [recipeValue, setRecipe] = useState<Recipe>();
+  const [coffeeModalValue, setCoffeeModalValue] = useState<boolean>(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -38,51 +45,57 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (session) handleRefresh();
+    if (session) getRecipe();
   }, [session]);
-  useEffect(() => {
-    getCoffee();
-  }, [recipeValue]);
 
   async function getRecipe() {
-    if (!session?.user?.id) return;
-    const { data, error, status } = await fetchRecipe(id, session?.user?.id);
+    if (!session?.user?.id || !recipeId || typeof recipeId !== "string") return;
+    const { data, error } = await fetchRecipe(recipeId, session?.user?.id);
     if (!error) {
       const newRecipe = data;
       setRecipe(newRecipe);
     }
   }
 
-  async function getCoffee() {
-    if (session?.user?.id && id) {
-      const { data, error, status } = await fetchCoffee(
-        recipeValue.coffee_id,
-        session?.user?.id
-      );
-      if (!error) {
-        const newCoffee = data as CoffeeResponseData;
-        setCoffee(newCoffee);
-      }
-    }
-  }
+  function renderRecipe() {
+    if (!recipeValue) return <PageLoader />;
 
-  function handleRefresh() {
-    getRecipe();
-  }
-
-  function renderBrew() {
-    return <View>{renderCoffee()}</View>;
-  }
-
-  function renderCoffee() {
     return (
-      <View>
-        <Text>
-          {coffee?.name} was purchased from {coffee?.purchase_from} on
-          {coffee?.purchase_date}. Its a {coffee?.roast} roast with an intensity
-          of {coffee?.intensity}.
-        </Text>
-      </View>
+      <ScrollView>
+        <View
+          style={{
+            display: "flex",
+            gap: 24,
+            paddingHorizontal: 20,
+            paddingBottom: 48,
+          }}
+        >
+          <RecipeView recipe={recipeValue} />
+
+          <RecipeCoffeeView recipe={recipeValue} />
+
+          <RecipeGrinderView recipe={recipeValue} />
+
+          <RecipeBrewerView recipe={recipeValue} />
+
+          <RecipeInstructionsView recipe={recipeValue} />
+
+          <TouchableOpacity
+            style={appStyles.buttonSecondary}
+            onPress={() => setCoffeeModalValue(true)}
+          >
+            <Text style={appStyles.buttonSecondaryText}>Edit</Text>
+            <FontAwesome name="pen" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
+
+        <EditRecipeModal
+          recipe={recipeValue}
+          visible={coffeeModalValue}
+          hideFn={() => setCoffeeModalValue(false)}
+          onSaveFn={() => {}}
+        />
+      </ScrollView>
     );
   }
 
@@ -93,30 +106,18 @@ export default function Page() {
           headerShown: false,
         }}
       />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          paddingTop: insets.top,
-        }}
-      >
-        <View style={appStyles.pageContainer}>
-          <PageHeader text="Recipe" />
 
-          <ScrollView>
-            <View
-              style={{
-                display: "flex",
-                gap: 24,
-                paddingHorizontal: 20,
-                paddingBottom: 48,
-              }}
-            >
-              {recipeValue ? renderBrew() : <Text>No Data</Text>}
-            </View>
-          </ScrollView>
-        </View>
-      </KeyboardAvoidingView>
+      <View
+        style={[
+          appStyles.pageContainer,
+          {
+            paddingTop: insets.top,
+          },
+        ]}
+      >
+        <PageHeader text="Recipe" />
+        {renderRecipe()}
+      </View>
     </SafeAreaProvider>
   );
 }

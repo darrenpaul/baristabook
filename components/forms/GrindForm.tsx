@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
-
 import appStyles from "@/constants/styles";
 import Dropdown from "@/components/dropdowns/Dropdown";
 import Slider from "@/components/Slider";
 import { grindSizes } from "@/constants/grind-size-data";
-import { RecipeGrind } from "@/types/recipe";
+import { Grind } from "@/types/grind";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
@@ -17,8 +16,9 @@ const SECTIONS = [
 ];
 
 type ComponentProps = {
-  grind: RecipeGrind;
+  grind: Grind;
   setGrindFn: Function;
+  disabled?: boolean;
 };
 
 export default function Component(props: ComponentProps) {
@@ -28,44 +28,25 @@ export default function Component(props: ComponentProps) {
     props.grind.duration
   );
   const [weightValue, setWeightValue] = useState<number>(props.grind.weight);
-  const [notes, setNotes] = useState<string>("");
+  const [notesValue, setNotes] = useState<string>("");
 
   useEffect(() => {
     props.setGrindFn({
       ...props.grind,
       size: grindSize,
-    });
-  }, [grindSize]);
-  useEffect(() => {
-    props.setGrindFn({
-      ...props.grind,
       duration: durationValue,
-    });
-  }, [durationValue]);
-  useEffect(() => {
-    props.setGrindFn({
-      ...props.grind,
       weight: weightValue,
+      notes: notesValue,
     });
-  }, [weightValue]);
-  useEffect(() => {
-    props.setGrindFn({
-      ...props.grind,
-      notes: notes,
-    });
-  }, [notes]);
+  }, [grindSize, durationValue, weightValue, notesValue]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Grind</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader
+        title="Grind"
+        active={isActive}
+        disabled={props.disabled}
+      />
     );
   }
 
@@ -98,13 +79,9 @@ export default function Component(props: ComponentProps) {
           setFn={setWeightValue}
         />
 
-        <TouchableOpacity style={appStyles.buttonSecondary} onPress={() => {}}>
-          <Text style={appStyles.buttonSecondaryText}>Image</Text>
-          <FontAwesome name="upload" size={20} color="black" />
-        </TouchableOpacity>
-
         <TextInput
           style={appStyles.areaInput}
+          value={notesValue}
           multiline
           numberOfLines={4}
           onChangeText={setNotes}
@@ -121,6 +98,7 @@ export default function Component(props: ComponentProps) {
       renderHeader={renderHeader}
       renderContent={renderContent}
       underlayColor="transparent"
+      disabled={props.disabled}
       onChange={(value) => setActiveSectionsValue(value)}
     />
   );

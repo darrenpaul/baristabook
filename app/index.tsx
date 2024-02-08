@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, Stack } from "expo-router";
+import { Stack } from "expo-router";
 import { View, Text, ScrollView } from "react-native";
 import {
   SafeAreaProvider,
@@ -8,18 +8,18 @@ import {
 import { Session } from "@supabase/supabase-js";
 
 import { supabase } from "@/utils/supabase";
-
 import appStyles from "@/constants/styles";
 import BottomNavigation from "@/components/navigation/BottomNavigation";
 import { fetchRecipes } from "@/api/recipe";
-import { RecipeResponseData } from "@/types/recipe";
-import { recipeViewRoute } from "@/constants/routes";
+import { Recipe } from "@/types/recipe";
+import RecipeListCard from "@/components/cards/RecipeListCard";
+import PageLoader from "@/components/loaders/PageLoader";
 
 export default function App() {
   const insets = useSafeAreaInsets();
 
   const [session, setSession] = useState<Session | null>(null);
-  const [recipesValue, setRecipes] = useState<RecipeResponseData[]>([]);
+  const [recipesValue, setRecipes] = useState<Recipe[]>();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -44,8 +44,16 @@ export default function App() {
     }
   }
 
-  function handleRefresh() {
+  async function handleRefresh() {
     getBrews();
+  }
+
+  function renderContent() {
+    if (!recipesValue) return <PageLoader />;
+
+    return recipesValue.map((recipe) => (
+      <RecipeListCard key={recipe.id} recipe={recipe} />
+    ));
   }
 
   return (
@@ -55,6 +63,7 @@ export default function App() {
           headerShown: false,
         }}
       />
+
       <View style={appStyles.pageContainer}>
         <ScrollView>
           <View
@@ -67,11 +76,8 @@ export default function App() {
               paddingTop: insets.top,
             }}
           >
-            {recipesValue.map((recipe) => (
-              <Link href={recipeViewRoute.path(recipe.id)} key={recipe.id}>
-                {recipe.name}
-              </Link>
-            ))}
+            <Text style={appStyles.headerText}>Recipes</Text>
+            {renderContent()}
           </View>
         </ScrollView>
 

@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 10,
+    borderRadius: 25,
     overflow: "hidden",
   },
   button: {

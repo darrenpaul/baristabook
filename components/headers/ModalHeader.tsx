@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import * as Haptics from "expo-haptics";
 
 import appStyles from "@/constants/styles";
 
@@ -9,12 +10,14 @@ type HeaderProps = {
 };
 
 export default function Component(props: HeaderProps) {
+  function handlePress() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    props.hideFn();
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={appStyles.buttonSquare}
-        onPress={() => props.hideFn()}
-      >
+      <TouchableOpacity style={appStyles.buttonSquare} onPress={handlePress}>
         <FontAwesome name="xmark" size={24} color="white" />
       </TouchableOpacity>
 

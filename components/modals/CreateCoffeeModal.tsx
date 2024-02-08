@@ -6,14 +6,10 @@ import {
   TouchableOpacity,
   Text,
   Modal,
-  KeyboardAvoidingView,
-  Platform,
+  StyleSheet,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from "@react-native-community/datetimepicker";
-
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { supabase } from "@/utils/supabase";
 import appStyles from "@/constants/styles";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
@@ -22,6 +18,13 @@ import Slider from "@/components/Slider";
 import { coffeeTable } from "@/constants/database";
 import { CoffeeData } from "@/types/coffee";
 import ModalHeader from "@/components/headers/ModalHeader";
+import { currencyList } from "@/utils/currency";
+import { validateTextInput } from "@/utils/input-validation";
+import ImagePicker from "@/components/image/ImagePicker";
+import { handleImageUpload } from "@/utils/imageStorage";
+import { coffeeImagesBucket } from "@/constants/storage-buckets";
+import { coffeeFlavours } from "@/constants/flavour-data";
+import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
 
 type ModalProps = {
   visible: boolean;
@@ -31,34 +34,77 @@ type ModalProps = {
 };
 
 export default function Component(props: ModalProps) {
-  const [nameValue, setNameValue] = useState<string>("");
-  const [purchaseFromValue, setPurchaseFromValue] = useState<string>("");
-  const [purchaseDateValue, setPurchaseDateValue] = useState<Date>(new Date());
-  const [purchasePriceValue, setPurchasePriceValue] = useState<string>("");
-  const [roastValue, setRoastValue] = useState<string>("");
-  const [intensityValue, setIntensityValue] = useState<number>(5);
-  const [notesValue, setNotesValue] = useState<string>("");
+  const [nameValue, setName] = useState<string>();
+  const [nameErrorValue, setNameError] = useState<boolean>(false);
+  const [roastValue, setRoast] = useState<string>();
+  const [intensityValue, setIntensity] = useState<number>(5);
+  const [flavoursValue, setFlavours] = useState<string[]>([]);
+  const [storeNameValue, setStoreName] = useState<string>();
+  const [storeUrlValue, setStoreUrl] = useState<string>();
+  const [purchaseDateValue, setPurchaseDate] = useState<Date>(new Date());
+  const [priceValue, setPrice] = useState<string>();
+  const [currencyValue, setCurrency] = useState<string>();
+  const [imageValue, setImage] = useState<string>();
+  const [notesValue, setNotes] = useState<string>();
+
+  const currencySymbols = currencyList();
+
+  async function onUploadImage(
+    imageUri: string | undefined,
+    userId: string
+  ): Promise<string | undefined> {
+    if (imageUri) {
+      const { data: imageData, error: imageError } = await handleImageUpload({
+        directory: coffeeImagesBucket,
+        imageUri: imageUri,
+        userId: userId,
+      });
+      if (imageError) {
+        return;
+      }
+      return imageData?.path;
+    }
+    return "";
+  }
 
   async function handleSave() {
-    const data: CoffeeData = {
+    if (!nameValue || !roastValue || !intensityValue) {
+      validateTextInput({ value: nameValue, setFn: setNameError });
+      return;
+    }
+
+    const imagePath = await onUploadImage(imageValue, props.userId);
+
+    if (imagePath === undefined) return;
+
+    const coffeeData: CoffeeData = {
       name: nameValue,
       roast: roastValue,
-      purchase_from: purchaseFromValue,
-      purchase_date: purchaseDateValue,
-      purchase_price: purchasePriceValue,
       intensity: intensityValue,
+      flavours: flavoursValue,
+      store_name: storeNameValue,
+      store_url: storeUrlValue,
+      purchase_date: purchaseDateValue,
+      purchase_price: Number(priceValue?.replace(/,/g, ".")),
+      purchase_currency: currencyValue,
+      image: imagePath,
       notes: notesValue,
       user_id: props.userId,
     };
-    const { error } = await supabase.from(coffeeTable).insert(data);
+
+    const { error } = await supabase.from(coffeeTable).insert(coffeeData);
+
     if (!error) {
-      setNameValue("");
-      setRoastValue("");
-      setPurchaseFromValue("");
-      setPurchaseDateValue(new Date());
-      setPurchasePriceValue("");
-      setIntensityValue(5);
-      setNotesValue("");
+      setName("");
+      setRoast("");
+      setIntensity(5);
+      setFlavours([]);
+      setStoreName("");
+      setStoreUrl("");
+      setPurchaseDate(new Date());
+      setPrice("");
+      setCurrency("");
+      setNotes("");
 
       props.onSaveFn();
       props.hideFn();
@@ -70,98 +116,108 @@ export default function Component(props: ModalProps) {
       <View style={(appStyles.pageContainer, { marginTop: 24 })}>
         <ModalHeader text="Add Coffee" hideFn={() => props.hideFn()} />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-        >
-          <ScrollView>
-            <View
-              style={{
-                display: "flex",
-                gap: 12,
-                paddingHorizontal: 20,
-                paddingBottom: 48,
+        <ScrollView>
+          <View style={styles.formContainer}>
+            <TextInput
+              style={[
+                appStyles.textInput,
+                nameErrorValue && appStyles.textInputError,
+              ]}
+              value={nameValue}
+              onChangeText={(value) => {
+                setName(value);
+                validateTextInput({ value: value, setFn: setNameError });
               }}
-            >
-              <TextInput
-                style={appStyles.textInput}
-                value={nameValue}
-                onChangeText={setNameValue}
-                placeholder="Name"
-              />
+              placeholder="Name"
+            />
 
-              <Dropdown
-                value={roastValue}
-                setFn={setRoastValue}
-                items={coffeeRoasts}
-                icon="magnifying-glass"
-                placeholder="Select Roast Type"
-              />
+            <Dropdown
+              value={roastValue}
+              setFn={setRoast}
+              items={coffeeRoasts}
+              icon="magnifying-glass"
+              placeholder="Select Roast Type"
+            />
 
-              <TextInput
-                style={appStyles.textInput}
-                value={purchaseFromValue}
-                onChangeText={setPurchaseFromValue}
-                placeholder="Purchase From"
-              />
+            <Slider
+              title="Intensity"
+              minValue={0}
+              maxValue={10}
+              measurement=""
+              value={intensityValue}
+              setFn={setIntensity}
+              disableCustomInput={true}
+            />
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+            <MultiSelectDropdown
+              value={flavoursValue}
+              setFn={setFlavours}
+              items={coffeeFlavours}
+              icon="face-grin-tongue"
+              placeholder="Select Flavour Profile"
+            />
+
+            <TextInput
+              style={appStyles.textInput}
+              value={storeNameValue}
+              onChangeText={setStoreName}
+              placeholder="Store Name"
+            />
+
+            <TextInput
+              style={appStyles.textInput}
+              value={storeUrlValue}
+              onChangeText={setStoreUrl}
+              placeholder="Store Link"
+            />
+
+            <View style={styles.rowContainer}>
+              <Text>Purchase Date</Text>
+              <DateTimePicker
+                value={purchaseDateValue}
+                onChange={(_, date) => {
+                  if (date) setPurchaseDate(date);
                 }}
-              >
-                <Text>Purchase Date</Text>
-                <DateTimePicker
-                  value={purchaseDateValue}
-                  onChange={(_, date) => {
-                    if (date) setPurchaseDateValue(date);
-                  }}
-                />
-              </View>
+              />
+            </View>
+
+            <View style={styles.rowContainer}>
+              <Dropdown
+                value={currencyValue}
+                setFn={setCurrency}
+                items={currencySymbols}
+                icon="coins"
+                placeholder="$"
+                dropdownStyle={styles.dropdown}
+              />
 
               <TextInput
-                style={appStyles.textInput}
-                value={purchasePriceValue}
-                onChangeText={setPurchasePriceValue}
+                style={[appStyles.textInput, styles.textInput]}
+                value={priceValue}
+                onChangeText={setPrice}
                 inputMode="decimal"
                 keyboardType="decimal-pad"
-                placeholder="Purchase Price"
+                placeholder="Price"
               />
-
-              <Slider
-                title="Intensity"
-                minValue={0}
-                maxValue={10}
-                measurement=""
-                value={intensityValue}
-                setFn={setIntensityValue}
-              />
-
-              <TouchableOpacity
-                style={appStyles.buttonSecondary}
-                onPress={() => {}}
-              >
-                <Text style={appStyles.buttonSecondaryText}>Image</Text>
-                <FontAwesome name="upload" size={20} color="black" />
-              </TouchableOpacity>
-
-              <TextInput
-                style={appStyles.areaInput}
-                multiline
-                numberOfLines={4}
-                value={notesValue}
-                onChangeText={setNotesValue}
-                placeholder="Notes"
-              />
-
-              <TouchableOpacity style={appStyles.button} onPress={handleSave}>
-                <Text style={appStyles.buttonText}>Save</Text>
-                <FontAwesome name="floppy-disk" size={20} color="white" />
-              </TouchableOpacity>
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+
+            <ImagePicker value={imageValue} setFn={setImage} />
+
+            <TextInput
+              style={appStyles.areaInput}
+              multiline
+              numberOfLines={4}
+              value={notesValue}
+              onChangeText={setNotes}
+              placeholder="Notes"
+            />
+
+            <TouchableOpacity style={appStyles.button} onPress={handleSave}>
+              <Text style={appStyles.buttonText}>Save</Text>
+              <FontAwesome name="floppy-disk" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -177,3 +233,32 @@ export default function Component(props: ModalProps) {
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  formContainer: {
+    display: "flex",
+    gap: 12,
+    paddingHorizontal: 20,
+    paddingBottom: 100,
+  },
+  rowContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  dropdown: {
+    flexGrow: 0,
+    minWidth: 100,
+    borderRadius: 0,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    borderRightWidth: 0,
+  },
+  textInput: {
+    flex: 1,
+    borderRadius: 0,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    textAlign: "right",
+  },
+});

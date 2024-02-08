@@ -1,7 +1,9 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import * as Haptics from "expo-haptics";
+import TextInputModal from "@/components/modals/TextInputModal";
+import appStyles from "@/constants/styles";
 
 type GrindProps = {
   title: string;
@@ -10,12 +12,15 @@ type GrindProps = {
   measurement: string;
   value: number;
   setFn: Function;
+  disableCustomInput?: boolean;
 };
 
 export default function Component(props: GrindProps) {
-  function handleValueChange(value: number) {
+  const [modalVisibilityValue, setModalVisibility] = useState(false);
+
+  function handleValueChange(value: string | number) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    props.setFn(value);
+    props.setFn(Number(value));
   }
 
   return (
@@ -37,15 +42,29 @@ export default function Component(props: GrindProps) {
           {props.title}
         </Text>
 
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "bold",
-          }}
+        <TouchableOpacity
+          disabled={props.disableCustomInput}
+          style={[
+            appStyles.buttonStretchSmall,
+            props.disableCustomInput && appStyles.buttonDisabled,
+          ]}
+          onPress={() => setModalVisibility(true)}
         >
-          {props.value}
-          {props.measurement}
-        </Text>
+          <Text style={appStyles.buttonText}>
+            {props.value}
+            {props.measurement}
+          </Text>
+        </TouchableOpacity>
+
+        <TextInputModal
+          visible={modalVisibilityValue}
+          hideFn={() => setModalVisibility(false)}
+          title="Custom Amount"
+          placeholder="Enter amount"
+          initialValue={props.value}
+          onSaveFn={props.setFn}
+          inputType="numeric"
+        />
       </View>
 
       <Slider
