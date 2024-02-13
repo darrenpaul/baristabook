@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
-import { View, ScrollView, TouchableOpacity, Text } from "react-native";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { View, TouchableOpacity, Text } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
-import PageHeader from "@/components/headers/PageHeader";
-import appStyles from "@/constants/styles";
-import { Stack, useLocalSearchParams } from "expo-router";
+import appStyles, { containerStyles } from "@/constants/styles";
+import { useLocalSearchParams } from "expo-router";
 import { fetchRecipe } from "@/api/recipe";
 import RecipeCoffeeView from "@/components/recipe/RecipeCoffeeView";
 import RecipeGrinderView from "@/components/recipe/RecipeGrinderView";
@@ -17,20 +12,20 @@ import RecipeInstructionsView from "@/components/recipe/RecipeInstructionsView";
 import PageLoader from "@/components/loaders/PageLoader";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import EditRecipeModal from "@/components/modals/EditRecipeModal";
-import { recipeImagesBucket } from "@/constants/storage-buckets";
-import Rating from "@/components/Rating";
-import Image from "@/components/Image";
 import { Recipe } from "@/types/recipe";
-import { format } from "date-fns";
-import { dateFormat } from "@/constants/date";
-import RecipeListItem from "@/components/recipe/RecipeListItem";
 import RecipeView from "@/components/recipe/RecipeView";
+import PageWrapper from "@/components/wrappers/PageWrapper";
+import { fetchUser } from "@/api/user";
+import { Preferences, User } from "@/types/user";
 
 export default function Page() {
-  const insets = useSafeAreaInsets();
-
   const { id: recipeId } = useLocalSearchParams();
   const [session, setSession] = useState<Session | null>(null);
+  const [userValue, setUser] = useState<User>();
+  const [preferencesValue, setPreferences] = useState<Preferences>({
+    weight: "",
+    temperature: "",
+  });
   const [recipeValue, setRecipe] = useState<Recipe>();
   const [coffeeModalValue, setCoffeeModalValue] = useState<boolean>(false);
 
@@ -45,7 +40,18 @@ export default function Page() {
   }, []);
 
   useEffect(() => {
-    if (session) getRecipe();
+    if (session) {
+      fetchUser().then((response) => {
+        const { data } = response;
+        setUser(data);
+        setPreferences({
+          ...preferencesValue,
+          weight: data.weight,
+          temperature: data.temperature,
+        });
+        getRecipe();
+      });
+    }
   }, [session]);
 
   async function getRecipe() {
@@ -58,36 +64,30 @@ export default function Page() {
   }
 
   function renderRecipe() {
-    if (!recipeValue) return <PageLoader />;
+    if (!recipeValue || !preferencesValue) return <PageLoader />;
 
     return (
-      <ScrollView>
-        <View
-          style={{
-            display: "flex",
-            gap: 24,
-            paddingHorizontal: 20,
-            paddingBottom: 48,
-          }}
+      <View style={containerStyles.columnContainer}>
+        <RecipeView recipe={recipeValue} />
+
+        <RecipeCoffeeView recipe={recipeValue} />
+
+        <RecipeGrinderView recipe={recipeValue} />
+
+        <RecipeBrewerView recipe={recipeValue} />
+
+        <RecipeInstructionsView
+          recipe={recipeValue}
+          preferences={preferencesValue}
+        />
+
+        <TouchableOpacity
+          style={appStyles.buttonSecondary}
+          onPress={() => setCoffeeModalValue(true)}
         >
-          <RecipeView recipe={recipeValue} />
-
-          <RecipeCoffeeView recipe={recipeValue} />
-
-          <RecipeGrinderView recipe={recipeValue} />
-
-          <RecipeBrewerView recipe={recipeValue} />
-
-          <RecipeInstructionsView recipe={recipeValue} />
-
-          <TouchableOpacity
-            style={appStyles.buttonSecondary}
-            onPress={() => setCoffeeModalValue(true)}
-          >
-            <Text style={appStyles.buttonSecondaryText}>Edit</Text>
-            <FontAwesome name="pen" size={20} color="black" />
-          </TouchableOpacity>
-        </View>
+          <Text style={appStyles.buttonSecondaryText}>Edit</Text>
+          <FontAwesome name="pen" size={20} color="black" />
+        </TouchableOpacity>
 
         <EditRecipeModal
           recipe={recipeValue}
@@ -95,29 +95,9 @@ export default function Page() {
           hideFn={() => setCoffeeModalValue(false)}
           onSaveFn={() => {}}
         />
-      </ScrollView>
+      </View>
     );
   }
 
-  return (
-    <SafeAreaProvider>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
-
-      <View
-        style={[
-          appStyles.pageContainer,
-          {
-            paddingTop: insets.top,
-          },
-        ]}
-      >
-        <PageHeader text="Recipe" />
-        {renderRecipe()}
-      </View>
-    </SafeAreaProvider>
-  );
+  return <PageWrapper title="Recipe">{renderRecipe()}</PageWrapper>;
 }

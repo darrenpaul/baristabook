@@ -6,9 +6,8 @@ import {
   ActivityIndicator,
   StyleSheet,
   Animated,
-  Text,
 } from "react-native";
-import { handleImageDownload } from "@/utils/imageStorage";
+import { handleImageDownload } from "@/utils/image-storage";
 
 type Props = {
   imageBucket: string;
@@ -88,5 +87,6 @@ const styles = StyleSheet.create({
     height: 300,
     justifyContent: "center",
     overflow: "hidden",
+    borderRadius: 10,
   },
 });

@@ -43,6 +43,9 @@ export type RecipeInformation = {
   flavours: string[];
   rating: number;
   image: string;
+  weight_measurement: string;
+  temperature_measurement: string;
+  is_public: boolean;
   notes: string;
 };
 

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
-
 import DropdownActionButton from "@/components/dropdowns/DropdownActionButton";
 import Dropdown from "@/components/dropdowns/Dropdown";
 import appStyles from "@/constants/styles";
@@ -13,6 +11,7 @@ import CreateGrinderModal from "@/components/modals/CreateGrinderModal";
 import CreateBrewerModal from "@/components/modals/CreateBrewerModal";
 import { GrinderResponseData } from "@/types/grinder";
 import { BrewerResponseData } from "@/types/brewer";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
@@ -69,15 +68,7 @@ export default function Component(props: ComponentProps) {
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Equipment</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader title="Equipment" active={isActive} disabled={false} />
     );
   }
 

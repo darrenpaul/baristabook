@@ -4,7 +4,7 @@ export const homeRoute = {
 };
 
 export const loginRoute = {
-  path: "/login",
+  path: "/auth",
   name: "Login",
 };
 
@@ -21,4 +21,9 @@ export const recipeCreateRoute = {
 export const recipeViewRoute = {
   path: (id: string) => `recipe/${id}`,
   name: "Recipe View",
+};
+
+export const accountViewRoute = {
+  path: "/account/view",
+  name: "Account View",
 };

@@ -11,7 +11,6 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { supabase } from "@/utils/supabase";
-import appStyles from "@/constants/styles";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
 import Dropdown from "@/components/dropdowns/Dropdown";
 import Slider from "@/components/Slider";
@@ -21,10 +20,11 @@ import ModalHeader from "@/components/headers/ModalHeader";
 import { currencyList } from "@/utils/currency";
 import { validateTextInput } from "@/utils/input-validation";
 import ImagePicker from "@/components/image/ImagePicker";
-import { handleImageUpload } from "@/utils/imageStorage";
+import { handleImageUpload } from "@/utils/image-storage";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
+import appStyles, { containerStyles } from "@/constants/styles";
 
 type ModalProps = {
   visible: boolean;
@@ -113,7 +113,7 @@ export default function Component(props: ModalProps) {
 
   function renderContent() {
     return (
-      <View style={(appStyles.pageContainer, { marginTop: 24 })}>
+      <View style={(containerStyles.pageContainer, { marginTop: 24 })}>
         <ModalHeader text="Add Coffee" hideFn={() => props.hideFn()} />
 
         <ScrollView>

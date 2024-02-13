@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/constants/styles";
+import appStyles, { accordionStyles } from "@/constants/styles";
 
 type ComponentProps = {
   title: string;
@@ -11,15 +11,18 @@ type ComponentProps = {
 
 export default function Component(props: ComponentProps) {
   return (
-    <View style={appStyles.accordionHeader}>
+    <View style={accordionStyles.header}>
       <Text
-        style={[appStyles.headerText, props.disabled && appStyles.textDisabled]}
+        style={[
+          accordionStyles.heading,
+          props.disabled && appStyles.textDisabled,
+        ]}
       >
         {props.title}
       </Text>
 
       <FontAwesome
-        name={props.active ? "eye-slash" : "eye"}
+        name={props.active ? "eye" : "eye-slash"}
         size={24}
         color={props.disabled ? "lightgray" : "black"}
       />

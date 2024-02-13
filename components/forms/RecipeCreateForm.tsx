@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, TextInput } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import appStyles from "@/constants/styles";
 import ImagePicker from "@/components/image/ImagePicker";
 import RatingForm from "@/components/forms/RatingForm";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
-import { Recipe, RecipeInformation } from "@/types/recipe";
+import { RecipeInformation } from "@/types/recipe";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import SwitchWrapper from "@/components/wrappers/SwitchWrapper";
 
 const SECTIONS = [
   {
@@ -30,6 +30,7 @@ export default function Component(props: ComponentProps) {
   const [ratingValue, setRating] = useState<number>(5);
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>("");
+  const [publicValue, setPublic] = useState<boolean>(false);
 
   useEffect(() => {
     props.setFn({
@@ -38,9 +39,17 @@ export default function Component(props: ComponentProps) {
       flavours: flavoursValue,
       rating: ratingValue,
       image: imageValue,
+      is_public: publicValue,
       notes: notesValue,
     });
-  }, [nameValue, flavoursValue, ratingValue, imageValue, notesValue]);
+  }, [
+    nameValue,
+    flavoursValue,
+    ratingValue,
+    imageValue,
+    publicValue,
+    notesValue,
+  ]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
@@ -81,6 +90,13 @@ export default function Component(props: ComponentProps) {
           numberOfLines={4}
           onChangeText={setNotes}
           placeholder="Notes"
+        />
+
+        <SwitchWrapper
+          offText="Private"
+          onText="Public"
+          value={publicValue}
+          setFn={setPublic}
         />
       </View>
     );

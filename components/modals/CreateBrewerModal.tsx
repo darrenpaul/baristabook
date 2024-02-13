@@ -8,14 +8,14 @@ import {
   Modal,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/constants/styles";
+import appStyles, { containerStyles } from "@/constants/styles";
 import Dropdown from "@/components/dropdowns/Dropdown";
 import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
 import ModalHeader from "@/components/headers/ModalHeader";
 import { BrewerCreateData } from "@/types/brewer";
 import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
-import { handleImageUpload } from "@/utils/imageStorage";
+import { handleImageUpload } from "@/utils/image-storage";
 import { validateTextInput } from "@/utils/input-validation";
 import ImagePicker from "@/components/image/ImagePicker";
 
@@ -81,7 +81,7 @@ export default function Component(props: ModalProps) {
 
   function renderContent() {
     return (
-      <View style={(appStyles.pageContainer, { marginTop: 24 })}>
+      <View style={(containerStyles.pageContainer, { marginTop: 24 })}>
         <ModalHeader text="Add Brewer" hideFn={() => props.hideFn()} />
 
         <ScrollView>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Text, View, TextInput, StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";

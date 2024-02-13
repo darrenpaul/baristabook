@@ -10,8 +10,7 @@ import {
   Platform,
 } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-
-import appStyles from "@/constants/styles";
+import appStyles, { containerStyles } from "@/constants/styles";
 import ModalHeader from "@/components/headers/ModalHeader";
 import { GrinderCreateData } from "@/types/grinder";
 import { createGrinder } from "@/api/grinder";
@@ -46,7 +45,7 @@ export default function Component(props: ModalProps) {
 
   function renderContent() {
     return (
-      <View style={(appStyles.pageContainer, { marginTop: 24 })}>
+      <View style={(containerStyles.pageContainer, { marginTop: 24 })}>
         <ModalHeader text="Add Grinder" hideFn={() => props.hideFn()} />
 
         <KeyboardAvoidingView

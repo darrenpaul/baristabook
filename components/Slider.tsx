@@ -7,11 +7,12 @@ import appStyles from "@/constants/styles";
 
 type GrindProps = {
   title: string;
-  minValue: number;
-  maxValue: number;
-  measurement: string;
+  minValue?: number;
+  maxValue?: number;
+  measurement?: string;
   value: number;
   setFn: Function;
+  step?: number;
   disableCustomInput?: boolean;
 };
 
@@ -62,7 +63,7 @@ export default function Component(props: GrindProps) {
           title="Custom Amount"
           placeholder="Enter amount"
           initialValue={props.value}
-          onSaveFn={props.setFn}
+          onSaveFn={(value: string) => props.setFn(Number(value))}
           inputType="numeric"
         />
       </View>
@@ -71,9 +72,9 @@ export default function Component(props: GrindProps) {
         style={{ width: "100%", height: 40 }}
         value={props.value}
         onValueChange={handleValueChange}
-        step={1}
-        minimumValue={props.minValue}
-        maximumValue={props.maxValue}
+        step={props.step || 1}
+        minimumValue={props.minValue || 0}
+        maximumValue={props.maxValue || 10}
         minimumTrackTintColor="#000000"
         maximumTrackTintColor="#000000"
       />

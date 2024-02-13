@@ -7,6 +7,9 @@ import Slider from "@/components/Slider";
 import { grindSizes } from "@/constants/grind-size-data";
 import { Grind } from "@/types/grind";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import grindSettings, { gramSettings } from "@/constants/grind-settings";
+import { GrindSetting } from "@/types/grind-setting";
+import { findObject } from "@/utils/array-helpers";
 
 const SECTIONS = [
   {
@@ -18,11 +21,14 @@ const SECTIONS = [
 type ComponentProps = {
   grind: Grind;
   setGrindFn: Function;
+  weightMeasurement: string;
   disabled?: boolean;
 };
 
 export default function Component(props: ComponentProps) {
   const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
+  const [settingsValue, setSettings] = useState<GrindSetting>(gramSettings);
+
   const [grindSize, setGrindSize] = useState<string>(props.grind.size);
   const [durationValue, setDurationValue] = useState<number>(
     props.grind.duration
@@ -31,6 +37,30 @@ export default function Component(props: ComponentProps) {
   const [notesValue, setNotes] = useState<string>("");
 
   useEffect(() => {
+    // Watch prop changes and update state
+    const matchedSettings = findObject(
+      grindSettings,
+      "value",
+      props.weightMeasurement
+    );
+
+    if (matchedSettings) {
+      setSettings({
+        label: matchedSettings.label,
+        value: matchedSettings.value,
+        display: matchedSettings.display,
+        weight: matchedSettings.weight,
+        weightMin: matchedSettings.weightMin,
+        weightMax: matchedSettings.weightMax,
+        step: matchedSettings.step,
+      });
+
+      setWeightValue(matchedSettings.weight);
+    }
+  }, [props.weightMeasurement]);
+
+  useEffect(() => {
+    // Update parent state
     props.setGrindFn({
       ...props.grind,
       size: grindSize,
@@ -72,11 +102,12 @@ export default function Component(props: ComponentProps) {
 
         <Slider
           title="Weight"
-          minValue={0}
-          maxValue={200}
-          measurement="g"
+          minValue={settingsValue.weightMin}
+          maxValue={settingsValue.weightMax}
+          measurement={settingsValue.display}
           value={weightValue}
-          setFn={setWeightValue}
+          setFn={(value: number) => setWeightValue(Number(value.toFixed(2)))}
+          step={settingsValue.step}
         />
 
         <TextInput

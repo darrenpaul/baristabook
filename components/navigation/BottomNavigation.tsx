@@ -1,16 +1,14 @@
-import React, { useState } from "react";
-import { Text, View, TextInput, TouchableOpacity } from "react-native";
+import React from "react";
+import { View, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import * as Haptics from "expo-haptics";
 import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-import { recipeCreateRoute } from "@/constants/routes";
+import { accountViewRoute, recipeCreateRoute } from "@/constants/routes";
 
 export default function Component() {
   const router = useRouter();
 
   function handlePress(route: string) {
-    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.push(route);
   }
 
@@ -27,8 +25,11 @@ export default function Component() {
         <FontAwesome name="file-lines" size={24} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-        <FontAwesome name="plus" size={24} color="white" />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handlePress(accountViewRoute.path)}
+      >
+        <FontAwesome name="person" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );

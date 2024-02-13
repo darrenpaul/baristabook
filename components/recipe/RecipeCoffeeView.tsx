@@ -17,6 +17,7 @@ import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { formatCurrency } from "@/utils/currency";
 import Toast from "react-native-toast-message";
 import Image from "@/components/Image";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
@@ -48,15 +49,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Coffee</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader title="Coffee" active={isActive} disabled={false} />
     );
   }
 

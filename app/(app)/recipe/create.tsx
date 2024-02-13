@@ -1,28 +1,15 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from "react-native";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { TouchableOpacity, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { Session } from "@supabase/supabase-js";
 import Toast from "react-native-toast-message";
 import { supabase } from "@/utils/supabase";
-import PageHeader from "@/components/headers/PageHeader";
 import EquipmentForm from "@/components/forms/EquipmentForm";
 import GrindForm from "@/components/forms/GrindForm";
 import InstructionsForm from "@/components/forms/InstructionsForm";
 import appStyles from "@/constants/styles";
 import { fetchCoffees } from "@/api/coffee";
-import { Stack, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { Coffee } from "@/types/coffee";
 import { fetchGrinders } from "@/api/grinder";
 import { GrinderResponseData } from "@/types/grinder";
@@ -35,43 +22,27 @@ import {
   RecipeCoffee,
   RecipeGrinder,
   RecipeBrewer,
-  Recipe,
   RecipeInstructions,
   RecipeInformation,
 } from "@/types/recipe";
 import { createRecipe } from "@/api/recipe";
 import { grindSizeMedium } from "@/constants/grind-size-data";
-import { handleImageUpload } from "@/utils/imageStorage";
+import { handleImageUpload } from "@/utils/image-storage";
 import { recipeImagesBucket } from "@/constants/storage-buckets";
 import { Instructions } from "@/types/instructions";
 import RecipeCreateForm from "@/components/forms/RecipeCreateForm";
 import { Grind } from "@/types/grind";
-
-const expandableSections = [
-  {
-    title: "Equipment",
-    content: "equipment",
-  },
-  {
-    title: "Grind",
-    content: "grind",
-  },
-  {
-    title: "Instructions",
-    content: "instructions",
-  },
-  {
-    title: "Recipe",
-    content: "recipe",
-  },
-];
+import PageWrapper from "@/components/wrappers/PageWrapper";
+import { User } from "@/types/user";
+import { fetchUser } from "@/api/user";
+import { grams } from "@/constants/weights";
+import { celsius } from "@/constants/temperatures";
 
 export default function Page() {
-  const insets = useSafeAreaInsets();
-
   const router = useRouter();
 
   const [session, setSession] = useState<Session | null>(null);
+  const [userValue, setUser] = useState<User>();
   const [coffeesValue, setCoffees] = useState<Coffee[]>([]);
   const [grindersValue, setGrinders] = useState<GrinderResponseData[]>([]);
   const [brewersValue, setBrewers] = useState<BrewerResponseData[]>([]);
@@ -95,6 +66,9 @@ export default function Page() {
     flavours: [],
     rating: 5,
     image: "",
+    weight_measurement: grams.value,
+    temperature_measurement: celsius.value,
+    is_public: false,
     notes: "",
   });
 
@@ -140,9 +114,17 @@ export default function Page() {
   }
 
   function handleRefresh() {
-    getCoffees();
-    getGrinders();
-    getBrewers();
+    fetchUser().then(({ data }) => {
+      setUser(data);
+      setRecipe({
+        ...recipeValue,
+        weight_measurement: data.weight,
+        temperature_measurement: data.temperature,
+      });
+      getCoffees();
+      getGrinders();
+      getBrewers();
+    });
   }
 
   async function onUploadImage(
@@ -174,6 +156,7 @@ export default function Page() {
   async function handleSave() {
     if (
       !session?.user.id ||
+      !userValue ||
       !equipmentValue ||
       !grindValue ||
       !instructionsValue ||
@@ -248,6 +231,9 @@ export default function Page() {
       name: recipeValue.name,
       flavours: recipeValue.flavours,
       rating: recipeValue.rating,
+      is_public: recipeValue.is_public,
+      weight_measurement: userValue.weight,
+      temperature_measurement: userValue.temperature,
       image: recipeImagePath,
       notes: recipeValue.notes,
     };
@@ -281,12 +267,14 @@ export default function Page() {
   }
 
   function renderEquipmentForm() {
+    if (!session) return <></>;
+
     return (
       <EquipmentForm
         coffees={coffeesValue}
         grinders={grindersValue}
         brewers={brewersValue}
-        userId={session?.user.id || ""}
+        userId={session?.user.id}
         refreshFn={handleRefresh}
         equipment={equipmentValue}
         setEquipmentFn={setEquipment}
@@ -301,10 +289,13 @@ export default function Page() {
       !equipmentValue?.grinder_id ||
       !equipmentValue?.brewer_id;
 
+    if (!userValue) return <></>;
+
     return (
       <GrindForm
         grind={grindValue}
         setGrindFn={setGrind}
+        weightMeasurement={userValue.weight}
         disabled={isDisabled}
       />
     );
@@ -326,6 +317,7 @@ export default function Page() {
         instructions={instructionsValue}
         setFn={setInstructions}
         brewer={brewer}
+        user={userValue}
         disabled={isDisabled}
       />
     );
@@ -348,49 +340,19 @@ export default function Page() {
   }
 
   return (
-    <SafeAreaProvider>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{
-          flex: 1,
-          paddingTop: insets.top,
-        }}
-      >
-        <View style={appStyles.pageContainer}>
-          <PageHeader text="Create Recipe" />
+    <PageWrapper title="Create Recipe">
+      {renderEquipmentForm()}
 
-          <ScrollView>
-            <View
-              style={{
-                display: "flex",
-                gap: 24,
-                paddingHorizontal: 20,
-                paddingBottom: 48,
-              }}
-            >
-              {renderEquipmentForm()}
+      {renderGrindForm()}
 
-              {renderGrindForm()}
+      {renderInstructionsForm()}
 
-              {renderInstructionsForm()}
+      {renderRecipeForm()}
 
-              {renderRecipeForm()}
-
-              <TouchableOpacity style={appStyles.button} onPress={handleSave}>
-                <Text style={appStyles.buttonText}>Save</Text>
-                <FontAwesome name="floppy-disk" size={20} color="white" />
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      </KeyboardAvoidingView>
-
-      <Toast />
-    </SafeAreaProvider>
+      <TouchableOpacity style={appStyles.button} onPress={handleSave}>
+        <Text style={appStyles.buttonText}>Save</Text>
+        <FontAwesome name="floppy-disk" size={20} color="white" />
+      </TouchableOpacity>
+    </PageWrapper>
   );
 }

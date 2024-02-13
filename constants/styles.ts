@@ -1,13 +1,107 @@
 import { StyleSheet } from "react-native";
 
-export default StyleSheet.create({
+export const containerStyles = StyleSheet.create({
   pageContainer: {
     flex: 1,
-    height: "100%",
+  },
+  columnContainer: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+});
+
+export const paddingStyles = StyleSheet.create({
+  horizontal: {
+    paddingHorizontal: 20,
+  },
+});
+
+export const cardStyles = StyleSheet.create({
+  card: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    shadowColor: "black",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  image: {
+    overflow: "hidden",
+    width: "100%",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  body: {
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 8,
+  },
+  actions: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 8,
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  date: {
+    fontSize: 14,
+    color: "gray",
+  },
+});
+
+export const accordionStyles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: "lightgray",
+  },
+  heading: {
+    fontSize: 28,
+    fontWeight: "bold",
+  },
+});
+
+export default StyleSheet.create({
+  pageContentContainer: {
+    display: "flex",
+    gap: 24,
+    paddingHorizontal: 20,
+    paddingBottom: 48,
+  },
+  columnSpacedContainer: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    backgroundColor: "red",
+    gap: 12,
   },
   rowContainer: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 8,
+  },
+  rowCenterContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
   },
   rowSpacedContainer: {
@@ -26,6 +120,7 @@ export default StyleSheet.create({
     backgroundColor: "black",
     borderWidth: 2,
     borderColor: "black",
+    gap: 8,
   },
   buttonText: {
     fontSize: 16,
@@ -82,6 +177,7 @@ export default StyleSheet.create({
   },
   buttonDisabled: {
     backgroundColor: "lightgray",
+    borderColor: "lightgray",
   },
   buttonGroupHorizontal: {
     flexDirection: "row",
@@ -89,11 +185,7 @@ export default StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  accordionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
+
   accordionContent: {
     display: "flex",
     flexDirection: "column",

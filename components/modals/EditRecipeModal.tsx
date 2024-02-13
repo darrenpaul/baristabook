@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, Text, Modal } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/constants/styles";
+import appStyles, { containerStyles } from "@/constants/styles";
 import ModalHeader from "@/components/headers/ModalHeader";
 import { BrewerCreateData } from "@/types/brewer";
 import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
-import { handleImageUpload } from "@/utils/imageStorage";
+import { handleImageUpload } from "@/utils/image-storage";
 import { validateTextInput } from "@/utils/input-validation";
 import RecipeCoffeeForm from "@/components/forms/RecipeCoffeeEditForm";
 import RecipeInstructionsEditForm from "@/components/forms/RecipeInstructionsEditForm";
@@ -97,7 +97,7 @@ export default function Component(props: ModalProps) {
 
   function renderContent() {
     return (
-      <View style={(appStyles.pageContainer, { marginTop: 24 })}>
+      <View style={(containerStyles.pageContainer, { marginTop: 24 })}>
         <ModalHeader text={TITLE} hideFn={() => props.hideFn()} />
 
         <ScrollView>

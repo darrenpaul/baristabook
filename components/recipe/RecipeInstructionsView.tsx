@@ -1,10 +1,18 @@
-import React, { useState } from "react";
-import { View, Text } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
 import appStyles from "@/constants/styles";
 import Accordion from "react-native-collapsible/Accordion";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
+import { findObject } from "@/utils/array-helpers";
+import weights from "@/constants/weights";
+import temperatures from "@/constants/temperatures";
+import { Preferences } from "@/types/user";
+import {
+  temperatureConversionWithSymbol,
+  weightConversionWithSymbol,
+} from "@/utils/conversion-calculator";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
@@ -15,22 +23,36 @@ const SECTIONS = [
 
 type Props = {
   recipe: Recipe;
+  preferences: Preferences;
 };
 
 export default function Component(props: Props) {
   const [activeSections, setActiveSectionsValue] = useState<number[]>([0]);
 
+  useEffect(() => {
+    if (props.recipe) {
+      const matchedWeightMeasurement = findObject(
+        weights,
+        "value",
+        props.recipe.weight_measurement
+      );
+      const matchedTemperatureMeasurement = findObject(
+        temperatures,
+        "value",
+        props.recipe.temperature_measurement
+      );
+
+      if (!matchedWeightMeasurement || !matchedTemperatureMeasurement) return;
+    }
+  }, [props.recipe]);
+
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Instructions</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader
+        title="Instructions"
+        active={isActive}
+        disabled={false}
+      />
     );
   }
 
@@ -40,7 +62,11 @@ export default function Component(props: Props) {
         <RecipeListItem
           icon="book"
           title="Temperature"
-          body={`${props.recipe.instruction_temperature}°C`}
+          body={temperatureConversionWithSymbol(
+            props.recipe.temperature_measurement,
+            props.preferences.temperature,
+            props.recipe.instruction_temperature
+          )}
         />
 
         <RecipeListItem
@@ -65,7 +91,11 @@ export default function Component(props: Props) {
           icon="book"
           title="Weight"
           uppercaseBody={false}
-          body={`${props.recipe.instruction_weight}g`}
+          body={weightConversionWithSymbol(
+            props.recipe.weight_measurement,
+            props.preferences.weight,
+            props.recipe.instruction_weight
+          )}
         />
 
         <RecipeListItem
