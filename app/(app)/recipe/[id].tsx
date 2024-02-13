@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
@@ -16,12 +16,11 @@ import { Recipe } from "@/types/recipe";
 import RecipeView from "@/components/recipe/RecipeView";
 import PageWrapper from "@/components/wrappers/PageWrapper";
 import { fetchUser } from "@/api/user";
-import { Preferences, User } from "@/types/user";
+import { Preferences } from "@/types/user";
 
 export default function Page() {
   const { id: recipeId } = useLocalSearchParams();
   const [session, setSession] = useState<Session | null>(null);
-  const [userValue, setUser] = useState<User>();
   const [preferencesValue, setPreferences] = useState<Preferences>({
     weight: "",
     temperature: "",
@@ -43,7 +42,6 @@ export default function Page() {
     if (session) {
       fetchUser().then((response) => {
         const { data } = response;
-        setUser(data);
         setPreferences({
           ...preferencesValue,
           weight: data.weight,
@@ -53,6 +51,13 @@ export default function Page() {
       });
     }
   }, [session]);
+
+  const isRecipeOwner = useMemo(() => {
+    if (session?.user.id === recipeValue?.user_id) {
+      return true;
+    }
+    return false;
+  }, [session, recipeValue]);
 
   async function getRecipe() {
     if (!session?.user?.id || !recipeId || typeof recipeId !== "string") return;
@@ -80,14 +85,15 @@ export default function Page() {
           recipe={recipeValue}
           preferences={preferencesValue}
         />
-
-        <TouchableOpacity
-          style={appStyles.buttonSecondary}
-          onPress={() => setCoffeeModalValue(true)}
-        >
-          <Text style={appStyles.buttonSecondaryText}>Edit</Text>
-          <FontAwesome name="pen" size={20} color="black" />
-        </TouchableOpacity>
+        {isRecipeOwner === true && (
+          <TouchableOpacity
+            style={appStyles.buttonSecondary}
+            onPress={() => setCoffeeModalValue(true)}
+          >
+            <Text style={appStyles.buttonSecondaryText}>Edit</Text>
+            <FontAwesome name="pen" size={20} color="black" />
+          </TouchableOpacity>
+        )}
 
         <EditRecipeModal
           recipe={recipeValue}

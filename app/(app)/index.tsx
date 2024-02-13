@@ -77,39 +77,29 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <Stack.Screen
-        options={{
-          headerShown: false,
-        }}
-      />
+    <View style={containerStyles.pageContainer}>
+      <ScrollView>
+        <View
+          style={{
+            display: "flex",
+            gap: 24,
+            paddingHorizontal: 20,
+            paddingBottom: 12,
+          }}
+        >
+          <AccordionHeader
+            title="Your Recipes"
+            active={true}
+            disabled={false}
+          />
+          {renderUserRecipes()}
 
-      <View style={containerStyles.pageContainer}>
-        <ScrollView>
-          <View
-            style={{
-              display: "flex",
-              gap: 24,
-              paddingHorizontal: 20,
-              paddingBottom: 48,
-              height: "100%",
-              paddingTop: insets.top,
-            }}
-          >
-            <AccordionHeader
-              title="Your Recipes"
-              active={true}
-              disabled={false}
-            />
-            {renderUserRecipes()}
+          <AccordionHeader title="Recipes" active={true} disabled={false} />
+          {renderPublicRecipes()}
+        </View>
+      </ScrollView>
 
-            <AccordionHeader title="Recipes" active={true} disabled={false} />
-            {renderPublicRecipes()}
-          </View>
-        </ScrollView>
-
-        <BottomNavigation />
-      </View>
-    </SafeAreaProvider>
+      <BottomNavigation />
+    </View>
   );
 }
