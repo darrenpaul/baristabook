@@ -7,13 +7,17 @@ export function useBrewerService(session: Session | null) {
   const [brewersValue, setBrewers] = useState<Brewer[]>([]);
 
   useEffect(() => {
+    handleRefresh();
+  }, [session]);
+
+  function handleRefresh() {
     if (session && session.user) {
       const userId = session.user.id;
       getBrewers({ userId: userId, setFn: setBrewers });
     }
-  }, [session]);
+  }
 
-  return { brewers: brewersValue };
+  return { brewers: brewersValue, refreshFn: handleRefresh };
 }
 
 type Props = {

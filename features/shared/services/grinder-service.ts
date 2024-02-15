@@ -7,13 +7,17 @@ export function useGrinderService(session: Session | null) {
   const [grindersValue, setGrinders] = useState<Grinder[]>([]);
 
   useEffect(() => {
+    handleRefresh();
+  }, [session]);
+
+  function handleRefresh() {
     if (session && session.user) {
       const userId = session.user.id;
       getGrinders({ userId: userId, setFn: setGrinders });
     }
-  }, [session]);
+  }
 
-  return { grinders: grindersValue };
+  return { grinders: grindersValue, refreshFn: handleRefresh };
 }
 
 type Props = {

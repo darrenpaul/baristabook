@@ -7,13 +7,17 @@ export function useCoffeeService(session: Session | null) {
   const [coffeesValue, setCoffees] = useState<Coffee[]>([]);
 
   useEffect(() => {
+    handleRefresh();
+  }, [session]);
+
+  function handleRefresh() {
     if (session && session.user) {
       const userId = session.user.id;
       getCoffees({ userId: userId, setFn: setCoffees });
     }
-  }, [session]);
+  }
 
-  return { coffees: coffeesValue };
+  return { coffees: coffeesValue, refreshFn: handleRefresh };
 }
 
 type Props = {

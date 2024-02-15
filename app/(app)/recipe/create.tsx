@@ -41,9 +41,9 @@ export default function Page() {
   const router = useRouter();
   const { session } = useAuthService();
   const { user } = useUserService(session);
-  const { coffees } = useCoffeeService(session);
-  const { grinders } = useGrinderService(session);
-  const { brewers } = useBrewerService(session);
+  const { coffees, refreshFn: refreshCoffees } = useCoffeeService(session);
+  const { grinders, refreshFn: refreshGrinders } = useGrinderService(session);
+  const { brewers, refreshFn: refreshBrewers } = useBrewerService(session);
 
   const [equipmentValue, setEquipment] = useState<RecipeEquipment>();
   const [grindValue, setGrind] = useState<Grind>({
@@ -76,6 +76,9 @@ export default function Page() {
 
   function handleRefresh() {
     fetchUser().then(({ data }) => {
+      refreshCoffees();
+      refreshGrinders();
+      refreshBrewers();
       setRecipe({
         ...recipeValue,
         weight_measurement: data.weight,
