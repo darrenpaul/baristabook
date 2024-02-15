@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-
-import appStyles from "@/constants/styles";
+import {
+  containerStyles,
+  typographyStyles,
+  buttonStyles,
+} from "@/features/shared/styles/index";
 
 type ComponentProps = {
   value: string | undefined;
@@ -39,27 +42,18 @@ export default function Component(props: ComponentProps) {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={containerStyles.column}>
       {imageUriValue && (
         <Image width={200} height={200} source={{ uri: imageUriValue }} />
       )}
 
       <TouchableOpacity
-        style={appStyles.buttonSecondary}
+        style={buttonStyles.buttonSecondary}
         onPress={onImageSelection}
       >
-        <Text style={appStyles.buttonSecondaryText}>Image</Text>
+        <Text style={typographyStyles.buttonSecondaryText}>Image</Text>
         <FontAwesome name="upload" size={20} color="black" />
       </TouchableOpacity>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 12,
-    marginTop: 12,
-  },
-});

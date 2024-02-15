@@ -13,7 +13,7 @@ export type CoffeeData = {
   user_id: string;
 };
 
-export type CoffeeResponseData = {
+export type Coffee = {
   id: string;
   created_at: string;
   name: string;

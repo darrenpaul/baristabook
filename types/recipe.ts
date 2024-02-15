@@ -23,6 +23,7 @@ export type RecipeGrind = {
   grind_size: string;
   grind_duration: number;
   grind_weight: number;
+  grind_image?: string;
   grind_notes: string;
 };
 

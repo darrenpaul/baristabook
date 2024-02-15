@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   View,
   TextInput,
@@ -6,7 +6,13 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import appStyles, { containerStyles, paddingStyles } from "@/constants/styles";
+import {
+  containerStyles,
+  paddingStyles,
+  typographyStyles,
+  inputStyles,
+  buttonStyles,
+} from "@/features/shared/styles/index";
 import { validateEmail, validatePassword } from "@/utils/input-validation";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { signIn } from "@/api/auth";
@@ -20,20 +26,18 @@ export default function Component(props: ComponentProps) {
   const [emailErrorValue, setEmailError] = useState<boolean>(false);
   const [passwordValue, setPassword] = useState<string>();
   const [passwordErrorValue, setPasswordError] = useState<boolean>(false);
-  const [canSubmitValue, setCanSubmit] = useState<boolean>(false);
   const [isSubmittingValue, setIsSubmitting] = useState<boolean>(false);
 
-  useEffect(() => {
+  const buttonDisabled = useMemo(() => {
     if (
       !emailValue ||
       !passwordValue ||
       emailErrorValue ||
       passwordErrorValue
     ) {
-      setCanSubmit(false);
-    } else {
-      setCanSubmit(true);
+      return false;
     }
+    return true;
   }, [emailErrorValue, passwordErrorValue]);
 
   async function onSignIn() {
@@ -42,7 +46,7 @@ export default function Component(props: ComponentProps) {
     validateEmail({ value: emailValue, setFn: setEmailError });
     validatePassword({ value: passwordValue, setFn: setPasswordError });
 
-    if (!canSubmitValue) {
+    if (!buttonDisabled || !emailValue || !passwordValue) {
       setIsSubmitting(false);
       return;
     }
@@ -51,8 +55,8 @@ export default function Component(props: ComponentProps) {
   }
 
   return (
-    <View style={[containerStyles.columnContainer, paddingStyles.horizontal]}>
-      <Text style={appStyles.headerText}>Sign Into Your Account</Text>
+    <View style={[containerStyles.column, paddingStyles.horizontalGutter]}>
+      <Text style={typographyStyles.heading}>Sign Into Your Account</Text>
 
       <TextInput
         autoComplete="email"
@@ -62,8 +66,8 @@ export default function Component(props: ComponentProps) {
         textContentType="emailAddress"
         editable={!isSubmittingValue}
         style={[
-          appStyles.textInput,
-          emailErrorValue && appStyles.textInputError,
+          inputStyles.textInput,
+          emailErrorValue && inputStyles.textInputError,
         ]}
         value={emailValue}
         onChangeText={(value) => {
@@ -75,8 +79,8 @@ export default function Component(props: ComponentProps) {
 
       <TextInput
         style={[
-          appStyles.textInput,
-          passwordErrorValue && appStyles.textInputError,
+          inputStyles.textInput,
+          passwordErrorValue && inputStyles.textInputError,
         ]}
         editable={!isSubmittingValue}
         value={passwordValue}
@@ -89,11 +93,10 @@ export default function Component(props: ComponentProps) {
       />
 
       <TouchableOpacity
-        disabled={!canSubmitValue || isSubmittingValue}
+        disabled={!buttonDisabled}
         style={[
-          appStyles.button,
-          (!canSubmitValue && appStyles.buttonDisabled) ||
-            (isSubmittingValue && appStyles.buttonDisabled),
+          buttonStyles.button,
+          !buttonDisabled && buttonStyles.buttonDisabled,
         ]}
         onPress={onSignIn}
       >
@@ -101,7 +104,7 @@ export default function Component(props: ComponentProps) {
 
         {!isSubmittingValue && (
           <>
-            <Text style={appStyles.buttonText}>Sign In</Text>
+            <Text style={typographyStyles.buttonText}>Sign In</Text>
             <FontAwesome name="right-to-bracket" size={20} color="white" />
           </>
         )}
@@ -109,10 +112,10 @@ export default function Component(props: ComponentProps) {
 
       <TouchableOpacity
         disabled={isSubmittingValue}
-        style={appStyles.buttonSecondary}
+        style={buttonStyles.buttonSecondary}
         onPress={() => props.toggleForm()}
       >
-        <Text style={appStyles.buttonSecondaryText}>
+        <Text style={typographyStyles.buttonSecondaryText}>
           Don't have an account?
         </Text>
       </TouchableOpacity>

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import Slider from "@/components/Slider";
-import { BrewerResponseData } from "@/types/brewer";
+import { Brewer } from "@/types/brewer";
 import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
 import { BrewMethod } from "@/types/brew-method";
 import { Instructions } from "@/types/instructions";
@@ -22,6 +22,7 @@ import {
 } from "@/constants/temperature-settings";
 import { TemperatureSetting } from "@/types/temperature-setting";
 import { celsius } from "@/constants/temperatures";
+import { inputStyles } from "@/features/shared/styles/index";
 
 const SECTIONS = [
   {
@@ -33,7 +34,7 @@ const SECTIONS = [
 type ComponentProps = {
   instructions: Instructions;
   setFn: Function;
-  brewer?: BrewerResponseData;
+  brewer?: Brewer;
   user: User;
   disabled?: boolean;
 };
@@ -277,7 +278,7 @@ export default function Component(props: ComponentProps) {
         {componentsToRender.map((renderFn) => renderFn())}
 
         <TextInput
-          style={appStyles.areaInput}
+          style={inputStyles.areaInput}
           multiline
           value={notesValue}
           numberOfLines={4}

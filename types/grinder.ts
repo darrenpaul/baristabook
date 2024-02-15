@@ -4,7 +4,7 @@ export type GrinderCreateData = {
   user_id: string;
 };
 
-export type GrinderResponseData = {
+export type Grinder = {
   created_at: string;
   id: string;
   name: string;

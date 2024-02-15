@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import { Text, View, TextInput, StyleSheet } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import Dropdown from "@/components/dropdowns/Dropdown";
-import appStyles from "@/constants/styles";
+import Dropdown from "@/components/dropdowns/DropdownWrapper";
+import appStyles from "@/features/shared/styles/styles";
 import { RecipeCoffee } from "@/types/recipe";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
 import Slider from "@/components/Slider";
 import { currencyList } from "@/utils/currency";
 import { validateTextInput } from "@/utils/input-validation";
-import ImagePicker from "@/components/image/ImagePicker";
+import ImagePicker from "@/features/shared/components/image/ImagePicker";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
 import Image from "@/components/Image";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
+import AccordionHeader from "@/components/accordion/AccordionHeader";
 
 const SECTIONS = [
   {
@@ -26,12 +27,6 @@ const SECTIONS = [
 type ComponentProps = {
   coffee: RecipeCoffee;
   setFn: Function;
-  // userId: string;
-  // coffees: CoffeeResponseData[];
-  // grinders: GrinderResponseData[];
-  // brewers: BrewerResponseData[];
-  // refreshFn: Function;
-  // equipment: any;
 };
 
 export default function Component(props: ComponentProps) {
@@ -43,15 +38,7 @@ export default function Component(props: ComponentProps) {
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
-      <View style={appStyles.accordionHeader}>
-        <Text style={appStyles.headerText}>Coffee</Text>
-
-        <FontAwesome
-          name={isActive ? "eye-slash" : "eye"}
-          size={24}
-          color="black"
-        />
-      </View>
+      <AccordionHeader title="Coffee" active={isActive} disabled={false} />
     );
   }
 

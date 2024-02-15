@@ -7,20 +7,27 @@ const CONTENT_TYPE = "image/png";
 
 type ImageUploadProps = {
   directory: string;
-  imageUri: string;
+  imageUri: string | undefined;
   userId: string;
 };
 
 export async function handleImageUpload(props: ImageUploadProps) {
+  if (!props.imageUri) return "";
+
   const filePath = `${props.userId!}/${new Date().getTime()}.${IMAGE_TYPE}`;
 
   const base64 = await FileSystem.readAsStringAsync(props.imageUri, {
     encoding: "base64",
   });
 
-  return supabase.storage
+  const { data, error } = await supabase.storage
     .from(props.directory)
     .upload(filePath, decode(base64), { contentType: CONTENT_TYPE });
+
+  if (error) {
+    return;
+  }
+  return data.path;
 }
 
 type ImageDownloadProps = {

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import * as Haptics from "expo-haptics";
 import TextInputModal from "@/components/modals/TextInputModal";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 
 type GrindProps = {
   title: string;

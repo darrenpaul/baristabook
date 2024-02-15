@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useRouter } from "expo-router";
 import { format } from "date-fns";
-import appStyles, { cardStyles } from "@/constants/styles";
+import { cardStyles } from "@/features/index/styles/recipe-card";
 import { Recipe } from "@/types/recipe";
 import Rating from "@/components/Rating";
 import { dateFormat } from "@/constants/date";
@@ -31,21 +31,14 @@ export default function Component(props: HeaderProps) {
             {format(props.recipe.created_at, dateFormat)}
           </Text>
         </View>
-
-        <TouchableOpacity
-          style={appStyles.buttonSquare}
-          onPress={() => router.push(recipeViewRoute.path(props.recipe.id))}
-        >
-          <FontAwesome name="heart" size={24} color="red" />
-        </TouchableOpacity>
       </View>
 
       <View style={cardStyles.actions}>
         <TouchableOpacity
-          style={appStyles.button}
+          style={cardStyles.button}
           onPress={() => router.push(recipeViewRoute.path(props.recipe.id))}
         >
-          <Text style={appStyles.buttonText}>View</Text>
+          <Text style={cardStyles.buttonText}>View</Text>
           <FontAwesome name="angle-right" size={24} color="white" />
         </TouchableOpacity>
       </View>

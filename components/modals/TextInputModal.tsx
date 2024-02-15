@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 
 type ModalProps = {
   visible: boolean;

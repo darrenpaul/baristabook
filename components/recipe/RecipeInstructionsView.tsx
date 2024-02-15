@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import Accordion from "react-native-collapsible/Accordion";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";

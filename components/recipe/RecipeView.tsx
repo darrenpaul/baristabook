@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import { Recipe } from "@/types/recipe";
 import { recipeImagesBucket } from "@/constants/storage-buckets";
 import Rating from "@/components/Rating";

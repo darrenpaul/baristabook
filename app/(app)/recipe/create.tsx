@@ -1,20 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TouchableOpacity, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import { Session } from "@supabase/supabase-js";
 import Toast from "react-native-toast-message";
-import { supabase } from "@/utils/supabase";
 import EquipmentForm from "@/components/forms/EquipmentForm";
 import GrindForm from "@/components/forms/GrindForm";
 import InstructionsForm from "@/components/forms/InstructionsForm";
-import appStyles from "@/constants/styles";
-import { fetchCoffees } from "@/api/coffee";
 import { useRouter } from "expo-router";
-import { Coffee } from "@/types/coffee";
-import { fetchGrinders } from "@/api/grinder";
-import { GrinderResponseData } from "@/types/grinder";
-import { fetchBrewers } from "@/api/brewers";
-import { BrewerResponseData } from "@/types/brewer";
 import {
   RecipeCreate,
   RecipeEquipment,
@@ -28,31 +19,41 @@ import {
 import { createRecipe } from "@/api/recipe";
 import { grindSizeMedium } from "@/constants/grind-size-data";
 import { handleImageUpload } from "@/utils/image-storage";
-import { recipeImagesBucket } from "@/constants/storage-buckets";
+import {
+  grindImagesBucket,
+  recipeImagesBucket,
+} from "@/constants/storage-buckets";
 import { Instructions } from "@/types/instructions";
 import RecipeCreateForm from "@/components/forms/RecipeCreateForm";
 import { Grind } from "@/types/grind";
-import PageWrapper from "@/components/wrappers/PageWrapper";
-import { User } from "@/types/user";
+import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
 import { fetchUser } from "@/api/user";
 import { grams } from "@/constants/weights";
 import { celsius } from "@/constants/temperatures";
+import { buttonStyles, typographyStyles } from "@/features/shared/styles";
+import { useAuthService } from "@/features/shared/services/auth-service";
+import { useCoffeeService } from "@/features/shared/services/coffee-service";
+import { useGrinderService } from "@/features/shared/services/grinder-service";
+import { useBrewerService } from "@/features/shared/services/brewer-service";
+import { useUserService } from "@/features/shared/services/user-service";
 
 export default function Page() {
   const router = useRouter();
+  const { session } = useAuthService();
+  const { user } = useUserService(session);
+  const { coffees } = useCoffeeService(session);
+  const { grinders } = useGrinderService(session);
+  const { brewers } = useBrewerService(session);
 
-  const [session, setSession] = useState<Session | null>(null);
-  const [userValue, setUser] = useState<User>();
-  const [coffeesValue, setCoffees] = useState<Coffee[]>([]);
-  const [grindersValue, setGrinders] = useState<GrinderResponseData[]>([]);
-  const [brewersValue, setBrewers] = useState<BrewerResponseData[]>([]);
   const [equipmentValue, setEquipment] = useState<RecipeEquipment>();
   const [grindValue, setGrind] = useState<Grind>({
     size: grindSizeMedium.value,
     duration: 30,
     weight: 30,
+    image: "",
     notes: "",
   });
+
   const [instructionsValue, setInstructions] = useState<Instructions>({
     pre_infusion_duration: 30,
     extraction_duration: 30,
@@ -61,6 +62,7 @@ export default function Page() {
     pressure: 30,
     notes: "",
   });
+
   const [recipeValue, setRecipe] = useState<RecipeInformation>({
     name: "",
     flavours: [],
@@ -72,91 +74,20 @@ export default function Page() {
     notes: "",
   });
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (session) handleRefresh();
-  }, [session]);
-
-  async function getCoffees() {
-    if (!session?.user?.id) return;
-    const { data, error } = await fetchCoffees(session.user.id);
-    if (!error) {
-      const coffees = data as Coffee[];
-      setCoffees(coffees);
-    }
-  }
-
-  async function getGrinders() {
-    if (!session?.user?.id) return;
-    const { data, error } = await fetchGrinders(session.user.id);
-    if (!error) {
-      const grinders = data as GrinderResponseData[];
-      setGrinders(grinders);
-    }
-  }
-
-  async function getBrewers() {
-    if (!session?.user?.id) return;
-    const { data, error } = await fetchBrewers(session.user.id);
-    if (!error) {
-      const brewers = data as BrewerResponseData[];
-      setBrewers(brewers);
-    }
-  }
-
   function handleRefresh() {
     fetchUser().then(({ data }) => {
-      setUser(data);
       setRecipe({
         ...recipeValue,
         weight_measurement: data.weight,
         temperature_measurement: data.temperature,
       });
-      getCoffees();
-      getGrinders();
-      getBrewers();
     });
-  }
-
-  async function onUploadImage(
-    imageUri: string,
-    userId: string
-  ): Promise<string | undefined> {
-    if (imageUri) {
-      const { data: imageData, error: imageError } = await handleImageUpload({
-        directory: recipeImagesBucket,
-        imageUri: imageUri,
-        userId: userId,
-      });
-
-      if (imageError) {
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: imageError.message,
-        });
-        return;
-      }
-
-      return imageData?.path;
-    }
-
-    return "";
   }
 
   async function handleSave() {
     if (
       !session?.user.id ||
-      !userValue ||
+      !user ||
       !equipmentValue ||
       !grindValue ||
       !instructionsValue ||
@@ -166,19 +97,29 @@ export default function Page() {
 
     // This will return if the image upload fails
     // If the user has not uploaded an image, this will return an empty string
-    const recipeImagePath = await onUploadImage(
-      recipeValue.image,
-      session.user.id
-    );
+    const recipeImagePath = await handleImageUpload({
+      directory: recipeImagesBucket,
+      imageUri: recipeValue.image,
+      userId: session.user.id,
+    });
+
     if (recipeImagePath === undefined) return;
 
-    const matchedCoffee = coffeesValue.find(
+    const grindImagePath = await handleImageUpload({
+      directory: grindImagesBucket,
+      imageUri: grindValue.image,
+      userId: session.user.id,
+    });
+
+    if (grindImagePath === undefined) return;
+
+    const matchedCoffee = coffees.find(
       (item) => item.id === equipmentValue.coffee_id
     );
-    const matchedGrinder = grindersValue.find(
+    const matchedGrinder = grinders.find(
       (item) => item.id === equipmentValue.grinder_id
     );
-    const matchedBrewer = brewersValue.find(
+    const matchedBrewer = brewers.find(
       (item) => item.id === equipmentValue.brewer_id
     );
 
@@ -214,6 +155,7 @@ export default function Page() {
       grind_size: grindValue.size,
       grind_duration: grindValue.duration,
       grind_weight: grindValue.weight,
+      grind_image: grindImagePath,
       grind_notes: grindValue.notes,
     };
 
@@ -232,8 +174,8 @@ export default function Page() {
       flavours: recipeValue.flavours,
       rating: recipeValue.rating,
       is_public: recipeValue.is_public,
-      weight_measurement: userValue.weight,
-      temperature_measurement: userValue.temperature,
+      weight_measurement: user.weight,
+      temperature_measurement: user.temperature,
       image: recipeImagePath,
       notes: recipeValue.notes,
     };
@@ -271,9 +213,9 @@ export default function Page() {
 
     return (
       <EquipmentForm
-        coffees={coffeesValue}
-        grinders={grindersValue}
-        brewers={brewersValue}
+        coffees={coffees}
+        grinders={grinders}
+        brewers={brewers}
         userId={session?.user.id}
         refreshFn={handleRefresh}
         equipment={equipmentValue}
@@ -289,26 +231,27 @@ export default function Page() {
       !equipmentValue?.grinder_id ||
       !equipmentValue?.brewer_id;
 
-    if (!userValue) return <></>;
+    if (!user) return <></>;
 
     return (
       <GrindForm
         grind={grindValue}
         setGrindFn={setGrind}
-        weightMeasurement={userValue.weight}
+        weightMeasurement={user.weight}
         disabled={isDisabled}
       />
     );
   }
 
   function renderInstructionsForm() {
+    if (!user) return <></>;
     const isDisabled =
       !equipmentValue?.coffee_id ||
       !equipmentValue?.water_hardness ||
       !equipmentValue?.grinder_id ||
       !equipmentValue?.brewer_id;
 
-    const brewer = brewersValue.find(
+    const brewer = brewers.find(
       (item) => item.id === equipmentValue?.brewer_id
     );
 
@@ -317,7 +260,7 @@ export default function Page() {
         instructions={instructionsValue}
         setFn={setInstructions}
         brewer={brewer}
-        user={userValue}
+        user={user}
         disabled={isDisabled}
       />
     );
@@ -349,8 +292,8 @@ export default function Page() {
 
       {renderRecipeForm()}
 
-      <TouchableOpacity style={appStyles.button} onPress={handleSave}>
-        <Text style={appStyles.buttonText}>Save</Text>
+      <TouchableOpacity style={buttonStyles.button} onPress={handleSave}>
+        <Text style={typographyStyles.buttonText}>Save</Text>
         <FontAwesome name="floppy-disk" size={20} color="white" />
       </TouchableOpacity>
     </PageWrapper>

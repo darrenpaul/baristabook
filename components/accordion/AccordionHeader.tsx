@@ -1,7 +1,11 @@
 import React from "react";
 import { Text, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles, { accordionStyles } from "@/constants/styles";
+import {
+  containerStyles,
+  marginStyles,
+  typographyStyles,
+} from "@/features/shared/styles";
 
 type ComponentProps = {
   title: string;
@@ -11,11 +15,11 @@ type ComponentProps = {
 
 export default function Component(props: ComponentProps) {
   return (
-    <View style={accordionStyles.header}>
+    <View style={[containerStyles.header, marginStyles.bottomGutter]}>
       <Text
         style={[
-          accordionStyles.heading,
-          props.disabled && appStyles.textDisabled,
+          typographyStyles.heading,
+          props.disabled && typographyStyles.disabled,
         ]}
       >
         {props.title}

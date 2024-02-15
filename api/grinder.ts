@@ -2,8 +2,12 @@ import { grinderTable } from "@/constants/database";
 import { GrinderCreateData } from "@/types/grinder";
 import { supabase } from "@/utils/supabase";
 
-export function fetchGrinders(userId: string) {
-  return supabase.from(grinderTable).select("*").eq("user_id", userId);
+export function fetchGrinders(userId: string, limit: number = 10) {
+  return supabase
+    .from(grinderTable)
+    .select("*")
+    .eq("user_id", userId)
+    .limit(limit);
 }
 
 export function fetchGrinder(grinderId: string, userId: string) {

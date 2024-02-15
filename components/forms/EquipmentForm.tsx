@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import DropdownActionButton from "@/components/dropdowns/DropdownActionButton";
-import Dropdown from "@/components/dropdowns/Dropdown";
-import appStyles from "@/constants/styles";
-import { CoffeeResponseData } from "@/types/coffee";
+import Dropdown from "@/components/dropdowns/DropdownWrapper";
+import appStyles from "@/features/shared/styles/styles";
+import { Coffee } from "@/types/coffee";
 import { waterHardnessLevels } from "@/constants/water-hardness-data";
-import CreateCoffeeModal from "@/components/modals/CreateCoffeeModal";
-import CreateGrinderModal from "@/components/modals/CreateGrinderModal";
-import CreateBrewerModal from "@/components/modals/CreateBrewerModal";
-import { GrinderResponseData } from "@/types/grinder";
-import { BrewerResponseData } from "@/types/brewer";
+import CreateCoffeeModal from "@/features/recipe/create/modals/CreateCoffeeModal";
+import CreateGrinderModal from "@/features/recipe/create/modals/CreateGrinderModal";
+import CreateBrewerModal from "@/features/recipe/create/modals/CreateBrewerModal";
+import { Grinder } from "@/types/grinder";
+import { Brewer } from "@/types/brewer";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import { useModal } from "@/features/shared/services/modal-service";
 
 const SECTIONS = [
   {
@@ -22,20 +23,24 @@ const SECTIONS = [
 
 type ComponentProps = {
   userId: string;
-  coffees: CoffeeResponseData[];
-  grinders: GrinderResponseData[];
-  brewers: BrewerResponseData[];
+  coffees: Coffee[];
+  grinders: Grinder[];
+  brewers: Brewer[];
   refreshFn: Function;
   equipment: any;
   setEquipmentFn: Function;
 };
 
 export default function Component(props: ComponentProps) {
-  const [coffeeModalValue, setCoffeeModalValue] = useState<boolean>(false);
-  const [grinderModalValue, setGrinderModalValue] = useState<boolean>(false);
-  const [brewerModalValue, setBrewerModalValue] = useState<boolean>(false);
+  const { modalState: coffeeModalState, setModalState: setCoffeeModalState } =
+    useModal();
+  const { modalState: grinderModalState, setModalState: setGrinderModalState } =
+    useModal();
+  const { modalState: brewerModalState, setModalState: setBrewerModalState } =
+    useModal();
 
   const [activeSections, setActiveSectionsValue] = useState<number[]>([0]);
+
   const [coffeeValue, setCoffeeValue] = useState<string>("");
   const [waterValue, setWaterValue] = useState<string>("");
   const [grinderValue, setGrinderValue] = useState<string>("");
@@ -45,26 +50,11 @@ export default function Component(props: ComponentProps) {
     props.setEquipmentFn({
       ...props.equipment,
       coffee_id: coffeeValue,
-    });
-  }, [coffeeValue]);
-  useEffect(() => {
-    props.setEquipmentFn({
-      ...props.equipment,
       water_hardness: waterValue,
-    });
-  }, [waterValue]);
-  useEffect(() => {
-    props.setEquipmentFn({
-      ...props.equipment,
       grinder_id: grinderValue,
-    });
-  }, [grinderValue]);
-  useEffect(() => {
-    props.setEquipmentFn({
-      ...props.equipment,
       brewer_id: brewerValue,
     });
-  }, [brewerValue]);
+  }, [coffeeValue, waterValue, grinderValue, brewerValue]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
@@ -84,7 +74,7 @@ export default function Component(props: ComponentProps) {
           }))}
           icon="mug-hot"
           placeholder="Select Coffee"
-          buttonFn={() => setCoffeeModalValue(true)}
+          buttonFn={() => setCoffeeModalState(true)}
         />
 
         <Dropdown
@@ -104,7 +94,7 @@ export default function Component(props: ComponentProps) {
           }))}
           icon="gears"
           placeholder="Select Grinder"
-          buttonFn={() => setGrinderModalValue(true)}
+          buttonFn={() => setGrinderModalState(true)}
         />
 
         <DropdownActionButton
@@ -116,26 +106,26 @@ export default function Component(props: ComponentProps) {
           }))}
           icon="flask"
           placeholder="Select Brewer"
-          buttonFn={() => setBrewerModalValue(true)}
+          buttonFn={() => setBrewerModalState(true)}
         />
 
         <CreateCoffeeModal
-          visible={coffeeModalValue}
-          hideFn={() => setCoffeeModalValue(false)}
+          visible={coffeeModalState}
+          hideFn={() => setCoffeeModalState(false)}
           userId={props.userId}
           onSaveFn={props.refreshFn}
         />
 
         <CreateGrinderModal
-          visible={grinderModalValue}
-          hideFn={() => setGrinderModalValue(false)}
+          visible={grinderModalState}
+          hideFn={() => setGrinderModalState(false)}
           userId={props.userId}
           onSaveFn={props.refreshFn}
         />
 
         <CreateBrewerModal
-          visible={brewerModalValue}
-          hideFn={() => setBrewerModalValue(false)}
+          visible={brewerModalState}
+          hideFn={() => setBrewerModalState(false)}
           userId={props.userId}
           onSaveFn={props.refreshFn}
         />

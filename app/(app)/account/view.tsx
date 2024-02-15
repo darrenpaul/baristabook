@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Text, TouchableOpacity } from "react-native";
-import PageWrapper from "@/components/wrappers/PageWrapper";
+import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import { signOut } from "@/api/auth";
 import PreferencesForm from "@/components/forms/PreferencesForm";
 import { Session } from "@supabase/supabase-js";
@@ -32,7 +32,6 @@ export default function Page() {
     if (session) {
       fetchUser().then((response) => {
         const { data } = response;
-        console.log("fetchUser ~ data:", data);
         setUser(data);
         setPreferences({
           ...preferencesValue,

@@ -6,7 +6,7 @@ export type BrewerCreateData = {
   user_id: string;
 };
 
-export type BrewerResponseData = {
+export type Brewer = {
   created_at: string;
   id: string;
   name: string;

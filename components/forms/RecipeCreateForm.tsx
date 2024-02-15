@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import appStyles from "@/constants/styles";
-import ImagePicker from "@/components/image/ImagePicker";
+import appStyles from "@/features/shared/styles/styles";
+import ImagePicker from "@/features/shared/components/image/ImagePicker";
 import RatingForm from "@/components/forms/RatingForm";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
 import { RecipeInformation } from "@/types/recipe";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
-import SwitchWrapper from "@/components/wrappers/SwitchWrapper";
+import SwitchWrapper from "@/features/shared/components/wrappers/SwitchWrapper";
+import { inputStyles } from "@/features/shared/styles/index";
 
 const SECTIONS = [
   {
@@ -65,7 +66,7 @@ export default function Component(props: ComponentProps) {
     return (
       <View style={appStyles.accordionContent}>
         <TextInput
-          style={appStyles.textInput}
+          style={inputStyles.textInput}
           value={nameValue}
           onChangeText={setName}
           placeholder="Name"
@@ -84,7 +85,7 @@ export default function Component(props: ComponentProps) {
         <ImagePicker value={imageValue} setFn={setImage} />
 
         <TextInput
-          style={appStyles.areaInput}
+          style={inputStyles.areaInput}
           value={notesValue}
           multiline
           numberOfLines={4}

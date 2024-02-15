@@ -4,8 +4,12 @@ import { Dropdown } from "react-native-element-dropdown";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import * as Haptics from "expo-haptics";
 import styles from "./styles";
-
-import appStyles from "@/constants/styles";
+import {
+  containerStyles,
+  typographyStyles,
+  buttonStyles,
+} from "@/features/shared/styles/index";
+import appStyles from "@/features/shared/styles/styles";
 
 type Item = { label: string; value: string | number };
 
@@ -64,8 +68,8 @@ export default function Component(props: DropdownActionButtonProps) {
         )}
       />
 
-      <TouchableOpacity style={appStyles.buttonSquare} onPress={handlePress}>
-        <FontAwesome name="angle-right" size={24} color="white" />
+      <TouchableOpacity style={buttonStyles.buttonSquare} onPress={handlePress}>
+        <FontAwesome name="plus" size={24} color="white" />
       </TouchableOpacity>
     </View>
   );

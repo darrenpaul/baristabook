@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import appStyles from "@/constants/styles";
-import Dropdown from "@/components/dropdowns/Dropdown";
+import appStyles from "@/features/shared/styles/styles";
+import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import weights from "@/constants/weights";
 import temperatures from "@/constants/temperatures";

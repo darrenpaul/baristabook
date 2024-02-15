@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, Text, Modal } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles, { containerStyles } from "@/constants/styles";
-import ModalHeader from "@/components/headers/ModalHeader";
+import appStyles from "@/features/shared/styles/styles";
+import containerStyles from "@/features/shared/styles/containers";
+import ModalHeader from "@/features/shared/components/headers/ModalHeader";
 import { BrewerCreateData } from "@/types/brewer";
 import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
@@ -17,11 +18,15 @@ import {
   Recipe,
 } from "@/types/recipe";
 import { updateRecipe } from "@/api/recipe";
-import { CoffeeResponseData } from "@/types/coffee";
+import { Coffee } from "@/types/coffee";
+import { Instructions } from "@/types/instructions";
+import InstructionsForm from "@/components/forms/InstructionsForm";
+import { User } from "@/types/user";
 
 type ModalProps = {
   recipe: Recipe;
   visible: boolean;
+  user: User;
   hideFn: Function;
   onSaveFn: Function;
 };
@@ -35,7 +40,7 @@ export default function Component(props: ModalProps) {
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>();
   const [coffeeValue, setCoffee] = useState<RecipeCoffee>();
-  const [instructionsValue, setInstructions] = useState<RecipeInstructions>();
+  const [instructionsValue, setInstructions] = useState<Instructions>();
 
   useEffect(() => {
     if (props.recipe) {
@@ -54,16 +59,12 @@ export default function Component(props: ModalProps) {
       });
 
       setInstructions({
-        name: props.recipe.name,
-        pre_infusion_duration: props.recipe.pre_infusion_duration,
-        duration: props.recipe.duration,
-        weight: props.recipe.weight,
-        temperature: props.recipe.temperature,
-        pressure: props.recipe.pressure,
-        flavours: props.recipe.flavours,
-        rating: props.recipe.rating,
-        notes: props.recipe.notes,
-        image: props.recipe.image,
+        pre_infusion_duration: props.recipe.instruction_pre_infusion_duration,
+        extraction_duration: props.recipe.instruction_extraction_duration,
+        weight: props.recipe.instruction_weight,
+        temperature: props.recipe.instruction_temperature,
+        pressure: props.recipe.instruction_temperature,
+        notes: props.recipe.instruction_notes,
       });
     }
   }, [props.recipe]);
@@ -97,7 +98,7 @@ export default function Component(props: ModalProps) {
 
   function renderContent() {
     return (
-      <View style={(containerStyles.pageContainer, { marginTop: 24 })}>
+      <View style={(containerStyles.page, { marginTop: 24 })}>
         <ModalHeader text={TITLE} hideFn={() => props.hideFn()} />
 
         <ScrollView>
@@ -114,9 +115,12 @@ export default function Component(props: ModalProps) {
             )}
 
             {instructionsValue && (
-              <RecipeInstructionsEditForm
+              <InstructionsForm
                 instructions={instructionsValue}
                 setFn={setInstructions}
+                brewer={props.recipe.brewer_name}
+                user={props.user}
+                disabled={false}
               />
             )}
 

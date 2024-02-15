@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
-import appStyles, { containerStyles } from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import { useLocalSearchParams } from "expo-router";
 import { fetchRecipe } from "@/api/recipe";
 import RecipeCoffeeView from "@/components/recipe/RecipeCoffeeView";
@@ -14,13 +14,19 @@ import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import EditRecipeModal from "@/components/modals/EditRecipeModal";
 import { Recipe } from "@/types/recipe";
 import RecipeView from "@/components/recipe/RecipeView";
-import PageWrapper from "@/components/wrappers/PageWrapper";
+import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
 import { fetchUser } from "@/api/user";
 import { Preferences } from "@/types/user";
+import {
+  buttonStyles,
+  typographyStyles,
+  containerStyles,
+} from "@/features/shared/styles/index";
+import { useAuthService } from "@/features/shared/services/auth-service";
+import RecipeGrindView from "@/components/recipe/RecipeGrindView";
 
 export default function Page() {
   const { id: recipeId } = useLocalSearchParams();
-  const [session, setSession] = useState<Session | null>(null);
   const [preferencesValue, setPreferences] = useState<Preferences>({
     weight: "",
     temperature: "",
@@ -28,15 +34,7 @@ export default function Page() {
   const [recipeValue, setRecipe] = useState<Recipe>();
   const [coffeeModalValue, setCoffeeModalValue] = useState<boolean>(false);
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-  }, []);
+  const { session } = useAuthService();
 
   useEffect(() => {
     if (session) {
@@ -72,12 +70,14 @@ export default function Page() {
     if (!recipeValue || !preferencesValue) return <PageLoader />;
 
     return (
-      <View style={containerStyles.columnContainer}>
+      <View style={containerStyles.column}>
         <RecipeView recipe={recipeValue} />
 
         <RecipeCoffeeView recipe={recipeValue} />
 
         <RecipeGrinderView recipe={recipeValue} />
+
+        <RecipeGrindView recipe={recipeValue} preferences={preferencesValue} />
 
         <RecipeBrewerView recipe={recipeValue} />
 
@@ -85,22 +85,23 @@ export default function Page() {
           recipe={recipeValue}
           preferences={preferencesValue}
         />
+
         {isRecipeOwner === true && (
           <TouchableOpacity
-            style={appStyles.buttonSecondary}
+            style={buttonStyles.buttonSecondary}
             onPress={() => setCoffeeModalValue(true)}
           >
-            <Text style={appStyles.buttonSecondaryText}>Edit</Text>
+            <Text style={typographyStyles.buttonSecondaryText}>Edit</Text>
             <FontAwesome name="pen" size={20} color="black" />
           </TouchableOpacity>
         )}
 
-        <EditRecipeModal
+        {/* <EditRecipeModal
           recipe={recipeValue}
           visible={coffeeModalValue}
           hideFn={() => setCoffeeModalValue(false)}
           onSaveFn={() => {}}
-        />
+        /> */}
       </View>
     );
   }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Switch } from "react-native";
 
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 
 type ComponentProps = {
   offText: string;

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
-import appStyles from "@/constants/styles";
-import Dropdown from "@/components/dropdowns/Dropdown";
+import appStyles from "@/features/shared/styles/styles";
+import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import Slider from "@/components/Slider";
 import { grindSizes } from "@/constants/grind-size-data";
 import { Grind } from "@/types/grind";
@@ -10,6 +10,8 @@ import AccordionHeader from "@/components/accordion/AccordionHeader";
 import grindSettings, { gramSettings } from "@/constants/grind-settings";
 import { GrindSetting } from "@/types/grind-setting";
 import { findObject } from "@/utils/array-helpers";
+import { inputStyles } from "@/features/shared/styles/index";
+import ImagePicker from "@/features/shared/components/image/ImagePicker";
 
 const SECTIONS = [
   {
@@ -34,6 +36,7 @@ export default function Component(props: ComponentProps) {
     props.grind.duration
   );
   const [weightValue, setWeightValue] = useState<number>(props.grind.weight);
+  const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>("");
 
   useEffect(() => {
@@ -66,9 +69,10 @@ export default function Component(props: ComponentProps) {
       size: grindSize,
       duration: durationValue,
       weight: weightValue,
+      image: imageValue,
       notes: notesValue,
     });
-  }, [grindSize, durationValue, weightValue, notesValue]);
+  }, [grindSize, durationValue, weightValue, imageValue, notesValue]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
@@ -110,8 +114,10 @@ export default function Component(props: ComponentProps) {
           step={settingsValue.step}
         />
 
+        <ImagePicker value={imageValue} setFn={setImage} />
+
         <TextInput
-          style={appStyles.areaInput}
+          style={inputStyles.areaInput}
           value={notesValue}
           multiline
           numberOfLines={4}

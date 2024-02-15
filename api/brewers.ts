@@ -2,8 +2,12 @@ import { brewerTable } from "@/constants/database";
 import { BrewerCreateData } from "@/types/brewer";
 import { supabase } from "@/utils/supabase";
 
-export function fetchBrewers(userId: string) {
-  return supabase.from(brewerTable).select("*").eq("user_id", userId);
+export function fetchBrewers(userId: string, limit: number = 10) {
+  return supabase
+    .from(brewerTable)
+    .select("*")
+    .eq("user_id", userId)
+    .limit(limit);
 }
 
 export function fetchBrewer(grinderId: string, userId: string) {

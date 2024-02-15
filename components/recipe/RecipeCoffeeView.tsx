@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import Accordion from "react-native-collapsible/Accordion";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
@@ -18,6 +18,7 @@ import { formatCurrency } from "@/utils/currency";
 import Toast from "react-native-toast-message";
 import Image from "@/components/Image";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import { buttonStyles } from "@/features/shared/styles";
 
 const SECTIONS = [
   {
@@ -65,7 +66,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
           <Text style={appStyles.headerText}>{props.recipe.coffee_name}</Text>
 
           <TouchableOpacity
-            style={appStyles.buttonSquareSmall}
+            style={buttonStyles.buttonSquareSmall}
             onPress={onLinkPress}
           >
             <FontAwesome name="link" size={18} color="white" />

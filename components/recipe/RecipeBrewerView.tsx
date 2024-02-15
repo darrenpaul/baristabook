@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
-import appStyles from "@/constants/styles";
+import appStyles from "@/features/shared/styles/styles";
 import Accordion from "react-native-collapsible/Accordion";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
 import { Recipe } from "@/types/recipe";

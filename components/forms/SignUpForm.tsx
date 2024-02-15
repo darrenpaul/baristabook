@@ -6,7 +6,13 @@ import {
   Text,
   ActivityIndicator,
 } from "react-native";
-import appStyles, { containerStyles, paddingStyles } from "@/constants/styles";
+import {
+  containerStyles,
+  paddingStyles,
+  typographyStyles,
+  inputStyles,
+  buttonStyles,
+} from "@/features/shared/styles/index";
 import {
   validateTextInput,
   validateEmail,
@@ -76,15 +82,15 @@ export default function Component(props: ComponentProps) {
   }
 
   return (
-    <View style={[containerStyles.columnContainer, paddingStyles.horizontal]}>
-      <Text style={appStyles.headerText}>Sign Up For BrewLog</Text>
+    <View style={[containerStyles.column, paddingStyles.horizontalGutter]}>
+      <Text style={typographyStyles.heading}>Sign Up For BrewLog</Text>
 
       <TextInput
         autoComplete="name"
         editable={!isSubmittingValue}
         style={[
-          appStyles.textInput,
-          nameErrorValue && appStyles.textInputError,
+          inputStyles.textInput,
+          nameErrorValue && inputStyles.textInputError,
         ]}
         value={nameValue}
         onChangeText={(value) => {
@@ -102,8 +108,8 @@ export default function Component(props: ComponentProps) {
         textContentType="emailAddress"
         editable={!isSubmittingValue}
         style={[
-          appStyles.textInput,
-          emailErrorValue && appStyles.textInputError,
+          inputStyles.textInput,
+          emailErrorValue && inputStyles.textInputError,
         ]}
         value={emailValue}
         onChangeText={(value) => {
@@ -115,8 +121,8 @@ export default function Component(props: ComponentProps) {
 
       <TextInput
         style={[
-          appStyles.textInput,
-          passwordErrorValue && appStyles.textInputError,
+          inputStyles.textInput,
+          passwordErrorValue && inputStyles.textInputError,
         ]}
         editable={!isSubmittingValue}
         value={passwordValue}
@@ -131,9 +137,9 @@ export default function Component(props: ComponentProps) {
       <TouchableOpacity
         disabled={!canSubmitValue || isSubmittingValue}
         style={[
-          appStyles.button,
-          (!canSubmitValue && appStyles.buttonDisabled) ||
-            (isSubmittingValue && appStyles.buttonDisabled),
+          buttonStyles.button,
+          (!canSubmitValue && buttonStyles.buttonDisabled) ||
+            (isSubmittingValue && buttonStyles.buttonDisabled),
         ]}
         onPress={onSignUp}
       >
@@ -141,7 +147,7 @@ export default function Component(props: ComponentProps) {
 
         {!isSubmittingValue && (
           <>
-            <Text style={appStyles.buttonText}>Sign Up</Text>
+            <Text style={typographyStyles.buttonText}>Sign Up</Text>
             <FontAwesome name="right-to-bracket" size={20} color="white" />
           </>
         )}
@@ -149,10 +155,10 @@ export default function Component(props: ComponentProps) {
 
       <TouchableOpacity
         disabled={isSubmittingValue}
-        style={appStyles.buttonSecondary}
+        style={buttonStyles.buttonSecondary}
         onPress={() => props.toggleForm()}
       >
-        <Text style={appStyles.buttonSecondaryText}>
+        <Text style={typographyStyles.buttonSecondaryText}>
           Already have an account?
         </Text>
       </TouchableOpacity>
