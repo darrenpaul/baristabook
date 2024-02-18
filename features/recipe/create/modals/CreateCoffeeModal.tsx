@@ -28,6 +28,7 @@ import {
   CurrencyPrice,
   initialCurrencyPriceSettings,
 } from "@/features/shared/components/selectors/currency-price-select/index";
+import { CoffeeRoast, Taste } from "@/components/icons";
 
 type ModalProps = {
   visible: boolean;
@@ -124,7 +125,7 @@ export default function Component(props: ModalProps) {
           value={roastValue}
           setFn={setRoast}
           items={coffeeRoasts}
-          icon="magnifying-glass"
+          icon={<CoffeeRoast />}
           placeholder="Select Roast Type"
         />
 
@@ -142,7 +143,7 @@ export default function Component(props: ModalProps) {
           value={flavoursValue}
           setFn={setFlavours}
           items={coffeeFlavours}
-          icon="face-grin-tongue"
+          icon={<Taste />}
           placeholder="Select Flavour Profile"
         />
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 import DropdownActionButton from "@/components/dropdowns/DropdownActionButton";
@@ -13,6 +13,14 @@ import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { useModal } from "@/features/shared/services/modal-service";
+import {
+  CoffeeBag,
+  CoffeeGrinder,
+  CoffeeMachine,
+  FrenchPress,
+  WaterDrop,
+} from "@/components/icons/index";
+import { frenchPress } from "@/constants/coffee-brew-methods";
 
 const SECTIONS = [
   {
@@ -56,6 +64,16 @@ export default function Component(props: ComponentProps) {
     });
   }, [coffeeValue, waterValue, grinderValue, brewerValue]);
 
+  function renderBrewerIcon(): ReactNode {
+    const matchBrewer = props.brewers.find(
+      (brewer) => brewer.id === brewerValue
+    );
+    if (matchBrewer?.method === frenchPress.label) {
+      return <FrenchPress />;
+    }
+    return <CoffeeMachine />;
+  }
+
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (
       <AccordionHeader title="Equipment" active={isActive} disabled={false} />
@@ -72,7 +90,7 @@ export default function Component(props: ComponentProps) {
             label: coffee.name,
             value: coffee.id,
           }))}
-          icon="mug-hot"
+          icon={<CoffeeBag />}
           placeholder="Select Coffee"
           buttonFn={() => setCoffeeModalState(true)}
         />
@@ -81,7 +99,7 @@ export default function Component(props: ComponentProps) {
           value={waterValue}
           setFn={setWaterValue}
           items={waterHardnessLevels}
-          icon="droplet"
+          icon={<WaterDrop />}
           placeholder="Select Water"
         />
 
@@ -92,7 +110,7 @@ export default function Component(props: ComponentProps) {
             label: grinder.name,
             value: grinder.id,
           }))}
-          icon="gears"
+          icon={<CoffeeGrinder />}
           placeholder="Select Grinder"
           buttonFn={() => setGrinderModalState(true)}
         />
@@ -104,7 +122,7 @@ export default function Component(props: ComponentProps) {
             label: `${brewer.name} - ${brewer.method}`,
             value: brewer.id,
           }))}
-          icon="flask"
+          icon={renderBrewerIcon()}
           placeholder="Select Brewer"
           buttonFn={() => setBrewerModalState(true)}
         />

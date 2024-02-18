@@ -1,21 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { View, TouchableOpacity, Text } from "react-native";
-import { Session } from "@supabase/supabase-js";
-import { supabase } from "@/utils/supabase";
-import appStyles from "@/features/shared/styles/styles";
-import { useLocalSearchParams } from "expo-router";
-import { fetchRecipe } from "@/api/recipe";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { deleteRecipe, fetchRecipe } from "@/api/recipe";
 import RecipeCoffeeView from "@/components/recipe/RecipeCoffeeView";
 import RecipeGrinderView from "@/components/recipe/RecipeGrinderView";
 import RecipeBrewerView from "@/components/recipe/RecipeBrewerView";
 import RecipeInstructionsView from "@/components/recipe/RecipeInstructionsView";
 import PageLoader from "@/components/loaders/PageLoader";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import EditRecipeModal from "@/components/modals/EditRecipeModal";
 import { Recipe } from "@/types/recipe";
 import RecipeView from "@/components/recipe/RecipeView";
 import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
-import { fetchUser } from "@/api/user";
 import { Preferences } from "@/types/user";
 import {
   buttonStyles,
@@ -24,6 +19,8 @@ import {
 } from "@/features/shared/styles/index";
 import { useAuthService } from "@/features/shared/services/auth-service";
 import RecipeGrindView from "@/components/recipe/RecipeGrindView";
+import { useUserService } from "@/features/shared/services/user-service";
+import { homeRoute } from "@/constants/routes";
 
 export default function Page() {
   const { id: recipeId } = useLocalSearchParams();
@@ -32,23 +29,26 @@ export default function Page() {
     temperature: "",
   });
   const [recipeValue, setRecipe] = useState<Recipe>();
-  const [coffeeModalValue, setCoffeeModalValue] = useState<boolean>(false);
-
+  const router = useRouter();
   const { session } = useAuthService();
+  const { user } = useUserService(session);
 
   useEffect(() => {
-    if (session) {
-      fetchUser().then((response) => {
-        const { data } = response;
-        setPreferences({
-          ...preferencesValue,
-          weight: data.weight,
-          temperature: data.temperature,
-        });
-        getRecipe();
+    if (user) {
+      setPreferences({
+        ...preferencesValue,
+        weight: user.weight,
+        temperature: user.temperature,
+      });
+      if (!session?.user?.id || !recipeId || typeof recipeId !== "string")
+        return;
+      fetchRecipe(recipeId, session?.user?.id).then(({ data, error }) => {
+        if (!error) {
+          setRecipe(data);
+        }
       });
     }
-  }, [session]);
+  }, [user]);
 
   const isRecipeOwner = useMemo(() => {
     if (session?.user.id === recipeValue?.user_id) {
@@ -57,13 +57,10 @@ export default function Page() {
     return false;
   }, [session, recipeValue]);
 
-  async function getRecipe() {
-    if (!session?.user?.id || !recipeId || typeof recipeId !== "string") return;
-    const { data, error } = await fetchRecipe(recipeId, session?.user?.id);
-    if (!error) {
-      const newRecipe = data;
-      setRecipe(newRecipe);
-    }
+  async function onDelete() {
+    if (!recipeId || typeof recipeId !== "string") return;
+    await deleteRecipe(recipeId);
+    router.push(homeRoute.path);
   }
 
   function renderRecipe() {
@@ -88,11 +85,11 @@ export default function Page() {
 
         {isRecipeOwner === true && (
           <TouchableOpacity
-            style={buttonStyles.buttonSecondary}
-            onPress={() => setCoffeeModalValue(true)}
+            style={buttonStyles.buttonDanger}
+            onPress={onDelete}
           >
-            <Text style={typographyStyles.buttonSecondaryText}>Edit</Text>
-            <FontAwesome name="pen" size={20} color="black" />
+            <Text style={typographyStyles.buttonText}>Delete</Text>
+            <FontAwesome name="trash" size={20} color="white" />
           </TouchableOpacity>
         )}
 

@@ -19,6 +19,15 @@ import Toast from "react-native-toast-message";
 import Image from "@/components/Image";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { buttonStyles } from "@/features/shared/styles";
+import {
+  Calendar,
+  CoffeeRoast,
+  CoffeeShop,
+  Coins,
+  Intensity,
+  Notes,
+  Taste,
+} from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -74,19 +83,19 @@ export default function Component(props: RecipeCoffeeViewProps) {
         </View>
 
         <RecipeListItem
-          icon="link"
+          icon={<CoffeeShop />}
           title="Store"
           body={props.recipe.coffee_store}
         />
 
         <RecipeListItem
-          icon="calendar"
+          icon={<Calendar />}
           title="Purchase Date"
           body={format(props.recipe.coffee_purchase_date, dateFormat)}
         />
 
         <RecipeListItem
-          icon="coins"
+          icon={<Coins />}
           title="Price"
           body={formatCurrency(
             props.recipe.coffee_purchase_currency,
@@ -95,19 +104,19 @@ export default function Component(props: RecipeCoffeeViewProps) {
         />
 
         <RecipeListItem
-          icon="fire"
+          icon={<CoffeeRoast />}
           title="Roast"
           body={props.recipe.coffee_roast}
         />
 
         <RecipeListItem
-          icon="fire"
+          icon={<Intensity />}
           title="Intensity"
           body={`${props.recipe.coffee_intensity}/10`}
         />
 
         <RecipeListItem
-          icon="face-grin-tongue"
+          icon={<Taste />}
           title="Flavours"
           body={props.recipe.coffee_flavours.join(", ")}
           uppercaseBody={false}
@@ -115,7 +124,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Notes />}
           title="Notes"
           body={props.recipe.coffee_notes}
           uppercaseBody={false}

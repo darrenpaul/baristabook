@@ -1,8 +1,11 @@
-import { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
-import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
+import {
+  coffeeBrewMethods,
+  frenchPress,
+} from "@/constants/coffee-brew-methods";
 import { BrewerCreateData } from "@/types/brewer";
 import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
@@ -18,6 +21,7 @@ import {
   paddingStyles,
   marginStyles,
 } from "@/features/shared/styles/index";
+import { CoffeeMachine, FrenchPress } from "@/components/icons";
 
 type ModalProps = {
   visible: boolean;
@@ -32,6 +36,13 @@ export default function Component(props: ModalProps) {
   const [coffeeBrewMethod, setCoffeeBrewMethod] = useState<string>();
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>();
+
+  function renderIcon(): ReactNode {
+    if (coffeeBrewMethod === frenchPress.label) {
+      return <FrenchPress />;
+    }
+    return <CoffeeMachine />;
+  }
 
   async function handleSave() {
     if (!nameValue || !coffeeBrewMethod) {
@@ -88,7 +99,7 @@ export default function Component(props: ModalProps) {
           value={coffeeBrewMethod}
           setFn={setCoffeeBrewMethod}
           items={coffeeBrewMethods}
-          icon="magnifying-glass"
+          icon={renderIcon()}
           placeholder="Select Coffee Recipe Method"
         />
 

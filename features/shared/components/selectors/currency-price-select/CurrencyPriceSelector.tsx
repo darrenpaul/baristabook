@@ -4,6 +4,7 @@ import { currencyList } from "@/utils/currency";
 import { containerStyles, inputStyles } from "@/features/shared/styles/index";
 import currencyPriceSelectorStyles from "./styles";
 import { CurrencyPrice } from "./types";
+import { Currency } from "@/components/icons";
 
 type Props = {
   data: CurrencyPrice;
@@ -23,7 +24,7 @@ export default function Component(props: Props) {
         value={props.data.currency}
         setFn={(value: string) => onSet("currency", value)}
         items={currencySymbols}
-        icon="coins"
+        icon={<Currency />}
         placeholder=""
         dropdownStyle={currencyPriceSelectorStyles.dropdown}
       />

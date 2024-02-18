@@ -26,7 +26,7 @@ export default function Component(props: ComponentProps) {
       </Text>
 
       <FontAwesome
-        name={props.active ? "eye" : "eye-slash"}
+        name={props.active ? "angle-down" : "angle-up"}
         size={24}
         color={props.disabled ? "lightgray" : "black"}
       />

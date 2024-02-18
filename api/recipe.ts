@@ -45,3 +45,7 @@ export function createRecipe(data: RecipeCreate) {
 export function updateRecipe(id: string, data: RecipeCreate) {
   return supabase.from(recipeTable).update(data).eq("id", id);
 }
+
+export function deleteRecipe(id: string) {
+  return supabase.from(recipeTable).delete().eq("id", id);
+}

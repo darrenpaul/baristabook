@@ -23,6 +23,18 @@ export default StyleSheet.create({
     borderWidth: 2,
     borderColor: "black",
   },
+  buttonDanger: {
+    borderRadius: 10,
+    width: "100%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    backgroundColor: "red",
+    borderWidth: 2,
+    borderColor: "red",
+    gap: 8,
+  },
   buttonSquare: {
     borderRadius: 10,
     width: 44,

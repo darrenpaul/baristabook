@@ -1,9 +1,10 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { useRouter } from "expo-router";
 import { accountViewRoute, recipeCreateRoute } from "@/constants/routes";
 import styles from "./styles";
+import { Document } from "@/components/icons";
 
 export default function Component() {
   const router = useRouter();
@@ -18,11 +19,9 @@ export default function Component() {
         <FontAwesome name="house" size={20} color="white" />
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => handlePress(recipeCreateRoute.path)}
-      >
-        <FontAwesome name="file-lines" size={20} color="white" />
+      <TouchableOpacity onPress={() => handlePress(recipeCreateRoute.path)}>
+        <Document />
+        <Text>Log</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

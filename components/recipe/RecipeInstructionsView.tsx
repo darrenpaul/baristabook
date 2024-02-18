@@ -13,6 +13,13 @@ import {
   weightConversionWithSymbol,
 } from "@/utils/conversion-calculator";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import {
+  Notes,
+  Scale,
+  Timer,
+  Temperature,
+  PressureGauge,
+} from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -60,7 +67,7 @@ export default function Component(props: Props) {
     return (
       <View style={appStyles.accordionContent}>
         <RecipeListItem
-          icon="book"
+          icon={<Temperature />}
           title="Temperature"
           body={temperatureConversionWithSymbol(
             props.recipe.temperature_measurement,
@@ -70,25 +77,25 @@ export default function Component(props: Props) {
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<PressureGauge />}
           title="Pressure"
           body={`${props.recipe.instruction_pressure} Bar`}
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Timer />}
           title="Pre-Infusion"
           body={`${props.recipe.instruction_pre_infusion_duration} Seconds`}
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Timer />}
           title="Extraction"
           body={`${props.recipe.instruction_extraction_duration} Seconds`}
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Scale />}
           title="Weight"
           uppercaseBody={false}
           body={weightConversionWithSymbol(
@@ -99,7 +106,7 @@ export default function Component(props: Props) {
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Notes />}
           title="Notes"
           body={props.recipe.instruction_notes}
           uppercaseBody={false}

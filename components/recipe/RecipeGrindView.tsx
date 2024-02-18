@@ -21,6 +21,7 @@ import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { buttonStyles } from "@/features/shared/styles";
 import { weightConversionWithSymbol } from "@/utils/conversion-calculator";
 import { Preferences } from "@/types/user";
+import { Notes, Scale, GrindSize, Timer } from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -64,20 +65,20 @@ export default function Component(props: RecipeCoffeeViewProps) {
         />
 
         <RecipeListItem
-          icon="link"
+          icon={<GrindSize />}
           title="Size"
           body={props.recipe.grind_size}
         />
 
         <RecipeListItem
-          icon="calendar"
+          icon={<Timer />}
           title="Grind Time"
           uppercaseBody={false}
           body={`${props.recipe.grind_duration}s`}
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Scale />}
           title="Weight"
           uppercaseBody={false}
           body={weightConversionWithSymbol(
@@ -88,7 +89,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
         />
 
         <RecipeListItem
-          icon="book"
+          icon={<Notes />}
           title="Notes"
           body={props.recipe.grind_notes}
           uppercaseBody={false}

@@ -10,6 +10,7 @@ import {
   buttonStyles,
 } from "@/features/shared/styles/index";
 import appStyles from "@/features/shared/styles/styles";
+import CoffeeBag from "../icons/CoffeeBag";
 
 type Item = { label: string; value: string | number };
 
@@ -17,7 +18,7 @@ type DropdownActionButtonProps = {
   value: string;
   setFn: Function;
   items: Item[];
-  icon: string;
+  icon: React.ReactNode;
   placeholder: string;
   buttonFn: Function;
 };
@@ -30,6 +31,16 @@ export default function Component(props: DropdownActionButtonProps) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       props.buttonFn();
     }
+  }
+
+  function renderIcon() {
+    if (props.icon) {
+      if (typeof props.icon === "string") {
+        return <View></View>;
+      }
+      return <View style={{ marginRight: 8 }}>{props.icon}</View>;
+    }
+    return <View></View>;
   }
 
   return (
@@ -58,14 +69,7 @@ export default function Component(props: DropdownActionButtonProps) {
           props.setFn(item.value);
           setIsFocus(false);
         }}
-        renderLeftIcon={() => (
-          <FontAwesome
-            style={styles.icon}
-            color={isFocus ? "blue" : "black"}
-            name={props.icon}
-            size={20}
-          />
-        )}
+        renderLeftIcon={renderIcon}
       />
 
       <TouchableOpacity style={buttonStyles.buttonSquare} onPress={handlePress}>

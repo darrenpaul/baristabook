@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import { Dropdown } from "react-native-element-dropdown";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import styles from "./styles";
+import { View } from "react-native";
 
 type Item = { label: string; value: string };
 
@@ -9,13 +9,23 @@ type DropdownActionButtonProps = {
   value: string | undefined;
   setFn: Function;
   items: Item[];
-  icon: string;
+  icon: ReactNode;
   placeholder: string;
   dropdownStyle?: object;
 };
 
 export default function Component(props: DropdownActionButtonProps) {
   const [isFocus, setIsFocus] = useState(false);
+
+  function renderIcon() {
+    if (props.icon) {
+      if (typeof props.icon === "string") {
+        return <View></View>;
+      }
+      return <View style={{ marginRight: 8 }}>{props.icon}</View>;
+    }
+    return <View></View>;
+  }
 
   return (
     <Dropdown
@@ -39,14 +49,7 @@ export default function Component(props: DropdownActionButtonProps) {
         props.setFn(item.value);
         setIsFocus(false);
       }}
-      renderLeftIcon={() => (
-        <FontAwesome
-          style={styles.icon}
-          color={isFocus ? "blue" : "black"}
-          name={props.icon}
-          size={20}
-        />
-      )}
+      renderLeftIcon={renderIcon}
     />
   );
 }

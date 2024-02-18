@@ -1,9 +1,10 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import { Taste } from "@/components/icons";
 
 type Props = {
-  icon: string;
+  icon: ReactNode;
   title: string;
   body?: string;
   uppercaseBody?: boolean;
@@ -17,6 +18,20 @@ export default function Component({
   uppercaseBody = true,
   bodyUnderTitle = false,
 }: Props) {
+  function renderIcon() {
+    if (icon) {
+      if (typeof icon === "string") {
+        return (
+          <View>
+            <FontAwesome name={icon} size={18} color="black" />
+          </View>
+        );
+      }
+      return <View style={{ marginRight: 8 }}>{icon}</View>;
+    }
+    return <View></View>;
+  }
+
   return (
     <View
       style={
@@ -24,7 +39,8 @@ export default function Component({
       }
     >
       <View style={styles.rowContainer}>
-        <FontAwesome name={icon} size={18} color="black" />
+        {renderIcon()}
+
         <Text style={styles.titleText}>{title}</Text>
       </View>
 

@@ -5,6 +5,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
+import { Notes } from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -32,7 +33,7 @@ export default function Component(props: Props) {
         <Text style={appStyles.headerText}>{props.recipe.grinder_name}</Text>
 
         <RecipeListItem
-          icon="book"
+          icon={<Notes />}
           title="Notes"
           body={props.recipe.grinder_notes}
           uppercaseBody={false}

@@ -12,6 +12,7 @@ import { GrindSetting } from "@/types/grind-setting";
 import { findObject } from "@/utils/array-helpers";
 import { inputStyles } from "@/features/shared/styles/index";
 import ImagePicker from "@/features/shared/components/image/ImagePicker";
+import { GrindSize } from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -91,7 +92,7 @@ export default function Component(props: ComponentProps) {
           value={grindSize}
           setFn={setGrindSize}
           items={grindSizes}
-          icon="magnifying-glass"
+          icon={<GrindSize />}
           placeholder="Select Grind Size"
         />
 

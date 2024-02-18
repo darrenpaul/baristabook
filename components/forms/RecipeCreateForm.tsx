@@ -10,6 +10,7 @@ import { RecipeInformation } from "@/types/recipe";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import SwitchWrapper from "@/features/shared/components/wrappers/SwitchWrapper";
 import { inputStyles } from "@/features/shared/styles/index";
+import { Taste } from "@/components/icons";
 
 const SECTIONS = [
   {
@@ -76,7 +77,7 @@ export default function Component(props: ComponentProps) {
           value={flavoursValue}
           setFn={setFlavours}
           items={coffeeFlavours}
-          icon="face-grin-tongue"
+          icon={<Taste />}
           placeholder="Select Flavour Profile"
         />
 
