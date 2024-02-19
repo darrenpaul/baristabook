@@ -1,4 +1,4 @@
-import { Modal } from "react-native";
+import { Modal, View } from "react-native";
 import ModalHeader from "@/features/shared/components/headers/ModalHeader";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
@@ -19,7 +19,15 @@ export default function Component(props: ModalProps) {
     >
       <ModalHeader text={props.title} hideFn={() => props.hideFn()} />
 
-      <KeyboardAwareScrollView>{props.children}</KeyboardAwareScrollView>
+      <KeyboardAwareScrollView>
+        <View
+          style={{
+            marginBottom: 20,
+          }}
+        >
+          {props.children}
+        </View>
+      </KeyboardAwareScrollView>
     </Modal>
   );
 }

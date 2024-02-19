@@ -6,7 +6,7 @@ import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import appStyles from "@/features/shared/styles/styles";
 import { Coffee } from "@/types/coffee";
 import { waterHardnessLevels } from "@/constants/water-hardness-data";
-import CreateCoffeeModal from "@/features/recipe/create/modals/CreateCoffeeModal";
+import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
 import CreateGrinderModal from "@/features/recipe/create/modals/CreateGrinderModal";
 import CreateBrewerModal from "@/features/recipe/create/modals/CreateBrewerModal";
 import { Grinder } from "@/types/grinder";
@@ -127,7 +127,7 @@ export default function Component(props: ComponentProps) {
           buttonFn={() => setBrewerModalState(true)}
         />
 
-        <CreateCoffeeModal
+        <CoffeeModal
           visible={coffeeModalState}
           hideFn={() => setCoffeeModalState(false)}
           userId={props.userId}

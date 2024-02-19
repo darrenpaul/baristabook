@@ -7,7 +7,7 @@ import { Recipe } from "@/types/recipe";
 import Rating from "@/components/Rating";
 import { dateFormat } from "@/constants/date";
 import { recipeViewRoute } from "@/constants/routes";
-import Image from "@/components/Image";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import { recipeImagesBucket } from "@/constants/storage-buckets";
 
 type HeaderProps = {
@@ -19,7 +19,10 @@ export default function Component(props: HeaderProps) {
 
   return (
     <View style={cardStyles.card}>
-      <Image imageBucket={recipeImagesBucket} imageUrl={props.recipe.image} />
+      <ImageWrapper
+        imageBucket={recipeImagesBucket}
+        imageUrl={props.recipe.image}
+      />
 
       <View style={cardStyles.body}>
         <View style={cardStyles.content}>

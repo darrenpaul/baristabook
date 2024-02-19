@@ -38,3 +38,36 @@ type ImageDownloadProps = {
 export async function handleImageDownload(props: ImageDownloadProps) {
   return supabase.storage.from(props.directory).download(props.imagePath);
 }
+
+type ImageDeleteProps = {
+  directory: string;
+  imagePath: string;
+};
+export async function handleImageDelete(props: ImageDeleteProps) {
+  return supabase.storage.from(props.directory).remove([props.imagePath]);
+}
+
+type ImageReplaceProps = {
+  directory: string;
+  currentImage: string | undefined; // The current image path
+  imageUri: string | undefined; // The new image uri
+  userId: string;
+};
+export async function handleImageReplace(props: ImageReplaceProps) {
+  if (props.currentImage && props.imageUri) {
+    await handleImageDelete({
+      directory: props.directory,
+      imagePath: props.currentImage,
+    });
+  }
+
+  if (props.imageUri) {
+    return handleImageUpload({
+      directory: props.directory,
+      imageUri: props.imageUri,
+      userId: props.userId,
+    });
+  }
+
+  return props.currentImage;
+}

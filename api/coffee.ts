@@ -1,5 +1,18 @@
 import { coffeeTable } from "@/constants/database";
+import { CoffeeData } from "@/types/coffee";
 import { supabase } from "@/utils/supabase";
+
+export function createCoffee(data: CoffeeData) {
+  return supabase.from(coffeeTable).insert(data);
+}
+
+export function updateCoffee(coffeeId: string, data: CoffeeData) {
+  return supabase.from(coffeeTable).update(data).eq("id", coffeeId);
+}
+
+export function deleteCoffee(coffeeId: string) {
+  return supabase.from(coffeeTable).delete().eq("id", coffeeId);
+}
 
 export function fetchCoffees(userId: string, limit: number = 10) {
   return supabase

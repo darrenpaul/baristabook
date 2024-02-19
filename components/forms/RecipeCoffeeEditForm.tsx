@@ -13,7 +13,7 @@ import { validateTextInput } from "@/utils/input-validation";
 import ImagePicker from "@/features/shared/components/image/ImagePicker";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
-import Image from "@/components/Image";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 
@@ -146,7 +146,7 @@ export default function Component(props: ComponentProps) {
           />
         </View>
 
-        <Image
+        <ImageWrapper
           imageBucket={coffeeImagesBucket}
           imageUrl={props.coffee.coffee_image}
         />

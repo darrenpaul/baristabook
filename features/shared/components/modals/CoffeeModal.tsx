@@ -1,16 +1,13 @@
-import { useEffect, useState } from "react";
-import { View, TextInput, TouchableOpacity, Text } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import React, { useEffect, useMemo, useState } from "react";
+import { View, TextInput, Text, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { supabase } from "@/utils/supabase";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
 import DropdownWrapper from "@/components/dropdowns/DropdownWrapper";
 import Slider from "@/components/Slider";
-import { coffeeTable } from "@/constants/database";
-import { CoffeeData } from "@/types/coffee";
+import { Coffee, CoffeeData } from "@/types/coffee";
 import { validateTextInput } from "@/utils/input-validation";
 import ImagePicker from "@/features/shared/components/image/ImagePicker";
-import { handleImageUpload } from "@/utils/image-storage";
+import { handleImageDelete, handleImageReplace } from "@/utils/image-storage";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
@@ -18,8 +15,6 @@ import ModalWrapper from "@/features/shared/components/wrappers/ModalWrapper";
 import {
   containerStyles,
   inputStyles,
-  typographyStyles,
-  buttonStyles,
   paddingStyles,
   marginStyles,
 } from "@/features/shared/styles/index";
@@ -29,16 +24,20 @@ import {
   initialCurrencyPriceSettings,
 } from "@/features/shared/components/selectors/currency-price-select/index";
 import { CoffeeRoast, Taste } from "@/components/icons";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import { createCoffee, deleteCoffee, updateCoffee } from "@/api/coffee";
+import { buttonDanger } from "@/constants/button-types";
 
-type ModalProps = {
+type Props = {
   visible: boolean;
   hideFn: Function;
   userId: string;
   onSaveFn: Function;
-  editData?: CoffeeData;
+  editData?: Coffee;
 };
 
-export default function Component(props: ModalProps) {
+export default function Component(props: Props) {
   const [nameValue, setName] = useState<string>();
   const [nameErrorValue, setNameError] = useState<boolean>(false);
   const [roastValue, setRoast] = useState<string>();
@@ -59,6 +58,11 @@ export default function Component(props: ModalProps) {
         ? new Date(props.editData.purchase_date)
         : new Date();
 
+      const price = `${props.editData.purchase_price}`;
+      const currency = props.editData.purchase_currency
+        ? props.editData.purchase_currency
+        : "EUR";
+
       setName(props.editData.name);
       setRoast(props.editData.roast);
       setIntensity(props.editData.intensity);
@@ -67,22 +71,63 @@ export default function Component(props: ModalProps) {
       setStoreUrl(props.editData.store_url);
       setPurchaseDate(date);
       setCurrencyPrice({
-        price: props.editData.purchase_price.toString(),
-        currency: props.editData.purchase_currency,
+        price: price,
+        currency: currency,
       });
-      setImage(props.editData.image);
       setNotes(props.editData.notes);
     }
   }, [props.editData]);
 
-  async function handleSave() {
-    if (!nameValue || !roastValue || !intensityValue) {
-      validateTextInput({ value: nameValue, setFn: setNameError });
-      return;
+  const isEditing = useMemo(() => {
+    if (props.editData) return true;
+    return false;
+  }, [props.editData]);
+
+  function clearStates() {
+    setName("");
+    setRoast("");
+    setIntensity(5);
+    setFlavours([]);
+    setStoreName("");
+    setStoreUrl("");
+    setPurchaseDate(new Date());
+    setCurrencyPrice(initialCurrencyPriceSettings);
+    setNotes("");
+
+    props.onSaveFn();
+    props.hideFn();
+  }
+
+  async function onDelete() {
+    if (!props.editData) return;
+
+    if (props.editData.image) {
+      await handleImageDelete({
+        directory: coffeeImagesBucket,
+        imagePath: props.editData?.image,
+      });
     }
 
-    const imagePath = await handleImageUpload({
+    const { error } = await deleteCoffee(props.editData.id);
+    if (!error) clearStates();
+  }
+
+  async function onDeleteConfirm() {
+    Alert.alert("Warning", "Are you sure you want to delete this coffee?", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      { text: "Yes", onPress: onDelete },
+    ]);
+  }
+
+  async function onSave() {
+    if (!nameValue || !roastValue) return;
+
+    const imagePath = await handleImageReplace({
       directory: coffeeImagesBucket,
+      currentImage: props.editData?.image,
       imageUri: imageValue,
       userId: props.userId,
     });
@@ -104,26 +149,20 @@ export default function Component(props: ModalProps) {
       user_id: props.userId,
     };
 
-    const { error } = await supabase.from(coffeeTable).insert(coffeeData);
+    const { error } =
+      isEditing && props.editData
+        ? await updateCoffee(props.editData.id, coffeeData)
+        : await createCoffee(coffeeData);
 
-    if (!error) {
-      setName("");
-      setRoast("");
-      setIntensity(5);
-      setFlavours([]);
-      setStoreName("");
-      setStoreUrl("");
-      setPurchaseDate(new Date());
-      setCurrencyPrice(initialCurrencyPriceSettings);
-      setNotes("");
-
-      props.onSaveFn();
-      props.hideFn();
-    }
+    if (!error) clearStates();
   }
 
-  function renderContent() {
-    return (
+  return (
+    <ModalWrapper
+      title={isEditing ? "Edit Coffee" : "Add Coffee"}
+      visible={props.visible}
+      hideFn={props.hideFn}
+    >
       <View
         style={[
           containerStyles.column,
@@ -200,6 +239,13 @@ export default function Component(props: ModalProps) {
           setFn={setCurrencyPrice}
         />
 
+        {props.editData?.image && !imageValue && (
+          <ImageWrapper
+            imageBucket={coffeeImagesBucket}
+            imageUrl={props.editData.image}
+          />
+        )}
+
         <ImagePicker value={imageValue} setFn={setImage} />
 
         <TextInput
@@ -211,21 +257,17 @@ export default function Component(props: ModalProps) {
           placeholder="Notes"
         />
 
-        <TouchableOpacity style={buttonStyles.button} onPress={handleSave}>
-          <Text style={typographyStyles.buttonText}>Save</Text>
-          <FontAwesome name="floppy-disk" size={20} color="white" />
-        </TouchableOpacity>
-      </View>
-    );
-  }
+        {isEditing && (
+          <ButtonWrapper
+            text="Delete"
+            icon="trash-can"
+            type={buttonDanger}
+            onPressFn={onDeleteConfirm}
+          />
+        )}
 
-  return (
-    <ModalWrapper
-      title="Add Coffee"
-      visible={props.visible}
-      hideFn={props.hideFn}
-    >
-      {renderContent()}
+        <ButtonWrapper text="Save" icon="floppy-disk" onPressFn={onSave} />
+      </View>
     </ModalWrapper>
   );
 }

@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import { cardStyles } from "@/features/index/styles/recipe-card";
-import Image from "@/components/Image";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import { Coffee } from "@/types/coffee";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
@@ -17,7 +17,10 @@ export default function Component(props: HeaderProps) {
   }
   return (
     <View style={cardStyles.card}>
-      <Image imageBucket={coffeeImagesBucket} imageUrl={props.coffee.image} />
+      <ImageWrapper
+        imageBucket={coffeeImagesBucket}
+        imageUrl={props.coffee.image}
+      />
 
       <View style={cardStyles.body}>
         <View style={cardStyles.content}>

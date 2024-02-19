@@ -5,7 +5,7 @@ import Accordion from "react-native-collapsible/Accordion";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
-import Image from "@/components/Image";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { Notes, CoffeeMachine, FrenchPress } from "@/components/icons";
 import { frenchPress } from "@/constants/coffee-brew-methods";
@@ -40,7 +40,7 @@ export default function Component(props: Props) {
   function renderContent() {
     return (
       <View style={appStyles.accordionContent}>
-        <Image
+        <ImageWrapper
           imageBucket={brewerImagesBucket}
           imageUrl={props.recipe.brewer_image}
         />

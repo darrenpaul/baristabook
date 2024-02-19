@@ -6,9 +6,10 @@ import { Session } from "@supabase/supabase-js";
 import { useCoffeeService } from "@/features/shared/services/coffee-service";
 import CoffeeListItem from "./CoffeeListItem";
 import PageLoader from "@/components/loaders/PageLoader";
-import CreateCoffeeModal from "@/features/recipe/create/modals/CreateCoffeeModal";
+import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
 import { useModal } from "@/features/shared/services/modal-service";
-import { CoffeeData } from "@/types/coffee";
+import { Coffee } from "@/types/coffee";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 
 type ComponentProps = {
   session: Session;
@@ -17,9 +18,9 @@ type ComponentProps = {
 export default function Component(props: ComponentProps) {
   const { modalState, setModalState } = useModal();
   const { coffees, refreshFn } = useCoffeeService(props.session);
-  const [activeCoffeeValue, setActiveCoffee] = useState<CoffeeData>();
+  const [activeCoffeeValue, setActiveCoffee] = useState<Coffee>();
 
-  function onCoffeeSelect(coffee: CoffeeData) {
+  function onCoffeeSelect(coffee: Coffee) {
     setActiveCoffee(coffee);
     setModalState(true);
   }
@@ -35,10 +36,21 @@ export default function Component(props: ComponentProps) {
   return (
     <>
       <AccordionWrapper title="Coffees" disabled={false}>
-        <View style={appStyles.accordionContent}>{renderCoffees()}</View>
+        <View style={appStyles.accordionContent}>
+          <ButtonWrapper
+            text="Create"
+            icon="plus"
+            onPressFn={async () => {
+              setActiveCoffee(undefined);
+              setModalState(true);
+            }}
+          />
+
+          {renderCoffees()}
+        </View>
       </AccordionWrapper>
 
-      <CreateCoffeeModal
+      <CoffeeModal
         visible={modalState}
         hideFn={() => {
           setModalState(false);

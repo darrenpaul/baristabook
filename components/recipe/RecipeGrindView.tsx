@@ -16,7 +16,7 @@ import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { formatCurrency } from "@/utils/currency";
 import Toast from "react-native-toast-message";
-import Image from "@/components/Image";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { buttonStyles } from "@/features/shared/styles";
 import { weightConversionWithSymbol } from "@/utils/conversion-calculator";
@@ -59,7 +59,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
   function renderContent() {
     return (
       <View style={appStyles.accordionContent}>
-        <Image
+        <ImageWrapper
           imageBucket={grindImagesBucket}
           imageUrl={props.recipe.grind_image}
         />
