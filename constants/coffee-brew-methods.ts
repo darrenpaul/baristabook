@@ -14,7 +14,7 @@ export const espresso = {
   weightMax: 100,
   temperature: 96,
   temperatureMin: 0,
-  temperatureMax: 200,
+  temperatureMax: 150,
   pressure: 9,
   pressureMin: 0,
   pressureMax: 20,
@@ -34,13 +34,37 @@ export const frenchPress = {
   weightMax: 1000,
   temperature: 96,
   temperatureMin: 0,
-  temperatureMax: 200,
+  temperatureMax: 150,
   pressure: false,
   pressureMin: 0,
   pressureMax: 20,
 } as BrewMethod;
 
-export const coffeeBrewMethods: BrewMethod[] = [frenchPress, espresso];
+export const aeroPress = {
+  label: "AeroPress",
+  value: "AeroPress",
+  preInfusion: false,
+  preInfusionMin: 0,
+  preInfusionMax: 0,
+  duration: 240,
+  durationMin: 0,
+  durationMax: 500,
+  weight: 18,
+  weightMin: 0,
+  weightMax: 50,
+  temperature: 96,
+  temperatureMin: 0,
+  temperatureMax: 150,
+  pressure: false,
+  pressureMin: 0,
+  pressureMax: 20,
+} as BrewMethod;
+
+export const coffeeBrewMethods: BrewMethod[] = [
+  frenchPress,
+  aeroPress,
+  espresso,
+];
 // export const coffeeBrewMethods: BrewMethod[] = [
 //   { label: "Espresso Machine", value: "Espresso Machine" },
 //   { label: "Moka Pot", value: "Moka Pot" },

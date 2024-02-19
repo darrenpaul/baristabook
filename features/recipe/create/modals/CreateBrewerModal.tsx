@@ -3,6 +3,7 @@ import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import {
+  aeroPress,
   coffeeBrewMethods,
   frenchPress,
 } from "@/constants/coffee-brew-methods";
@@ -21,7 +22,7 @@ import {
   paddingStyles,
   marginStyles,
 } from "@/features/shared/styles/index";
-import { CoffeeMachine, FrenchPress } from "@/components/icons";
+import { AeroPress, CoffeeMachine, FrenchPress } from "@/components/icons";
 
 type ModalProps = {
   visible: boolean;
@@ -40,6 +41,9 @@ export default function Component(props: ModalProps) {
   function renderIcon(): ReactNode {
     if (coffeeBrewMethod === frenchPress.label) {
       return <FrenchPress />;
+    }
+    if (coffeeBrewMethod === aeroPress.label) {
+      return <AeroPress />;
     }
     return <CoffeeMachine />;
   }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, TextInput, TouchableOpacity, Text } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -35,6 +35,7 @@ type ModalProps = {
   hideFn: Function;
   userId: string;
   onSaveFn: Function;
+  editData?: CoffeeData;
 };
 
 export default function Component(props: ModalProps) {
@@ -51,6 +52,28 @@ export default function Component(props: ModalProps) {
   );
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>();
+
+  useEffect(() => {
+    if (props.editData) {
+      const date = props.editData.purchase_date
+        ? new Date(props.editData.purchase_date)
+        : new Date();
+
+      setName(props.editData.name);
+      setRoast(props.editData.roast);
+      setIntensity(props.editData.intensity);
+      setFlavours(props.editData.flavours);
+      setStoreName(props.editData.store_name);
+      setStoreUrl(props.editData.store_url);
+      setPurchaseDate(date);
+      setCurrencyPrice({
+        price: props.editData.purchase_price.toString(),
+        currency: props.editData.purchase_currency,
+      });
+      setImage(props.editData.image);
+      setNotes(props.editData.notes);
+    }
+  }, [props.editData]);
 
   async function handleSave() {
     if (!nameValue || !roastValue || !intensityValue) {

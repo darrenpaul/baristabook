@@ -5,14 +5,12 @@ export default StyleSheet.create({
   container: {
     ...containerStyles.row,
     ...marginStyles.horizontalGutter,
-    marginTop: 12,
+    marginTop: 8,
   },
   button: {
     alignItems: "center",
     justifyContent: "center",
-    width: 50,
-    height: 50,
-    backgroundColor: "black",
-    borderRadius: 25,
+    textAlign: "center",
+    gap: 4,
   },
 });

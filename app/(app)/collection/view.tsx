@@ -11,7 +11,7 @@ import { useAuthService } from "@/features/shared/services/auth-service";
 import { useUserService } from "@/features/shared/services/user-service";
 import { gramSettings } from "@/constants/grind-settings";
 import { celsiusSettings } from "@/constants/temperature-settings";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import CoffeeList from "@/features/collection/CoffeeList";
 
 export default function Page() {
   const { session } = useAuthService();
@@ -44,20 +44,8 @@ export default function Page() {
     await signOut();
   }
   return (
-    <PageWrapper title="Account">
-      <PreferencesForm preferences={preferencesValue} setFn={setPreferences} />
-
-      <ButtonWrapper
-        text="Update"
-        icon="floppy-disk"
-        onPressFn={onUpdatePreferences}
-      />
-
-      <ButtonWrapper
-        text="Logout"
-        icon="arrow-right-from-bracket"
-        onPressFn={onSignOut}
-      />
+    <PageWrapper title="Collection">
+      {session && <CoffeeList session={session} />}
     </PageWrapper>
   );
 }

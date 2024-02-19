@@ -1,10 +1,14 @@
 import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { useRouter } from "expo-router";
-import { accountViewRoute, recipeCreateRoute } from "@/constants/routes";
+import {
+  accountViewRoute,
+  collectionViewRoute,
+  homeRoute,
+  recipeCreateRoute,
+} from "@/constants/routes";
 import styles from "./styles";
-import { Document } from "@/components/icons";
+import { Settings, Home, CreateRecipe, Collection } from "@/components/icons";
 
 export default function Component() {
   const router = useRouter();
@@ -15,20 +19,36 @@ export default function Component() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
-        <FontAwesome name="house" size={20} color="white" />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handlePress(homeRoute.path)}
+      >
+        <Home />
+        <Text>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => handlePress(recipeCreateRoute.path)}>
-        <Document />
-        <Text>Log</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handlePress(recipeCreateRoute.path)}
+      >
+        <CreateRecipe />
+        <Text>Create</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handlePress(collectionViewRoute.path)}
+      >
+        <Collection />
+        <Text>Collection</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={styles.button}
         onPress={() => handlePress(accountViewRoute.path)}
       >
-        <FontAwesome name="person" size={20} color="white" />
+        <Settings />
+        <Text>Settings</Text>
       </TouchableOpacity>
     </View>
   );

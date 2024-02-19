@@ -23,6 +23,11 @@ export const recipeViewRoute = {
   name: "Recipe View",
 };
 
+export const collectionViewRoute = {
+  path: "/collection/view",
+  name: "Collection View",
+};
+
 export const accountViewRoute = {
   path: "/account/view",
   name: "Account View",

@@ -17,6 +17,11 @@ import Temperature from "./Temperature";
 import PressureGauge from "./PressureGauge";
 import Currency from "./Currency";
 import FrenchPress from "./FrenchPress";
+import AeroPress from "./AeroPress";
+import Home from "./Home";
+import CreateRecipe from "./CreateRecipe";
+import Collection from "./Collection";
+import Settings from "./Settings";
 
 export {
   CoffeeBag,
@@ -38,4 +43,9 @@ export {
   PressureGauge,
   Currency,
   FrenchPress,
+  AeroPress,
+  Home,
+  CreateRecipe,
+  Collection,
+  Settings,
 };
