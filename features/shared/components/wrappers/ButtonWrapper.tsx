@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { buttonStyles, typographyStyles } from "@/features/shared/styles";
@@ -8,12 +8,11 @@ type Props = {
   text: string;
   icon: string | ReactNode;
   type?: "danger";
+  loading?: boolean;
   onPressFn: Function;
 };
 
 export default function Component(props: Props) {
-  const [loadingValue, setLoading] = useState<boolean>(false);
-
   function renderIcon() {
     if (props.icon) {
       if (typeof props.icon === "string") {
@@ -25,12 +24,14 @@ export default function Component(props: Props) {
   }
 
   function onPress() {
-    if (loadingValue) return;
-    setLoading(true);
-    console.log(props.onPressFn);
-    props.onPressFn().finally(() => {
-      setLoading(false);
-    });
+    if (props.loading) return;
+    props.onPressFn();
+    // if (loadingValue) return;
+    // setLoading(true);
+    // console.log(props.onPressFn);
+    // props.onPressFn().finally(() => {
+    //   setLoading(false);
+    // });
   }
   return (
     <TouchableOpacity
@@ -40,14 +41,14 @@ export default function Component(props: Props) {
       ]}
       onPress={onPress}
     >
-      {!loadingValue && (
+      {!props.loading && (
         <>
           <Text style={typographyStyles.buttonText}>{props.text}</Text>
           {renderIcon()}
         </>
       )}
 
-      {loadingValue && <ActivityIndicator />}
+      {props.loading && <ActivityIndicator />}
     </TouchableOpacity>
   );
 }

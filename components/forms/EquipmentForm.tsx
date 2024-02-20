@@ -7,8 +7,8 @@ import appStyles from "@/features/shared/styles/styles";
 import { Coffee } from "@/types/coffee";
 import { waterHardnessLevels } from "@/constants/water-hardness-data";
 import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
-import CreateGrinderModal from "@/features/recipe/create/modals/CreateGrinderModal";
-import CreateBrewerModal from "@/features/recipe/create/modals/CreateBrewerModal";
+import GrinderModal from "@/features/shared/components/modals/GrinderModal";
+import BrewerModal from "@/features/shared/components/modals/BrewerModal";
 import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
 import AccordionHeader from "@/components/accordion/AccordionHeader";
@@ -134,14 +134,14 @@ export default function Component(props: ComponentProps) {
           onSaveFn={props.refreshFn}
         />
 
-        <CreateGrinderModal
+        <GrinderModal
           visible={grinderModalState}
           hideFn={() => setGrinderModalState(false)}
           userId={props.userId}
           onSaveFn={props.refreshFn}
         />
 
-        <CreateBrewerModal
+        <BrewerModal
           visible={brewerModalState}
           hideFn={() => setBrewerModalState(false)}
           userId={props.userId}

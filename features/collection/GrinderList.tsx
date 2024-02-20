@@ -3,14 +3,13 @@ import { View } from "react-native";
 import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 import appStyles from "@/features/shared/styles/styles";
 import { Session } from "@supabase/supabase-js";
-import { useCoffeeService } from "@/features/shared/services/coffee-service";
+import { useGrinderService } from "@/features/shared/services/grinder-service";
 import ListItem from "./ListItem";
 import PageLoader from "@/components/loaders/PageLoader";
-import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
+import GrinderModal from "@/features/shared/components/modals/GrinderModal";
 import { useModal } from "@/features/shared/services/modal-service";
-import { Coffee } from "@/types/coffee";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { coffeeImagesBucket } from "@/constants/storage-buckets";
+import { Grinder } from "@/types/grinder";
 
 type ComponentProps = {
   session: Session;
@@ -18,38 +17,36 @@ type ComponentProps = {
 
 export default function Component(props: ComponentProps) {
   const { modalState, setModalState } = useModal();
-  const { coffees, refreshFn } = useCoffeeService(props.session);
-  const [activeCoffeeValue, setActiveCoffee] = useState<Coffee>();
+  const { grinders, refreshFn } = useGrinderService(props.session);
+  const [activeGrinderValue, setActiveGrinder] = useState<Grinder>();
 
-  function onCoffeeSelect(coffee: Coffee) {
-    setActiveCoffee(coffee);
+  function onGrinderSelect(grinder: Grinder) {
+    setActiveGrinder(grinder);
     setModalState(true);
   }
 
   function renderContent() {
     if (!props.session) return <PageLoader />;
 
-    return coffees.map((coffee) => (
+    return grinders.map((grinder) => (
       <ListItem
-        key={coffee.id}
-        title={coffee.name}
-        imageBucket={coffeeImagesBucket}
-        imageUrl={coffee.image}
-        data={coffee}
-        setFn={onCoffeeSelect}
+        key={grinder.id}
+        title={grinder.name}
+        data={grinder}
+        setFn={onGrinderSelect}
       />
     ));
   }
 
   return (
     <>
-      <AccordionWrapper title="Coffees" disabled={false}>
+      <AccordionWrapper title="Grinders" disabled={false}>
         <View style={appStyles.accordionContent}>
           <ButtonWrapper
             text="Create"
             icon="plus"
             onPressFn={async () => {
-              setActiveCoffee(undefined);
+              setActiveGrinder(undefined);
               setModalState(true);
             }}
           />
@@ -58,15 +55,15 @@ export default function Component(props: ComponentProps) {
         </View>
       </AccordionWrapper>
 
-      <CoffeeModal
+      <GrinderModal
         visible={modalState}
         hideFn={() => {
           setModalState(false);
-          setActiveCoffee(undefined);
+          setActiveGrinder(undefined);
         }}
         userId={props.session.user.id}
         onSaveFn={refreshFn}
-        editData={activeCoffeeValue}
+        editData={activeGrinderValue}
       />
     </>
   );

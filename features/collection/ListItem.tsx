@@ -1,30 +1,36 @@
 import { View, Text } from "react-native";
 import { cardStyles } from "@/features/index/styles/recipe-card";
 import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
-import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import { Coffee } from "@/types/coffee";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import { Grinder } from "@/types/grinder";
+import { Brewer } from "@/types/brewer";
 
 type HeaderProps = {
-  coffee: Coffee;
+  title: string;
+  imageBucket?: string;
+  imageUrl?: string;
+  data: Coffee | Grinder | Brewer;
   setFn: Function;
 };
 
 export default function Component(props: HeaderProps) {
   async function onPress() {
-    props.setFn(props.coffee);
+    props.setFn(props.data);
     return;
   }
   return (
     <View style={cardStyles.card}>
-      <ImageWrapper
-        imageBucket={coffeeImagesBucket}
-        imageUrl={props.coffee.image}
-      />
+      {props.imageBucket && (
+        <ImageWrapper
+          imageBucket={props.imageBucket}
+          imageUrl={props.imageUrl}
+        />
+      )}
 
       <View style={cardStyles.body}>
         <View style={cardStyles.content}>
-          <Text style={cardStyles.heading}>{props.coffee.name}</Text>
+          <Text style={cardStyles.heading}>{props.title}</Text>
         </View>
       </View>
 

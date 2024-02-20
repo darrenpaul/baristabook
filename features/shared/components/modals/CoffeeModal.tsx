@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, TextInput, Text, Alert } from "react-native";
+import { View, TextInput, Text } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
 import DropdownWrapper from "@/components/dropdowns/DropdownWrapper";
@@ -28,16 +28,15 @@ import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { createCoffee, deleteCoffee, updateCoffee } from "@/api/coffee";
 import { buttonDanger } from "@/constants/button-types";
+import { ModalProps } from "./props";
+import { useConfirmService } from "@/features/shared/services/confirm-service";
 
 type Props = {
-  visible: boolean;
-  hideFn: Function;
-  userId: string;
-  onSaveFn: Function;
   editData?: Coffee;
-};
+} & ModalProps;
 
 export default function Component(props: Props) {
+  const [loadingValue, setLoading] = useState<boolean>(false);
   const [nameValue, setName] = useState<string>();
   const [nameErrorValue, setNameError] = useState<boolean>(false);
   const [roastValue, setRoast] = useState<string>();
@@ -51,6 +50,13 @@ export default function Component(props: Props) {
   );
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>();
+
+  const { onConfirm } = useConfirmService({
+    title: "Warning",
+    message: "Are you sure you want to delete this coffee?",
+    onConfirmFn: onDelete,
+    setLoadingFn: setLoading,
+  });
 
   useEffect(() => {
     if (props.editData) {
@@ -75,6 +81,8 @@ export default function Component(props: Props) {
         currency: currency,
       });
       setNotes(props.editData.notes);
+    } else {
+      clearStates();
     }
   }, [props.editData]);
 
@@ -93,9 +101,6 @@ export default function Component(props: Props) {
     setPurchaseDate(new Date());
     setCurrencyPrice(initialCurrencyPriceSettings);
     setNotes("");
-
-    props.onSaveFn();
-    props.hideFn();
   }
 
   async function onDelete() {
@@ -109,21 +114,17 @@ export default function Component(props: Props) {
     }
 
     const { error } = await deleteCoffee(props.editData.id);
-    if (!error) clearStates();
-  }
-
-  async function onDeleteConfirm() {
-    Alert.alert("Warning", "Are you sure you want to delete this coffee?", [
-      {
-        text: "No",
-        style: "cancel",
-      },
-      { text: "Yes", onPress: onDelete },
-    ]);
+    setLoading(false);
+    if (!error) {
+      clearStates();
+      props.onSaveFn();
+      props.hideFn();
+    }
   }
 
   async function onSave() {
     if (!nameValue || !roastValue) return;
+    setLoading(true);
 
     const imagePath = await handleImageReplace({
       directory: coffeeImagesBucket,
@@ -154,7 +155,12 @@ export default function Component(props: Props) {
         ? await updateCoffee(props.editData.id, coffeeData)
         : await createCoffee(coffeeData);
 
-    if (!error) clearStates();
+    setLoading(false);
+    if (!error) {
+      clearStates();
+      props.onSaveFn();
+      props.hideFn();
+    }
   }
 
   return (
@@ -262,11 +268,17 @@ export default function Component(props: Props) {
             text="Delete"
             icon="trash-can"
             type={buttonDanger}
-            onPressFn={onDeleteConfirm}
+            onPressFn={onConfirm}
+            loading={loadingValue}
           />
         )}
 
-        <ButtonWrapper text="Save" icon="floppy-disk" onPressFn={onSave} />
+        <ButtonWrapper
+          text="Save"
+          icon="floppy-disk"
+          onPressFn={onSave}
+          loading={loadingValue}
+        />
       </View>
     </ModalWrapper>
   );

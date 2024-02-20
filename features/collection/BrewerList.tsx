@@ -3,14 +3,14 @@ import { View } from "react-native";
 import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 import appStyles from "@/features/shared/styles/styles";
 import { Session } from "@supabase/supabase-js";
-import { useCoffeeService } from "@/features/shared/services/coffee-service";
+import { useBrewerService } from "@/features/shared/services/brewer-service";
 import ListItem from "./ListItem";
 import PageLoader from "@/components/loaders/PageLoader";
-import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
+import BrewerModal from "@/features/shared/components/modals/BrewerModal";
 import { useModal } from "@/features/shared/services/modal-service";
 import { Coffee } from "@/types/coffee";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { coffeeImagesBucket } from "@/constants/storage-buckets";
+import { brewerImagesBucket } from "@/constants/storage-buckets";
 
 type ComponentProps = {
   session: Session;
@@ -18,7 +18,7 @@ type ComponentProps = {
 
 export default function Component(props: ComponentProps) {
   const { modalState, setModalState } = useModal();
-  const { coffees, refreshFn } = useCoffeeService(props.session);
+  const { brewers, refreshFn } = useBrewerService(props.session);
   const [activeCoffeeValue, setActiveCoffee] = useState<Coffee>();
 
   function onCoffeeSelect(coffee: Coffee) {
@@ -29,13 +29,13 @@ export default function Component(props: ComponentProps) {
   function renderContent() {
     if (!props.session) return <PageLoader />;
 
-    return coffees.map((coffee) => (
+    return brewers.map((brewer) => (
       <ListItem
-        key={coffee.id}
-        title={coffee.name}
-        imageBucket={coffeeImagesBucket}
-        imageUrl={coffee.image}
-        data={coffee}
+        key={brewer.id}
+        title={brewer.name}
+        imageBucket={brewerImagesBucket}
+        imageUrl={brewer.image}
+        data={brewer}
         setFn={onCoffeeSelect}
       />
     ));
@@ -43,7 +43,7 @@ export default function Component(props: ComponentProps) {
 
   return (
     <>
-      <AccordionWrapper title="Coffees" disabled={false}>
+      <AccordionWrapper title="Brewers" disabled={false}>
         <View style={appStyles.accordionContent}>
           <ButtonWrapper
             text="Create"
@@ -58,7 +58,7 @@ export default function Component(props: ComponentProps) {
         </View>
       </AccordionWrapper>
 
-      <CoffeeModal
+      <BrewerModal
         visible={modalState}
         hideFn={() => {
           setModalState(false);
