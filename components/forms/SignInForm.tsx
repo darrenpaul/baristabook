@@ -1,21 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
-import {
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  ActivityIndicator,
-} from "react-native";
+import React, { useMemo, useState } from "react";
+import { View, TextInput, Text } from "react-native";
 import {
   containerStyles,
   paddingStyles,
   typographyStyles,
   inputStyles,
-  buttonStyles,
 } from "@/features/shared/styles/index";
 import { validateEmail, validatePassword } from "@/utils/input-validation";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { signIn } from "@/api/auth";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {
   toggleForm: Function;
@@ -92,33 +86,20 @@ export default function Component(props: ComponentProps) {
         placeholder="Password"
       />
 
-      <TouchableOpacity
+      <ButtonWrapper
         disabled={!buttonDisabled}
-        style={[
-          buttonStyles.button,
-          !buttonDisabled && buttonStyles.buttonDisabled,
-        ]}
-        onPress={onSignIn}
-      >
-        {isSubmittingValue && <ActivityIndicator />}
+        text="Sign In"
+        icon="right-to-bracket"
+        loading={isSubmittingValue}
+        onPressFn={onSignIn}
+      />
 
-        {!isSubmittingValue && (
-          <>
-            <Text style={typographyStyles.buttonText}>Sign In</Text>
-            <FontAwesome name="right-to-bracket" size={20} color="white" />
-          </>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        disabled={isSubmittingValue}
-        style={buttonStyles.buttonSecondary}
-        onPress={() => props.toggleForm()}
-      >
-        <Text style={typographyStyles.buttonSecondaryText}>
-          Don't have an account?
-        </Text>
-      </TouchableOpacity>
+      <ButtonWrapper
+        text="Don't have an account?"
+        type={buttonSecondary}
+        loading={isSubmittingValue}
+        onPressFn={() => props.toggleForm()}
+      />
     </View>
   );
 }

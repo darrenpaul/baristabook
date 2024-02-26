@@ -9,6 +9,7 @@ import CoffeeCollage from "@/components/illustrations/CoffeeCollage";
 import SignUpForm from "@/components/forms/SignUpForm";
 import { useAuthService } from "@/features/shared/services/auth-service";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { containerStyles } from "@/features/shared/styles";
 
 export default function App() {
   const router = useRouter();
@@ -35,7 +36,7 @@ export default function App() {
 
   return (
     <KeyboardAwareScrollView>
-      <View>
+      <View style={containerStyles.column}>
         <CoffeeCollage />
 
         {renderForm()}

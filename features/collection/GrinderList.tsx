@@ -4,13 +4,14 @@ import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWra
 import appStyles from "@/features/shared/styles/styles";
 import { Session } from "@supabase/supabase-js";
 import { useGrinderService } from "@/features/shared/services/grinder-service";
-import ListItem from "./ListItem";
+import CardItem from "./CardItem";
 import PageLoader from "@/components/loaders/PageLoader";
 import GrinderModal from "@/features/shared/components/modals/GrinderModal";
 import { useModal } from "@/features/shared/services/modal-service";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { Grinder } from "@/types/grinder";
 import { grinderImagesBucket } from "@/constants/storage-buckets";
+import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {
   session: Session;
@@ -30,7 +31,7 @@ export default function Component(props: ComponentProps) {
     if (!props.session) return <PageLoader />;
 
     return grinders.map((grinder) => (
-      <ListItem
+      <CardItem
         key={grinder.id}
         title={grinder.name}
         imageBucket={grinderImagesBucket}
@@ -48,6 +49,7 @@ export default function Component(props: ComponentProps) {
           <ButtonWrapper
             text="Create"
             icon="plus"
+            type={buttonSecondary}
             onPressFn={async () => {
               setActiveGrinder(undefined);
               setModalState(true);

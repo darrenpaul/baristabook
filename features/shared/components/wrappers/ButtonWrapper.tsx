@@ -5,10 +5,12 @@ import { buttonStyles, typographyStyles } from "@/features/shared/styles";
 import { buttonDanger, buttonSecondary } from "@/constants/button-types";
 
 type Props = {
-  text: string;
+  text?: string;
   icon?: string | ReactNode;
   type?: "danger" | "secondary";
+  square?: boolean;
   loading?: boolean;
+  disabled?: boolean;
   onPressFn: Function;
 };
 
@@ -35,24 +37,29 @@ export default function Component(props: Props) {
   }
   return (
     <TouchableOpacity
+      disabled={props.disabled}
       style={[
-        buttonStyles.button,
+        props.square ? buttonStyles.buttonSquare : buttonStyles.button,
         props.type === buttonDanger && buttonStyles.buttonDanger,
         props.type === buttonSecondary && buttonStyles.buttonSecondary,
+        props.disabled && buttonStyles.buttonDisabled,
       ]}
       onPress={onPress}
     >
       {!props.loading && (
         <>
-          <Text
-            style={[
-              typographyStyles.buttonText,
-              props.type === buttonSecondary &&
-                typographyStyles.buttonSecondaryText,
-            ]}
-          >
-            {props.text}
-          </Text>
+          {props.text && (
+            <Text
+              style={[
+                typographyStyles.buttonText,
+                props.type === buttonSecondary &&
+                  typographyStyles.buttonSecondaryText,
+              ]}
+            >
+              {props.text}
+            </Text>
+          )}
+
           {renderIcon()}
         </>
       )}

@@ -4,13 +4,14 @@ import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWra
 import appStyles from "@/features/shared/styles/styles";
 import { Session } from "@supabase/supabase-js";
 import { useBrewerService } from "@/features/shared/services/brewer-service";
-import ListItem from "./ListItem";
+import CardItem from "./CardItem";
 import PageLoader from "@/components/loaders/PageLoader";
 import BrewerModal from "@/features/shared/components/modals/BrewerModal";
 import { useModal } from "@/features/shared/services/modal-service";
 import { Coffee } from "@/types/coffee";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
+import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {
   session: Session;
@@ -30,7 +31,7 @@ export default function Component(props: ComponentProps) {
     if (!props.session) return <PageLoader />;
 
     return brewers.map((brewer) => (
-      <ListItem
+      <CardItem
         key={brewer.id}
         title={brewer.name}
         imageBucket={brewerImagesBucket}
@@ -48,6 +49,7 @@ export default function Component(props: ComponentProps) {
           <ButtonWrapper
             text="Create"
             icon="plus"
+            type={buttonSecondary}
             onPressFn={async () => {
               setActiveCoffee(undefined);
               setModalState(true);

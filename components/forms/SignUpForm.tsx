@@ -12,6 +12,7 @@ import {
   typographyStyles,
   inputStyles,
   buttonStyles,
+  marginStyles,
 } from "@/features/shared/styles/index";
 import {
   validateTextInput,
@@ -21,6 +22,8 @@ import {
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { signUp } from "@/api/auth";
 import Toast from "react-native-toast-message";
+import { buttonSecondary } from "@/constants/button-types";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 
 type ComponentProps = {
   toggleForm: Function;
@@ -134,34 +137,20 @@ export default function Component(props: ComponentProps) {
         placeholder="Password"
       />
 
-      <TouchableOpacity
+      <ButtonWrapper
         disabled={!canSubmitValue || isSubmittingValue}
-        style={[
-          buttonStyles.button,
-          (!canSubmitValue && buttonStyles.buttonDisabled) ||
-            (isSubmittingValue && buttonStyles.buttonDisabled),
-        ]}
-        onPress={onSignUp}
-      >
-        {isSubmittingValue && <ActivityIndicator />}
+        text="Sign Up"
+        icon="right-to-bracket"
+        loading={isSubmittingValue}
+        onPressFn={onSignUp}
+      />
 
-        {!isSubmittingValue && (
-          <>
-            <Text style={typographyStyles.buttonText}>Sign Up</Text>
-            <FontAwesome name="right-to-bracket" size={20} color="white" />
-          </>
-        )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        disabled={isSubmittingValue}
-        style={buttonStyles.buttonSecondary}
-        onPress={() => props.toggleForm()}
-      >
-        <Text style={typographyStyles.buttonSecondaryText}>
-          Already have an account?
-        </Text>
-      </TouchableOpacity>
+      <ButtonWrapper
+        text="Already have an account?"
+        type={buttonSecondary}
+        loading={isSubmittingValue}
+        onPressFn={() => props.toggleForm()}
+      />
     </View>
   );
 }

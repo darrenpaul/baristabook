@@ -32,10 +32,8 @@ export default function Component(props: HeaderProps) {
         <View style={cardStyles.content}>
           <Text style={cardStyles.heading}>{props.title}</Text>
         </View>
-      </View>
 
-      <View style={cardStyles.actions}>
-        <ButtonWrapper text="View" icon="angle-right" onPressFn={onPress} />
+        <ButtonWrapper icon="angle-right" square onPressFn={onPress} />
       </View>
     </View>
   );

@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import BottomNavigation from "@/features/shared/components/navigation/BottomNavigation";
 import RecipeCard from "@/features/index/components/RecipeCard";
 import PageLoader from "@/components/loaders/PageLoader";
@@ -14,6 +14,10 @@ export default function App() {
   function renderPublicRecipes() {
     if (!publicRecipes) return <PageLoader />;
 
+    if (publicRecipes.length === 0) {
+      return <Text>No recipes found</Text>;
+    }
+
     return publicRecipes.map((recipe) => (
       <RecipeCard key={recipe.id} recipe={recipe} />
     ));
@@ -21,6 +25,10 @@ export default function App() {
 
   function renderUserRecipes() {
     if (!userRecipes) return <PageLoader />;
+
+    if (userRecipes.length === 0) {
+      return <Text>No recipes found</Text>;
+    }
 
     return userRecipes.map((recipe) => (
       <RecipeCard key={recipe.id} recipe={recipe} />
