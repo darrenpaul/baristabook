@@ -2,8 +2,8 @@ import { StyleSheet } from "react-native";
 
 export default StyleSheet.create({
   button: {
+    flex: 1,
     borderRadius: 10,
-    width: "100%",
     height: 50,
     alignItems: "center",
     justifyContent: "center",
@@ -14,14 +14,7 @@ export default StyleSheet.create({
     gap: 8,
   },
   buttonSecondary: {
-    borderRadius: 10,
-    width: "100%",
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    borderWidth: 2,
-    borderColor: "black",
+    backgroundColor: "white",
   },
   buttonDanger: {
     backgroundColor: "red",

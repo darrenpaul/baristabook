@@ -1,7 +1,9 @@
 import { fetchPublicRecipes, fetchUserRecipes } from "@/api/recipe";
 import { useState, useEffect } from "react";
 import { Session } from "@supabase/supabase-js";
-import { Recipe } from "@/types/recipe";
+import { Recipe, RecipeInformation } from "@/types/recipe";
+import { grams } from "@/constants/weights";
+import { celsius } from "@/constants/temperatures";
 
 export function useRecipeService(session: Session | null) {
   const [publicRecipesValue, setPublicRecipes] = useState<Recipe[]>();
@@ -16,6 +18,21 @@ export function useRecipeService(session: Session | null) {
   }, [session]);
 
   return { publicRecipes: publicRecipesValue, userRecipes: userRecipesValue };
+}
+
+export function useRecipeInformationStateService() {
+  const [recipeValue, setRecipe] = useState<RecipeInformation>({
+    name: "",
+    flavours: [],
+    rating: 5,
+    image: "",
+    weight_measurement: grams.value,
+    temperature_measurement: celsius.value,
+    is_public: false,
+    notes: "",
+  });
+
+  return { recipeValue, setRecipe };
 }
 
 type Props = {

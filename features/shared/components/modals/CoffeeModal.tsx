@@ -30,6 +30,7 @@ import { createCoffee, deleteCoffee, updateCoffee } from "@/api/coffee";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
 import { useConfirmService } from "@/features/shared/services/confirm-service";
+import RatingForm from "@/components/forms/RatingForm";
 
 type Props = {
   editData?: Coffee;
@@ -48,6 +49,7 @@ export default function Component(props: Props) {
   const [currencyPriceValue, setCurrencyPrice] = useState<CurrencyPrice>(
     initialCurrencyPriceSettings
   );
+  const [ratingValue, setRating] = useState<number>(5);
   const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>();
 
@@ -80,6 +82,7 @@ export default function Component(props: Props) {
         price: price,
         currency: currency,
       });
+      setRating(props.editData.rating);
       setNotes(props.editData.notes);
     } else {
       clearStates();
@@ -100,6 +103,8 @@ export default function Component(props: Props) {
     setStoreUrl("");
     setPurchaseDate(new Date());
     setCurrencyPrice(initialCurrencyPriceSettings);
+    setRating(5);
+    setImage(undefined);
     setNotes("");
   }
 
@@ -145,6 +150,7 @@ export default function Component(props: Props) {
       purchase_date: purchaseDateValue,
       purchase_price: Number(currencyPriceValue.price?.replace(/,/g, ".")),
       purchase_currency: currencyPriceValue.currency,
+      rating: ratingValue,
       image: imagePath,
       notes: notesValue,
       user_id: props.userId,
@@ -244,6 +250,8 @@ export default function Component(props: Props) {
           data={currencyPriceValue}
           setFn={setCurrencyPrice}
         />
+
+        <RatingForm value={ratingValue} setFn={setRating} />
 
         {props.editData?.image && !imageValue && (
           <ImageWrapper

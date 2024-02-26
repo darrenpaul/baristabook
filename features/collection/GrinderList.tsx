@@ -10,6 +10,7 @@ import GrinderModal from "@/features/shared/components/modals/GrinderModal";
 import { useModal } from "@/features/shared/services/modal-service";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { Grinder } from "@/types/grinder";
+import { grinderImagesBucket } from "@/constants/storage-buckets";
 
 type ComponentProps = {
   session: Session;
@@ -32,6 +33,8 @@ export default function Component(props: ComponentProps) {
       <ListItem
         key={grinder.id}
         title={grinder.name}
+        imageBucket={grinderImagesBucket}
+        imageUrl={grinder.image}
         data={grinder}
         setFn={onGrinderSelect}
       />

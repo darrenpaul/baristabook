@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { View } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { deleteRecipe, fetchRecipe } from "@/api/recipe";
 import RecipeCoffeeView from "@/components/recipe/RecipeCoffeeView";
@@ -7,20 +7,17 @@ import RecipeGrinderView from "@/components/recipe/RecipeGrinderView";
 import RecipeBrewerView from "@/components/recipe/RecipeBrewerView";
 import RecipeInstructionsView from "@/components/recipe/RecipeInstructionsView";
 import PageLoader from "@/components/loaders/PageLoader";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { Recipe } from "@/types/recipe";
 import RecipeView from "@/components/recipe/RecipeView";
 import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
 import { Preferences } from "@/types/user";
-import {
-  buttonStyles,
-  typographyStyles,
-  containerStyles,
-} from "@/features/shared/styles/index";
+import { containerStyles } from "@/features/shared/styles/index";
 import { useAuthService } from "@/features/shared/services/auth-service";
 import RecipeGrindView from "@/components/recipe/RecipeGrindView";
 import { useUserService } from "@/features/shared/services/user-service";
 import { homeRoute } from "@/constants/routes";
+import { buttonDanger } from "@/constants/button-types";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 
 export default function Page() {
   const { id: recipeId } = useLocalSearchParams();
@@ -84,13 +81,12 @@ export default function Page() {
         />
 
         {isRecipeOwner === true && (
-          <TouchableOpacity
-            style={buttonStyles.buttonDanger}
-            onPress={onDelete}
-          >
-            <Text style={typographyStyles.buttonText}>Delete</Text>
-            <FontAwesome name="trash" size={20} color="white" />
-          </TouchableOpacity>
+          <ButtonWrapper
+            text="Delete"
+            icon="trash"
+            type={buttonDanger}
+            onPressFn={onDelete}
+          />
         )}
 
         {/* <EditRecipeModal

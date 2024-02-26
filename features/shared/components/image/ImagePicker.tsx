@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Image } from "react-native";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
+import { View, Image } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import {
-  containerStyles,
-  typographyStyles,
-  buttonStyles,
-} from "@/features/shared/styles/index";
+import { containerStyles } from "@/features/shared/styles/index";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {
   value: string | undefined;
@@ -47,13 +44,12 @@ export default function Component(props: ComponentProps) {
         <Image width={200} height={200} source={{ uri: imageUriValue }} />
       )}
 
-      <TouchableOpacity
-        style={buttonStyles.buttonSecondary}
-        onPress={onImageSelection}
-      >
-        <Text style={typographyStyles.buttonSecondaryText}>Image</Text>
-        <FontAwesome name="upload" size={20} color="black" />
-      </TouchableOpacity>
+      <ButtonWrapper
+        text="Image Upload"
+        icon="upload"
+        type={buttonSecondary}
+        onPressFn={onImageSelection}
+      />
     </View>
   );
 }

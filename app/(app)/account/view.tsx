@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Text, TouchableOpacity } from "react-native";
 import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { signOut } from "@/api/auth";
 import PreferencesForm from "@/components/forms/PreferencesForm";
 import { updateUser } from "@/api/user";
 import { Preferences, User } from "@/types/user";
-import { buttonStyles, typographyStyles } from "@/features/shared/styles";
 import { useAuthService } from "@/features/shared/services/auth-service";
 import { useUserService } from "@/features/shared/services/user-service";
 import { gramSettings } from "@/constants/grind-settings";

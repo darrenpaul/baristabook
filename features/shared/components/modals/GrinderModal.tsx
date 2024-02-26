@@ -13,6 +13,13 @@ import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
 import { useConfirmService } from "@/features/shared/services/confirm-service";
+import {
+  grindImagesBucket,
+  grinderImagesBucket,
+} from "@/constants/storage-buckets";
+import { handleImageDelete, handleImageReplace } from "@/utils/image-storage";
+import ImagePicker from "@/features/shared/components/image/ImagePicker";
+import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
 
 type Props = {
   editData?: Grinder;
@@ -21,6 +28,7 @@ type Props = {
 export default function Component(props: Props) {
   const [loadingValue, setLoading] = useState<boolean>(false);
   const [nameValue, setName] = useState<string>("");
+  const [imageValue, setImage] = useState<string>();
   const [notesValue, setNotes] = useState<string>("");
 
   const { onConfirm } = useConfirmService({
@@ -46,11 +54,19 @@ export default function Component(props: Props) {
 
   function clearStates() {
     setName("");
+    setImage(undefined);
     setNotes("");
   }
 
   async function onDelete() {
     if (!props.editData) return;
+
+    if (props.editData.image) {
+      await handleImageDelete({
+        directory: grinderImagesBucket,
+        imagePath: props.editData?.image,
+      });
+    }
 
     const { error } = await deleteGrinder(props.editData.id);
     if (!error) {
@@ -65,8 +81,16 @@ export default function Component(props: Props) {
 
     setLoading(true);
 
+    const imagePath = await handleImageReplace({
+      directory: grinderImagesBucket,
+      currentImage: props.editData?.image,
+      imageUri: imageValue,
+      userId: props.userId,
+    });
+
     const data: GrinderCreateData = {
       name: nameValue,
+      image: imagePath,
       notes: notesValue,
       user_id: props.userId,
     };
@@ -103,6 +127,15 @@ export default function Component(props: Props) {
           onChangeText={setName}
           placeholder="Name"
         />
+
+        {props.editData?.image && !imageValue && (
+          <ImageWrapper
+            imageBucket={grinderImagesBucket}
+            imageUrl={props.editData.image}
+          />
+        )}
+
+        <ImagePicker value={imageValue} setFn={setImage} />
 
         <TextInput
           style={inputStyles.areaInput}

@@ -25,7 +25,7 @@ export async function handleImageUpload(props: ImageUploadProps) {
     .upload(filePath, decode(base64), { contentType: CONTENT_TYPE });
 
   if (error) {
-    return;
+    return "";
   }
   return data.path;
 }
@@ -70,4 +70,42 @@ export async function handleImageReplace(props: ImageReplaceProps) {
   }
 
   return props.currentImage;
+}
+
+type ImageCopyProps = {
+  directory: string;
+  imageToCopy: string;
+  imageToPaste: string;
+};
+export async function handleImageCopy(props: ImageCopyProps) {
+  const { data, error } = await supabase.storage
+    .from(props.directory)
+    .copy(props.imageToCopy, props.imageToPaste);
+
+  if (error) {
+    return;
+  }
+  return data.path.replace(`${props.directory}/`, "");
+}
+
+type ImageDuplicateProps = {
+  directory: string;
+  subdirectory: string;
+  userId: string;
+  imagePath?: string;
+};
+export async function handleImageDuplicate(props: ImageDuplicateProps) {
+  if (!props.imagePath) return "";
+
+  console.log("imagePath", props.imagePath);
+
+  const imageToPaste = `${props.userId}/${
+    props.subdirectory
+  }/${new Date().getTime()}.${IMAGE_TYPE}`;
+
+  return await handleImageCopy({
+    directory: props.directory,
+    imageToCopy: props.imagePath,
+    imageToPaste,
+  });
 }

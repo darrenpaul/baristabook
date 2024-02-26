@@ -17,6 +17,7 @@ export default StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    gap: 8,
   },
   header: {
     flexDirection: "row",

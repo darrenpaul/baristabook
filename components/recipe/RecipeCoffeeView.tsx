@@ -28,6 +28,7 @@ import {
   Notes,
   Taste,
 } from "@/components/icons";
+import Rating from "@/components/Rating";
 
 const SECTIONS = [
   {
@@ -122,6 +123,8 @@ export default function Component(props: RecipeCoffeeViewProps) {
           uppercaseBody={false}
           bodyUnderTitle={true}
         />
+
+        <Rating value={props.recipe.coffee_rating} />
 
         <RecipeListItem
           icon={<Notes />}

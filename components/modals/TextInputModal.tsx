@@ -7,8 +7,14 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-
-import appStyles from "@/features/shared/styles/styles";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import {
+  typographyStyles,
+  inputStyles,
+  buttonStyles,
+  containerStyles,
+} from "@/features/shared/styles";
+import { buttonSecondary } from "@/constants/button-types";
 
 type ModalProps = {
   visible: boolean;
@@ -44,30 +50,23 @@ export default function Component(props: ModalProps) {
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={appStyles.headerText}>{props.title}</Text>
+          <Text style={typographyStyles.heading}>{props.title}</Text>
 
           <TextInput
-            style={appStyles.textInput}
+            style={inputStyles.textInput}
             value={nameValue}
             onChangeText={setNameValue}
             placeholder={props.placeholder}
             keyboardType={props.inputType}
           />
 
-          <View style={appStyles.buttonGroupHorizontal}>
-            <TouchableOpacity
-              style={{ ...appStyles.buttonSecondary, flex: 1 }}
-              onPress={() => props.hideFn()}
-            >
-              <Text style={appStyles.buttonSecondaryText}>Cancel</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={{ ...appStyles.button, flex: 1 }}
-              onPress={handleSave}
-            >
-              <Text style={appStyles.buttonText}>Save</Text>
-            </TouchableOpacity>
+          <View style={containerStyles.row}>
+            <ButtonWrapper
+              text="Cancel"
+              type={buttonSecondary}
+              onPressFn={() => props.hideFn()}
+            />
+            <ButtonWrapper text="Save" onPressFn={handleSave} />
           </View>
         </View>
       </View>

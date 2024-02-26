@@ -8,6 +8,7 @@ export type RecipeCoffee = {
   coffee_purchase_price: number;
   coffee_intensity: number;
   coffee_flavours: string[];
+  coffee_rating: number;
   coffee_image?: string;
   coffee_notes?: string;
 };
