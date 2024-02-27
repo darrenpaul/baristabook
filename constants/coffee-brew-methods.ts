@@ -29,7 +29,7 @@ export const frenchPress = {
   duration: 240,
   durationMin: 0,
   durationMax: 500,
-  weight: 30,
+  weight: 500,
   weightMin: 0,
   weightMax: 1000,
   temperature: 96,

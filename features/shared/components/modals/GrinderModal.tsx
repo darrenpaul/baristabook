@@ -146,22 +146,24 @@ export default function Component(props: Props) {
           placeholder="Notes"
         />
 
-        {isEditing && (
+        <View style={containerStyles.row}>
+          {isEditing && (
+            <ButtonWrapper
+              text="Delete"
+              icon="trash-can"
+              type={buttonDanger}
+              onPressFn={onConfirm}
+              loading={loadingValue}
+            />
+          )}
+
           <ButtonWrapper
-            text="Delete"
-            icon="trash-can"
-            type={buttonDanger}
-            onPressFn={onConfirm}
+            text="Save"
+            icon="floppy-disk"
+            onPressFn={onSave}
             loading={loadingValue}
           />
-        )}
-
-        <ButtonWrapper
-          text="Save"
-          icon="floppy-disk"
-          onPressFn={onSave}
-          loading={loadingValue}
-        />
+        </View>
       </View>
     </ModalWrapper>
   );

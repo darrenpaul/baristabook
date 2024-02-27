@@ -19,7 +19,7 @@ export default function Component(props: Props) {
   }
 
   return (
-    <View style={containerStyles.row}>
+    <View style={[containerStyles.row, { gap: 0 }]}>
       <DropdownWrapper
         value={props.data.currency}
         setFn={(value: string) => onSet("currency", value)}

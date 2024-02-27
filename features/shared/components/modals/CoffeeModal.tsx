@@ -47,7 +47,7 @@ export default function Component(props: Props) {
   const [storeUrlValue, setStoreUrl] = useState<string>();
   const [purchaseDateValue, setPurchaseDate] = useState<Date>(new Date());
   const [currencyPriceValue, setCurrencyPrice] = useState<CurrencyPrice>(
-    initialCurrencyPriceSettings
+    initialCurrencyPriceSettings,
   );
   const [ratingValue, setRating] = useState<number>(5);
   const [imageValue, setImage] = useState<string>();
@@ -271,22 +271,24 @@ export default function Component(props: Props) {
           placeholder="Notes"
         />
 
-        {isEditing && (
+        <View style={containerStyles.row}>
+          {isEditing && (
+            <ButtonWrapper
+              text="Delete"
+              icon="trash-can"
+              type={buttonDanger}
+              onPressFn={onConfirm}
+              loading={loadingValue}
+            />
+          )}
+
           <ButtonWrapper
-            text="Delete"
-            icon="trash-can"
-            type={buttonDanger}
-            onPressFn={onConfirm}
+            text="Save"
+            icon="floppy-disk"
+            onPressFn={onSave}
             loading={loadingValue}
           />
-        )}
-
-        <ButtonWrapper
-          text="Save"
-          icon="floppy-disk"
-          onPressFn={onSave}
-          loading={loadingValue}
-        />
+        </View>
       </View>
     </ModalWrapper>
   );

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { View, Image } from "react-native";
+import { View, Image, Dimensions } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { containerStyles } from "@/features/shared/styles/index";
+import { containerStyles, paddingStyles } from "@/features/shared/styles/index";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { buttonSecondary } from "@/constants/button-types";
 
@@ -11,24 +11,32 @@ type ComponentProps = {
   setFn: Function;
 };
 
+const windowWidth =
+  Dimensions.get("window").width -
+  paddingStyles.horizontalGutter.paddingHorizontal * 2;
+
+const options: ImagePicker.ImagePickerOptions = {
+  mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  allowsMultipleSelection: false,
+  allowsEditing: true,
+  aspect: [4, 3],
+  cameraType: ImagePicker.CameraType.back,
+  quality: 1,
+};
+
 export default function Component(props: ComponentProps) {
   const [imageUriValue, setImageUri] = useState<string>(); // Image URI for preview
 
-  async function onImageSelection() {
+  async function onImageSelect(isCamera: boolean = false) {
     Haptics.selectionAsync();
-
-    const options: ImagePicker.ImagePickerOptions = {
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      cameraType: ImagePicker.CameraType.back,
-    };
 
     // REQUEST PERMISSIONS
     await ImagePicker.requestMediaLibraryPermissionsAsync();
     await ImagePicker.requestCameraPermissionsAsync();
 
-    const result = await ImagePicker.launchCameraAsync(options);
+    const result = isCamera
+      ? await ImagePicker.launchCameraAsync(options)
+      : await ImagePicker.launchImageLibraryAsync(options);
 
     // Save image if not cancelled
     if (!result.canceled) {
@@ -41,15 +49,28 @@ export default function Component(props: ComponentProps) {
   return (
     <View style={containerStyles.column}>
       {imageUriValue && (
-        <Image width={200} height={200} source={{ uri: imageUriValue }} />
+        <Image
+          width={windowWidth}
+          height={windowWidth}
+          source={{ uri: imageUriValue }}
+        />
       )}
 
-      <ButtonWrapper
-        text="Image Upload"
-        icon="upload"
-        type={buttonSecondary}
-        onPressFn={onImageSelection}
-      />
+      <View style={containerStyles.row}>
+        <ButtonWrapper
+          text="Upload"
+          icon="upload"
+          type={buttonSecondary}
+          onPressFn={onImageSelect}
+        />
+
+        <ButtonWrapper
+          text="Camera"
+          icon="camera"
+          type={buttonSecondary}
+          onPressFn={() => onImageSelect(true)}
+        />
+      </View>
     </View>
   );
 }

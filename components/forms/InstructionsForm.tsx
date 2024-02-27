@@ -23,6 +23,7 @@ import {
 import { TemperatureSetting } from "@/types/temperature-setting";
 import { celsius } from "@/constants/temperatures";
 import { inputStyles } from "@/features/shared/styles/index";
+import weights from "@/constants/weights";
 
 const SECTIONS = [
   {
@@ -63,30 +64,38 @@ export default function Component(props: ComponentProps) {
 
     const brewerMethod = props.brewer.method;
     const brewMethod = coffeeBrewMethods.find(
-      (item) => item.value === brewerMethod
+      (item) => item.value === brewerMethod,
     );
     if (!brewMethod) return;
+
     setBrewMethod(brewMethod);
-    if (typeof brewMethod.preInfusion === "number")
+
+    if (typeof brewMethod.preInfusion === "number") {
       setPreInfusion(brewMethod.preInfusion);
-    if (typeof brewMethod.duration === "number")
+    }
+    if (typeof brewMethod.duration === "number") {
       setExtractionDuration(brewMethod.duration);
-    if (typeof brewMethod.weight === "number") setWeight(brewMethod.weight);
-    if (typeof brewMethod.temperature === "number")
+    }
+    if (typeof brewMethod.weight === "number") {
+      setWeight(brewMethod.weight);
+    }
+    if (typeof brewMethod.temperature === "number") {
       setTemperature(brewMethod.temperature);
-    if (typeof brewMethod.pressure === "number")
+    }
+    if (typeof brewMethod.pressure === "number") {
       setPressure(brewMethod.pressure);
+    }
 
     const matchedWeightSetting = findObject(
-      grindSettings,
+      weights,
       "value",
-      props.user.weight
+      props.user.weight,
     );
 
     const matchedTemperatureSetting = findObject(
       temperatureSettings,
       "value",
-      props.user.temperature
+      props.user.temperature,
     );
 
     if (matchedWeightSetting) {
@@ -99,9 +108,12 @@ export default function Component(props: ComponentProps) {
         weightMax: matchedWeightSetting.weightMax,
         step: matchedWeightSetting.step,
       });
-
       setWeight(
-        weightConversion(celsius.value, matchedWeightSetting.value, weightValue)
+        weightConversion(
+          celsius.value,
+          matchedWeightSetting.value,
+          weightValue,
+        ),
       );
     }
 
@@ -120,8 +132,8 @@ export default function Component(props: ComponentProps) {
         temperatureConversion(
           celsius.value,
           matchedTemperatureSetting.value,
-          temperatureValue
-        )
+          temperatureValue,
+        ),
       );
     }
   }, [props.brewer, props.user]);
@@ -196,12 +208,12 @@ export default function Component(props: ComponentProps) {
         minValue={weightConversion(
           gramSettings.value,
           weightSettingsValue.value,
-          brewMethodValue.weightMin
+          brewMethodValue.weightMin,
         )}
         maxValue={weightConversion(
           gramSettings.value,
           weightSettingsValue.value,
-          brewMethodValue.weightMax
+          brewMethodValue.weightMax,
         )}
         measurement={weightSettingsValue.display}
         value={weightValue}
@@ -220,12 +232,12 @@ export default function Component(props: ComponentProps) {
         minValue={temperatureConversion(
           celsiusSettings.value,
           temperatureSettingsValue.value,
-          brewMethodValue.temperatureMin
+          brewMethodValue.temperatureMin,
         )}
         maxValue={temperatureConversion(
           celsiusSettings.value,
           temperatureSettingsValue.value,
-          brewMethodValue.temperatureMax
+          brewMethodValue.temperatureMax,
         )}
         measurement={temperatureSettingsValue.display}
         value={temperatureValue}
