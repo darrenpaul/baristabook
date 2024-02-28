@@ -1,23 +1,29 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import * as Haptics from "expo-haptics";
 import TextInputModal from "@/components/modals/TextInputModal";
-import appStyles from "@/features/shared/styles/styles";
+import { useModal } from "@/features/shared/services/modal-service";
+import {
+  buttonStyles,
+  containerStyles,
+  inputStyles,
+  typographyStyles,
+} from "@/features/shared/styles";
 
-type GrindProps = {
+type Props = {
   title: string;
   minValue?: number;
   maxValue?: number;
   measurement?: string;
-  value: number;
+  value?: number;
   setFn: Function;
   step?: number;
   disableCustomInput?: boolean;
 };
 
-export default function Component(props: GrindProps) {
-  const [modalVisibilityValue, setModalVisibility] = useState(false);
+export default function Component(props: Props) {
+  const { modalState, setModalState } = useModal();
 
   function handleValueChange(value: string | number) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -25,18 +31,19 @@ export default function Component(props: GrindProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <View
+      style={[
+        containerStyles.column,
+        inputStyles.textInput,
+        {
+          gap: 0,
+          height: "auto",
+        },
+      ]}
+    >
+      <View style={[containerStyles.row]}>
         <Text
           style={{
-            fontSize: 18,
             textTransform: "uppercase",
           }}
         >
@@ -46,20 +53,20 @@ export default function Component(props: GrindProps) {
         <TouchableOpacity
           disabled={props.disableCustomInput}
           style={[
-            appStyles.buttonStretchSmall,
-            props.disableCustomInput && appStyles.buttonDisabled,
+            buttonStyles.buttonStretchSmall,
+            props.disableCustomInput && buttonStyles.buttonDisabled,
           ]}
-          onPress={() => setModalVisibility(true)}
+          onPress={() => setModalState(true)}
         >
-          <Text style={appStyles.buttonText}>
+          <Text style={typographyStyles.buttonText}>
             {props.value}
             {props.measurement}
           </Text>
         </TouchableOpacity>
 
         <TextInputModal
-          visible={modalVisibilityValue}
-          hideFn={() => setModalVisibility(false)}
+          visible={modalState}
+          hideFn={() => setModalState(false)}
           title="Custom Amount"
           placeholder="Enter amount"
           initialValue={props.value}
@@ -79,17 +86,10 @@ export default function Component(props: GrindProps) {
         maximumTrackTintColor="#000000"
       />
 
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      <View style={containerStyles.row}>
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 12,
             color: "gray",
           }}
         >
@@ -99,7 +99,7 @@ export default function Component(props: GrindProps) {
 
         <Text
           style={{
-            fontSize: 14,
+            fontSize: 12,
             color: "gray",
           }}
         >
@@ -110,10 +110,3 @@ export default function Component(props: GrindProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-  },
-});

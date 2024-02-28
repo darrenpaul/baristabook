@@ -1,32 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import Accordion from "react-native-collapsible/Accordion";
 import appStyles from "@/features/shared/styles/styles";
 import ImagePicker from "@/features/shared/components/image/ImagePicker";
 import RatingForm from "@/components/forms/RatingForm";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
 import { RecipeInformation } from "@/types/recipe";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import SwitchWrapper from "@/features/shared/components/wrappers/SwitchWrapper";
 import { inputStyles } from "@/features/shared/styles/index";
 import { Taste } from "@/components/icons";
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
-const SECTIONS = [
-  {
-    title: "Instructions",
-    content: "instructions",
-  },
-];
-
-type ComponentProps = {
+type Props = {
   recipe: RecipeInformation;
   setFn: Function;
   disabled?: boolean;
 };
 
-export default function Component(props: ComponentProps) {
-  const [activeSectionsValue, setActiveSections] = useState<number[]>([]);
+export default function Component(props: Props) {
   const [nameValue, setName] = useState<string>();
   const [flavoursValue, setFlavours] = useState<string[]>([]);
   const [ratingValue, setRating] = useState<number>(5);
@@ -53,18 +44,8 @@ export default function Component(props: ComponentProps) {
     notesValue,
   ]);
 
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader
-        title="Recipe"
-        active={isActive}
-        disabled={props.disabled}
-      />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Recipe" disabled={props.disabled}>
       <View style={appStyles.accordionContent}>
         <TextInput
           style={inputStyles.textInput}
@@ -101,18 +82,6 @@ export default function Component(props: ComponentProps) {
           setFn={setPublic}
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSectionsValue}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      disabled={props.disabled}
-      onChange={(value) => setActiveSections(value)}
-    />
+    </AccordionWrapper>
   );
 }

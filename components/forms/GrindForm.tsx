@@ -1,40 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import Accordion from "react-native-collapsible/Accordion";
 import appStyles from "@/features/shared/styles/styles";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import Slider from "@/components/Slider";
 import { grindSizes } from "@/constants/grind-size-data";
 import { Grind } from "@/types/grind";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import grindSettings, { gramSettings } from "@/constants/grind-settings";
 import { GrindSetting } from "@/types/grind-setting";
 import { findObject } from "@/utils/array-helpers";
 import { inputStyles } from "@/features/shared/styles/index";
 import ImagePicker from "@/features/shared/components/image/ImagePicker";
 import { GrindSize } from "@/components/icons";
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
-const SECTIONS = [
-  {
-    title: "Grind",
-    content: "grind",
-  },
-];
-
-type ComponentProps = {
+type Props = {
   grind: Grind;
   setGrindFn: Function;
   weightMeasurement: string;
   disabled?: boolean;
 };
 
-export default function Component(props: ComponentProps) {
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
+export default function Component(props: Props) {
   const [settingsValue, setSettings] = useState<GrindSetting>(gramSettings);
-
   const [grindSize, setGrindSize] = useState<string>(props.grind.size);
   const [durationValue, setDurationValue] = useState<number>(
-    props.grind.duration
+    props.grind.duration,
   );
   const [weightValue, setWeightValue] = useState<number>(props.grind.weight);
   const [imageValue, setImage] = useState<string>();
@@ -45,7 +35,7 @@ export default function Component(props: ComponentProps) {
     const matchedSettings = findObject(
       grindSettings,
       "value",
-      props.weightMeasurement
+      props.weightMeasurement,
     );
 
     if (matchedSettings) {
@@ -75,18 +65,8 @@ export default function Component(props: ComponentProps) {
     });
   }, [grindSize, durationValue, weightValue, imageValue, notesValue]);
 
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader
-        title="Grind"
-        active={isActive}
-        disabled={props.disabled}
-      />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Grind" disabled={props.disabled}>
       <View style={appStyles.accordionContent}>
         <Dropdown
           value={grindSize}
@@ -126,18 +106,6 @@ export default function Component(props: ComponentProps) {
           placeholder="Notes"
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      disabled={props.disabled}
-      onChange={(value) => setActiveSectionsValue(value)}
-    />
+    </AccordionWrapper>
   );
 }

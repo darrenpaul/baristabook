@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import appStyles from "@/features/shared/styles/styles";
-import Accordion from "react-native-collapsible/Accordion";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { findObject } from "@/utils/array-helpers";
@@ -12,7 +11,6 @@ import {
   temperatureConversionWithSymbol,
   weightConversionWithSymbol,
 } from "@/utils/conversion-calculator";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import {
   Notes,
   Scale,
@@ -20,13 +18,7 @@ import {
   Temperature,
   PressureGauge,
 } from "@/components/icons";
-
-const SECTIONS = [
-  {
-    title: "RecipeInstructionsView",
-    content: "recipeInstructionsView",
-  },
-];
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;
@@ -34,37 +26,26 @@ type Props = {
 };
 
 export default function Component(props: Props) {
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([0]);
-
+  console.log(props);
   useEffect(() => {
     if (props.recipe) {
       const matchedWeightMeasurement = findObject(
         weights,
         "value",
-        props.recipe.weight_measurement
+        props.recipe.weight_measurement,
       );
       const matchedTemperatureMeasurement = findObject(
         temperatures,
         "value",
-        props.recipe.temperature_measurement
+        props.recipe.temperature_measurement,
       );
 
       if (!matchedWeightMeasurement || !matchedTemperatureMeasurement) return;
     }
   }, [props.recipe]);
 
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader
-        title="Instructions"
-        active={isActive}
-        disabled={false}
-      />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Instructions" disabled={false}>
       <View style={appStyles.accordionContent}>
         <RecipeListItem
           icon={<Temperature />}
@@ -72,21 +53,25 @@ export default function Component(props: Props) {
           body={temperatureConversionWithSymbol(
             props.recipe.temperature_measurement,
             props.preferences.temperature,
-            props.recipe.instruction_temperature
+            props.recipe.instruction_temperature,
           )}
         />
 
-        <RecipeListItem
-          icon={<PressureGauge />}
-          title="Pressure"
-          body={`${props.recipe.instruction_pressure} Bar`}
-        />
+        {props.recipe.instruction_pressure && (
+          <RecipeListItem
+            icon={<PressureGauge />}
+            title="Pressure"
+            body={`${props.recipe.instruction_pressure} Bar`}
+          />
+        )}
 
-        <RecipeListItem
-          icon={<Timer />}
-          title="Pre-Infusion"
-          body={`${props.recipe.instruction_pre_infusion_duration} Seconds`}
-        />
+        {props.recipe.instruction_pre_infusion_duration && (
+          <RecipeListItem
+            icon={<Timer />}
+            title="Pre-Infusion"
+            body={`${props.recipe.instruction_pre_infusion_duration} Seconds`}
+          />
+        )}
 
         <RecipeListItem
           icon={<Timer />}
@@ -101,7 +86,7 @@ export default function Component(props: Props) {
           body={weightConversionWithSymbol(
             props.recipe.weight_measurement,
             props.preferences.weight,
-            props.recipe.instruction_weight
+            props.recipe.instruction_weight,
           )}
         />
 
@@ -113,17 +98,6 @@ export default function Component(props: Props) {
           bodyUnderTitle={true}
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      onChange={(value) => setActiveSectionsValue(value)}
-    />
+    </AccordionWrapper>
   );
 }

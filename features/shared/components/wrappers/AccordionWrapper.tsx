@@ -1,20 +1,22 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
 import Accordion from "react-native-collapsible/Accordion";
 
 import AccordionHeader from "@/components/accordion/AccordionHeader";
 
-type ComponentProps = {
+type Props = {
   title: string;
   children: ReactNode;
-  disabled: boolean;
+  disabled?: boolean;
+  expanded?: boolean;
 };
 
 export default function Component({
   title,
   children,
   disabled = false,
-}: ComponentProps) {
+  expanded = false,
+}: Props) {
   const SECTIONS = [
     {
       title: title,
@@ -22,7 +24,13 @@ export default function Component({
     },
   ];
 
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([0]);
+  const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (expanded) {
+      setActiveSectionsValue([0]);
+    }
+  }, [expanded]);
 
   function renderHeader(_content: Object, _index: number, isActive: boolean) {
     return (

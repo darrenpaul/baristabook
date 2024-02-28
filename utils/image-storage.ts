@@ -97,8 +97,6 @@ type ImageDuplicateProps = {
 export async function handleImageDuplicate(props: ImageDuplicateProps) {
   if (!props.imagePath) return "";
 
-  console.log("imagePath", props.imagePath);
-
   const imageToPaste = `${props.userId}/${
     props.subdirectory
   }/${new Date().getTime()}.${IMAGE_TYPE}`;

@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
-import Accordion from "react-native-collapsible/Accordion";
 import DropdownActionButton from "@/components/dropdowns/DropdownActionButton";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import appStyles from "@/features/shared/styles/styles";
@@ -11,7 +10,6 @@ import GrinderModal from "@/features/shared/components/modals/GrinderModal";
 import BrewerModal from "@/features/shared/components/modals/BrewerModal";
 import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { useModal } from "@/features/shared/services/modal-service";
 import {
   CoffeeBag,
@@ -21,15 +19,9 @@ import {
   WaterDrop,
 } from "@/components/icons/index";
 import { frenchPress } from "@/constants/coffee-brew-methods";
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
-const SECTIONS = [
-  {
-    title: "Equipment",
-    content: "equipment",
-  },
-];
-
-type ComponentProps = {
+type Props = {
   userId: string;
   coffees: Coffee[];
   grinders: Grinder[];
@@ -39,15 +31,13 @@ type ComponentProps = {
   setEquipmentFn: Function;
 };
 
-export default function Component(props: ComponentProps) {
+export default function Component(props: Props) {
   const { modalState: coffeeModalState, setModalState: setCoffeeModalState } =
     useModal();
   const { modalState: grinderModalState, setModalState: setGrinderModalState } =
     useModal();
   const { modalState: brewerModalState, setModalState: setBrewerModalState } =
     useModal();
-
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([0]);
 
   const [coffeeValue, setCoffeeValue] = useState<string>("");
   const [waterValue, setWaterValue] = useState<string>("");
@@ -66,7 +56,7 @@ export default function Component(props: ComponentProps) {
 
   function renderBrewerIcon(): ReactNode {
     const matchBrewer = props.brewers.find(
-      (brewer) => brewer.id === brewerValue
+      (brewer) => brewer.id === brewerValue,
     );
     if (matchBrewer?.method === frenchPress.label) {
       return <FrenchPress />;
@@ -74,14 +64,8 @@ export default function Component(props: ComponentProps) {
     return <CoffeeMachine />;
   }
 
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader title="Equipment" active={isActive} disabled={false} />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Equipment" disabled={false} expanded={true}>
       <View style={appStyles.accordionContent}>
         <DropdownActionButton
           value={coffeeValue}
@@ -148,17 +132,6 @@ export default function Component(props: ComponentProps) {
           onSaveFn={props.refreshFn}
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      onChange={(value) => setActiveSectionsValue(value)}
-    />
+    </AccordionWrapper>
   );
 }

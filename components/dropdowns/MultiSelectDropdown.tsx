@@ -1,6 +1,5 @@
 import React, { useState, ReactNode } from "react";
 import { MultiSelect } from "react-native-element-dropdown";
-import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import styles from "./styles";
 import { View } from "react-native";
 
@@ -28,24 +27,26 @@ export default function Component(props: DropdownActionButtonProps) {
   }
 
   return (
-    <MultiSelect
-      style={[styles.dropdown, isFocus && styles.dropdownFocused]}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={styles.selectedTextStyle}
-      iconStyle={styles.iconStyle}
-      data={props.items}
-      maxHeight={300}
-      labelField="label"
-      valueField="value"
-      placeholder={props.placeholder}
-      value={props.value}
-      onFocus={() => setIsFocus(true)}
-      onBlur={() => setIsFocus(false)}
-      onChange={(item) => {
-        props.setFn(item);
-        setIsFocus(false);
-      }}
-      renderLeftIcon={renderIcon}
-    />
+    <View>
+      <MultiSelect
+        style={[styles.dropdown, isFocus && styles.dropdownFocused]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        iconStyle={styles.iconStyle}
+        data={props.items}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={props.placeholder}
+        value={props.value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item) => {
+          props.setFn(item);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={renderIcon}
+      />
+    </View>
   );
 }

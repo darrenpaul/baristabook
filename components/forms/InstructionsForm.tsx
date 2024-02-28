@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import Accordion from "react-native-collapsible/Accordion";
 import appStyles from "@/features/shared/styles/styles";
 import Slider from "@/components/Slider";
 import { Brewer } from "@/types/brewer";
 import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
 import { BrewMethod } from "@/types/brew-method";
 import { Instructions } from "@/types/instructions";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { GrindSetting } from "@/types/grind-setting";
-import grindSettings, { gramSettings } from "@/constants/grind-settings";
+import { gramSettings } from "@/constants/grind-settings";
 import { findObject } from "@/utils/array-helpers";
 import { User } from "@/types/user";
 import {
@@ -24,35 +22,28 @@ import { TemperatureSetting } from "@/types/temperature-setting";
 import { celsius } from "@/constants/temperatures";
 import { inputStyles } from "@/features/shared/styles/index";
 import weights from "@/constants/weights";
-
-const SECTIONS = [
-  {
-    title: "Instructions",
-    content: "instructions",
-  },
-];
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
 type ComponentProps = {
   instructions: Instructions;
   setFn: Function;
   brewer?: Brewer;
   user: User;
-  disabled?: boolean;
+  disabled: boolean;
 };
 
 export default function Component(props: ComponentProps) {
-  const [activeSectionsValue, setActiveSections] = useState<number[]>([]);
   const [weightSettingsValue, setWeightSettings] =
     useState<GrindSetting>(gramSettings);
   const [temperatureSettingsValue, setTemperatureSettings] =
     useState<TemperatureSetting>(celsiusSettings);
 
   const [brewMethodValue, setBrewMethod] = useState<BrewMethod>();
-  const [preInfusionValue, setPreInfusion] = useState<number>(30);
+  const [preInfusionValue, setPreInfusion] = useState<number>();
   const [extractionDurationValue, setExtractionDuration] = useState<number>(30);
   const [weightValue, setWeight] = useState<number>(30);
   const [temperatureValue, setTemperature] = useState<number>(96);
-  const [pressureValue, setPressure] = useState<number>(30);
+  const [pressureValue, setPressure] = useState<number>();
   const [notesValue, setNotes] = useState<string>("");
 
   useEffect(() => {
@@ -156,16 +147,6 @@ export default function Component(props: ComponentProps) {
     pressureValue,
     notesValue,
   ]);
-
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader
-        title="Instructions"
-        active={isActive}
-        disabled={props.disabled}
-      />
-    );
-  }
 
   function renderPreInfusion() {
     if (!brewMethodValue) return;
@@ -302,14 +283,8 @@ export default function Component(props: ComponentProps) {
   }
 
   return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSectionsValue}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      disabled={props.disabled}
-      onChange={(value) => setActiveSections(value)}
-    />
+    <AccordionWrapper title="Instructions" disabled={props.disabled}>
+      {renderContent()}
+    </AccordionWrapper>
   );
 }

@@ -28,28 +28,30 @@ export default function Component(props: DropdownActionButtonProps) {
   }
 
   return (
-    <Dropdown
-      style={[
-        styles.dropdown,
-        props.dropdownStyle,
-        isFocus && styles.dropdownFocused,
-      ]}
-      placeholderStyle={styles.placeholderStyle}
-      selectedTextStyle={styles.selectedTextStyle}
-      iconStyle={styles.iconStyle}
-      data={props.items}
-      maxHeight={300}
-      labelField="label"
-      valueField="value"
-      placeholder={props.placeholder}
-      value={props.value}
-      onFocus={() => setIsFocus(true)}
-      onBlur={() => setIsFocus(false)}
-      onChange={(item: Item) => {
-        props.setFn(item.value);
-        setIsFocus(false);
-      }}
-      renderLeftIcon={renderIcon}
-    />
+    <View>
+      <Dropdown
+        style={[
+          styles.dropdown,
+          props.dropdownStyle,
+          isFocus && styles.dropdownFocused,
+        ]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        iconStyle={styles.iconStyle}
+        data={props.items}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={props.placeholder}
+        value={props.value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={(item: Item) => {
+          props.setFn(item.value);
+          setIsFocus(false);
+        }}
+        renderLeftIcon={renderIcon}
+      />
+    </View>
   );
 }

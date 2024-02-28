@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Modal,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Modal, StyleSheet, TextInput } from "react-native";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import {
   typographyStyles,
   inputStyles,
-  buttonStyles,
   containerStyles,
 } from "@/features/shared/styles";
 import { buttonSecondary } from "@/constants/button-types";
@@ -21,7 +13,7 @@ type ModalProps = {
   hideFn: Function;
   title: string;
   placeholder: string;
-  initialValue: string | number;
+  initialValue?: string | number;
   onSaveFn: Function;
   inputType: "numeric" | "default";
 };
@@ -30,7 +22,8 @@ export default function Component(props: ModalProps) {
   const [nameValue, setNameValue] = useState<string>();
 
   useEffect(() => {
-    if (props.visible === true) setNameValue(props.initialValue.toString());
+    if (props.visible === true && props.initialValue)
+      setNameValue(props.initialValue.toString());
   }, [props.visible]);
 
   function handleSave() {
