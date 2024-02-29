@@ -36,6 +36,7 @@ import {
   useRecipeInformationStateService,
 } from "@/features/shared/services";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import PageLoader from "@/components/loaders/PageLoader";
 
 export default function Page() {
   const router = useRouter();
@@ -74,13 +75,13 @@ export default function Page() {
 
   function matchEquipment() {
     const matchedCoffee = coffees.find(
-      (item) => item.id === equipmentValue?.coffee_id
+      (item) => item.id === equipmentValue?.coffee_id,
     );
     const matchedGrinder = grinders.find(
-      (item) => item.id === equipmentValue?.grinder_id
+      (item) => item.id === equipmentValue?.grinder_id,
     );
     const matchedBrewer = brewers.find(
-      (item) => item.id === equipmentValue?.brewer_id
+      (item) => item.id === equipmentValue?.brewer_id,
     );
 
     const waterHardness = equipmentValue?.water_hardness || "";
@@ -223,7 +224,7 @@ export default function Page() {
     if (!user) return null;
 
     const brewer = brewers.find(
-      (item) => item.id === equipmentValue?.brewer_id
+      (item) => item.id === equipmentValue?.brewer_id,
     );
 
     return (
@@ -237,9 +238,13 @@ export default function Page() {
     );
   }
 
-  return (
-    <PageWrapper title="Create Recipe">
-      {session && (
+  function renderPageContent() {
+    if (!session || !user) {
+      return <PageLoader />;
+    }
+
+    return (
+      <>
         <EquipmentForm
           coffees={coffees}
           grinders={grinders}
@@ -249,31 +254,31 @@ export default function Page() {
           equipment={equipmentValue}
           setEquipmentFn={setEquipment}
         />
-      )}
 
-      {user && (
         <GrindForm
           grind={grindValue}
           setGrindFn={setGrind}
           weightMeasurement={user.weight}
           disabled={isDisabled}
         />
-      )}
 
-      {renderInstructionsForm()}
+        {renderInstructionsForm()}
 
-      <RecipeCreateForm
-        recipe={recipeValue}
-        setFn={setRecipe}
-        disabled={isDisabled}
-      />
+        <RecipeCreateForm
+          recipe={recipeValue}
+          setFn={setRecipe}
+          disabled={isDisabled}
+        />
 
-      <ButtonWrapper
-        text="Save"
-        icon="floppy-disk"
-        onPressFn={onSave}
-        loading={loadingValue}
-      />
-    </PageWrapper>
-  );
+        <ButtonWrapper
+          text="Save"
+          icon="floppy-disk"
+          onPressFn={onSave}
+          loading={loadingValue}
+        />
+      </>
+    );
+  }
+
+  return <PageWrapper title="Create Recipe">{renderPageContent()}</PageWrapper>;
 }

@@ -12,12 +12,12 @@ import { validateTextInput } from "@/utils/input-validation";
 import { updateUser } from "@/api/user";
 import { Scale, Temperature } from "@/components/icons/index";
 
-type ComponentProps = {
+type Props = {
   user: User;
   disabled?: boolean;
 };
 
-export default function Component(props: ComponentProps) {
+export default function Component(props: Props) {
   const [loadingValue, setLoading] = useState<boolean>(false);
   const [nameValue, setName] = useState<string>();
   const [nameErrorValue, setNameError] = useState<boolean>(false);

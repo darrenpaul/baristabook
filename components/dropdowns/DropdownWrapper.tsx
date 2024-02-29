@@ -9,7 +9,7 @@ type DropdownActionButtonProps = {
   value: string | undefined;
   setFn: Function;
   items: Item[];
-  icon: ReactNode;
+  icon?: ReactNode;
   placeholder: string;
   dropdownStyle?: object;
 };
