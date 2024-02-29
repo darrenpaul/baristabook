@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
-import { marginStyles, containerStyles } from "@/features/shared/styles/index";
+import { paddingStyles, containerStyles } from "@/styles";
 
 export default StyleSheet.create({
   container: {
     ...containerStyles.row,
-    ...marginStyles.horizontalGutter,
-    marginTop: 8,
+    ...paddingStyles.horizontalGutter,
+    paddingTop: 16,
+    borderTopWidth: 1,
   },
   button: {
     alignItems: "center",

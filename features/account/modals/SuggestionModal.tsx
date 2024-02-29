@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { View, TextInput } from "react-native";
+import { createSuggestion } from "@/api/support/suggest-feature";
 import DropdownWrapper from "@/components/dropdowns/DropdownWrapper";
-import { validateTextInput } from "@/utils/input-validation";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
-import { handleImageUpload } from "@/utils/image-storage";
-import ModalWrapper from "@/features/shared/components/wrappers/ModalWrapper";
+import ImagePicker from "@/components/image/ImagePicker";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import ModalWrapper from "@/components/wrappers/ModalWrapper";
+import { suggestionsImagesBucket } from "@/constants/storage-buckets";
 import {
   containerStyles,
   inputStyles,
-  paddingStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { suggestionsImagesBucket } from "@/constants/storage-buckets";
-import { createSuggestion } from "@/api/support/suggest-feature";
+  paddingStyles,
+} from "@/styles";
+import { handleImageUpload } from "@/utils/image-storage";
+import { validateTextInput } from "@/utils/input-validation";
+import React, { useState } from "react";
+import { TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 type Props = {

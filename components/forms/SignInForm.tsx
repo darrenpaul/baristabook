@@ -5,10 +5,10 @@ import {
   paddingStyles,
   typographyStyles,
   inputStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 import { validateEmail, validatePassword } from "@/utils/input-validation";
 import { signIn } from "@/api/auth";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {

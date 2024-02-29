@@ -4,11 +4,7 @@ export const cardStyles = StyleSheet.create({
   card: {
     backgroundColor: "white",
     borderRadius: 10,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
   },
   image: {
     overflow: "hidden",
@@ -17,9 +13,10 @@ export const cardStyles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   body: {
-    padding: 20,
+    padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    borderTopWidth: 1,
     alignItems: "center",
     gap: 8,
   },

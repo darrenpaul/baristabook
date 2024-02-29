@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { inputStyles } from "@/features/shared/styles";
+import { inputStyles } from "@/styles";
 
 export default StyleSheet.create({
   dropdown: {

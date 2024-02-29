@@ -9,15 +9,15 @@ import RecipeInstructionsView from "@/components/recipe/RecipeInstructionsView";
 import PageLoader from "@/components/loaders/PageLoader";
 import { Recipe } from "@/types/recipe";
 import RecipeView from "@/components/recipe/RecipeView";
-import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
+import PageWrapper from "@/components/wrappers/PageWrapper";
 import { Preferences } from "@/types/user";
-import { containerStyles } from "@/features/shared/styles/index";
+import { containerStyles } from "@/styles";
 import { useAuthService } from "@/services/auth-service";
 import RecipeGrindView from "@/components/recipe/RecipeGrindView";
 import { useUserService } from "@/services/user-service";
 import { homeRoute } from "@/constants/routes";
 import { buttonDanger } from "@/constants/button-types";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 
 export default function Page() {
   const { id: recipeId } = useLocalSearchParams();

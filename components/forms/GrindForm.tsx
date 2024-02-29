@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import Slider from "@/components/Slider";
 import { grindSizes } from "@/constants/grind-size-data";
@@ -8,10 +8,10 @@ import { Grind } from "@/types/grind";
 import grindSettings, { gramSettings } from "@/constants/grind-settings";
 import { GrindSetting } from "@/types/grind-setting";
 import { findObject } from "@/utils/array-helpers";
-import { inputStyles } from "@/features/shared/styles/index";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
+import { inputStyles } from "@/styles";
+import ImagePicker from "@/components/image/ImagePicker";
 import { GrindSize } from "@/components/icons";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   grind: Grind;

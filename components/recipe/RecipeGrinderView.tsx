@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { Notes } from "@/components/icons";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;

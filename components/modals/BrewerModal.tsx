@@ -11,20 +11,20 @@ import { createBrewer, deleteBrewer, updateBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
 import { handleImageDelete, handleImageUpload } from "@/utils/image-storage";
 import { validateTextInput } from "@/utils/input-validation";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
-import ModalWrapper from "@/features/shared/components/wrappers/ModalWrapper";
+import ImagePicker from "@/components/image/ImagePicker";
+import ModalWrapper from "@/components/wrappers/ModalWrapper";
 import {
   containerStyles,
   inputStyles,
   paddingStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 import { AeroPress, CoffeeMachine, FrenchPress } from "@/components/icons";
 import { ModalProps } from "./props";
 import { useConfirmService } from "@/services/confirm-service";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { buttonDanger } from "@/constants/button-types";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 
 type Props = {
   editData?: Brewer;

@@ -1,23 +1,23 @@
+import PageLoader from "@/components/loaders/PageLoader";
+import BrewerModal from "@/components/modals/BrewerModal";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import { buttonSecondary } from "@/constants/button-types";
+import { brewerImagesBucket } from "@/constants/storage-buckets";
+import { useBrewerService } from "@/services/brewer-service";
+import { useModal } from "@/services/modal-service";
+import appStyles from "@/styles/styles";
+import { Coffee } from "@/types/coffee";
+import { Session } from "@supabase/supabase-js";
 import React, { useState } from "react";
 import { View } from "react-native";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
-import appStyles from "@/features/shared/styles/styles";
-import { Session } from "@supabase/supabase-js";
-import { useBrewerService } from "@/services/brewer-service";
 import CardItem from "./CardItem";
-import PageLoader from "@/components/loaders/PageLoader";
-import BrewerModal from "@/features/shared/components/modals/BrewerModal";
-import { useModal } from "@/services/modal-service";
-import { Coffee } from "@/types/coffee";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { brewerImagesBucket } from "@/constants/storage-buckets";
-import { buttonSecondary } from "@/constants/button-types";
 
-type ComponentProps = {
+type Props = {
   session: Session;
 };
 
-export default function Component(props: ComponentProps) {
+export default function Component(props: Props) {
   const { modalState, setModalState } = useModal();
   const { brewers, refreshFn } = useBrewerService(props.session);
   const [activeCoffeeValue, setActiveCoffee] = useState<Coffee>();

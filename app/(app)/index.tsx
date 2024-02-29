@@ -1,11 +1,11 @@
 import { View, Text } from "react-native";
-import BottomNavigation from "@/features/shared/components/navigation/BottomNavigation";
+import BottomNavigation from "@/components/navigation/BottomNavigation";
 import RecipeCard from "@/features/index/components/RecipeCard";
 import PageLoader from "@/components/loaders/PageLoader";
-import Heading from "@/features/shared/components/typography/Heading";
+import Heading from "@/components/typography/Heading";
 import { useRecipeService } from "@/services/recipe-service";
 import { useAuthService } from "@/services/auth-service";
-import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
+import PageWrapper from "@/components/wrappers/PageWrapper";
 
 export default function App() {
   const { session } = useAuthService();

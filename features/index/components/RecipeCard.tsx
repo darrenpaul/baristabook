@@ -7,7 +7,7 @@ import { Recipe } from "@/types/recipe";
 import Rating from "@/components/Rating";
 import { dateFormat } from "@/constants/date";
 import { recipeViewRoute } from "@/constants/routes";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 import { recipeImagesBucket } from "@/constants/storage-buckets";
 
 type HeaderProps = {

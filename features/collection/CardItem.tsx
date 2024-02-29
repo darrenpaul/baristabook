@@ -1,12 +1,12 @@
-import { View, Text } from "react-native";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 import { cardStyles } from "@/features/index/styles/recipe-card";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
-import { Coffee } from "@/types/coffee";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
+import { Coffee } from "@/types/coffee";
+import { Grinder } from "@/types/grinder";
+import { Text, View } from "react-native";
 
-type HeaderProps = {
+type Props = {
   title: string;
   imageBucket?: string;
   imageUrl?: string;
@@ -14,7 +14,7 @@ type HeaderProps = {
   setFn: Function;
 };
 
-export default function Component(props: HeaderProps) {
+export default function Component(props: Props) {
   async function onPress() {
     props.setFn(props.data);
     return;

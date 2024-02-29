@@ -1,14 +1,14 @@
 import React from "react";
 import { View } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { grindImagesBucket } from "@/constants/storage-buckets";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 import { weightConversionWithSymbol } from "@/utils/conversion-calculator";
 import { Preferences } from "@/types/user";
 import { Notes, Scale, GrindSize, Timer } from "@/components/icons";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;

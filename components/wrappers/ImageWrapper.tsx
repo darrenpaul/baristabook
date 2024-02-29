@@ -12,6 +12,7 @@ import { handleImageDownload } from "@/utils/image-storage";
 type Props = {
   imageBucket: string;
   imageUrl: string | undefined;
+  bottomRadius?: boolean;
 };
 
 const windowWidth = Dimensions.get("window").width;
@@ -54,7 +55,17 @@ export default function Component(props: Props) {
   }
 
   function renderLoader() {
-    return <ActivityIndicator size="large" />;
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          height: windowWidth,
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
   }
 
   function renderImage() {
@@ -67,7 +78,7 @@ export default function Component(props: Props) {
         }}
       >
         <Image
-          resizeMode="contain"
+          resizeMode="cover"
           height={windowWidth}
           source={{ uri: imageValue }}
         />
@@ -79,14 +90,24 @@ export default function Component(props: Props) {
     return <></>;
   }
 
-  return <View style={styles.container}>{renderImage()}</View>;
+  return (
+    <View
+      style={[
+        styles.container,
+        !props.bottomRadius && {
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
+        },
+      ]}
+    >
+      {renderImage()}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
-    height: 300,
-    justifyContent: "center",
-    overflow: "hidden",
     borderRadius: 10,
+    overflow: "hidden",
   },
 });

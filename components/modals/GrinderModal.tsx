@@ -5,11 +5,11 @@ import {
   inputStyles,
   paddingStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 import { Grinder, GrinderCreateData } from "@/types/grinder";
-import ModalWrapper from "@/features/shared/components/wrappers/ModalWrapper";
+import ModalWrapper from "@/components/wrappers/ModalWrapper";
 import { createGrinder, deleteGrinder, updateGrinder } from "@/api/grinder";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
 import { useConfirmService } from "@/services/confirm-service";
@@ -18,8 +18,8 @@ import {
   grinderImagesBucket,
 } from "@/constants/storage-buckets";
 import { handleImageDelete, handleImageReplace } from "@/utils/image-storage";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ImagePicker from "@/components/image/ImagePicker";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 
 type Props = {
   editData?: Grinder;

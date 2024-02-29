@@ -1,23 +1,23 @@
+import PageLoader from "@/components/loaders/PageLoader";
+import GrinderModal from "@/components/modals/GrinderModal";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import { buttonSecondary } from "@/constants/button-types";
+import { grinderImagesBucket } from "@/constants/storage-buckets";
+import { useGrinderService } from "@/services/grinder-service";
+import { useModal } from "@/services/modal-service";
+import appStyles from "@/styles/styles";
+import { Grinder } from "@/types/grinder";
+import { Session } from "@supabase/supabase-js";
 import React, { useState } from "react";
 import { View } from "react-native";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
-import appStyles from "@/features/shared/styles/styles";
-import { Session } from "@supabase/supabase-js";
-import { useGrinderService } from "@/services/grinder-service";
 import CardItem from "./CardItem";
-import PageLoader from "@/components/loaders/PageLoader";
-import GrinderModal from "@/features/shared/components/modals/GrinderModal";
-import { useModal } from "@/services/modal-service";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { Grinder } from "@/types/grinder";
-import { grinderImagesBucket } from "@/constants/storage-buckets";
-import { buttonSecondary } from "@/constants/button-types";
 
-type ComponentProps = {
+type Props = {
   session: Session;
 };
 
-export default function Component(props: ComponentProps) {
+export default function Component(props: Props) {
   const { modalState, setModalState } = useModal();
   const { grinders, refreshFn } = useGrinderService(props.session);
   const [activeGrinderValue, setActiveGrinder] = useState<Grinder>();

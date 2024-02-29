@@ -7,7 +7,7 @@ import {
   typographyStyles,
   paddingStyles,
   marginStyles,
-} from "@/features/shared/styles";
+} from "@/styles";
 
 type HeaderProps = {
   text: string;

@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, Linking } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { format } from "date-fns";
@@ -9,8 +9,8 @@ import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { formatCurrency } from "@/utils/currency";
 import Toast from "react-native-toast-message";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
-import { buttonStyles, containerStyles } from "@/features/shared/styles";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
+import { buttonStyles, containerStyles } from "@/styles";
 import {
   Calendar,
   CoffeeRoast,
@@ -21,7 +21,7 @@ import {
   Taste,
 } from "@/components/icons";
 import Rating from "@/components/Rating";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;

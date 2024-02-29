@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { Recipe } from "@/types/recipe";
 import { recipeImagesBucket } from "@/constants/storage-buckets";
 import Rating from "@/components/Rating";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
 import { format } from "date-fns";
 import { dateFormat } from "@/constants/date";
 import RecipeListItem from "@/components/recipe/RecipeListItem";

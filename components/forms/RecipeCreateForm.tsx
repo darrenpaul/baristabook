@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
+import appStyles from "@/styles/styles";
+import ImagePicker from "@/components/image/ImagePicker";
 import RatingForm from "@/components/forms/RatingForm";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
 import { RecipeInformation } from "@/types/recipe";
-import SwitchWrapper from "@/features/shared/components/wrappers/SwitchWrapper";
-import { inputStyles } from "@/features/shared/styles/index";
+import SwitchWrapper from "@/components/wrappers/SwitchWrapper";
+import { inputStyles } from "@/styles";
 import { Taste } from "@/components/icons";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: RecipeInformation;

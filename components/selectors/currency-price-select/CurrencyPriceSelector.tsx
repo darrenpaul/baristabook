@@ -1,7 +1,7 @@
 import { View, TextInput } from "react-native";
 import DropdownWrapper from "@/components/dropdowns/DropdownWrapper";
 import { currencyList } from "@/utils/currency";
-import { containerStyles, inputStyles } from "@/features/shared/styles/index";
+import { containerStyles, inputStyles } from "@/styles";
 import currencyPriceSelectorStyles from "./styles";
 import { CurrencyPrice } from "./types";
 import { Currency } from "@/components/icons";

@@ -1,11 +1,11 @@
 import React from "react";
-import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
+import PageWrapper from "@/components/wrappers/PageWrapper";
 import { signOut } from "@/api/auth";
 import AccountUserPreferencesForm from "@/features/account/forms/AccountUserPreferencesForm";
 import AccountSupportForm from "@/features/account/forms/AccountSupportForm";
 import { useAuthService } from "@/services/auth-service";
 import { useUserService } from "@/services/user-service";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 
 export default function Page() {
   const { session } = useAuthService();

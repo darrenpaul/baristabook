@@ -1,36 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { View, TextInput, Text } from "react-native";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import { View, TextInput } from "react-native";
 import { coffeeRoasts } from "@/constants/coffee-roasts";
 import DropdownWrapper from "@/components/dropdowns/DropdownWrapper";
 import Slider from "@/components/Slider";
 import { Coffee, CoffeeData } from "@/types/coffee";
 import { validateTextInput } from "@/utils/input-validation";
-import ImagePicker from "@/features/shared/components/image/ImagePicker";
+import ImagePicker from "@/components/image/ImagePicker";
 import { handleImageDelete, handleImageReplace } from "@/utils/image-storage";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import { coffeeFlavours } from "@/constants/flavour-data";
 import MultiSelectDropdown from "@/components/dropdowns/MultiSelectDropdown";
-import ModalWrapper from "@/features/shared/components/wrappers/ModalWrapper";
+import ModalWrapper from "@/components/wrappers/ModalWrapper";
 import {
   containerStyles,
   inputStyles,
   paddingStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 import {
   CurrencyPriceSelector,
   CurrencyPrice,
   initialCurrencyPriceSettings,
-} from "@/features/shared/components/selectors/currency-price-select/index";
+} from "@/components/selectors/currency-price-select/index";
 import { CoffeeRoast, Taste } from "@/components/icons";
-import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ImageWrapper from "@/components/wrappers/ImageWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { createCoffee, deleteCoffee, updateCoffee } from "@/api/coffee";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
 import { useConfirmService } from "@/services/confirm-service";
 import RatingForm from "@/components/forms/RatingForm";
+import DateSelector from "@/components/selectors/date-select/DateSelector";
 
 type Props = {
   editData?: Coffee;
@@ -235,16 +235,7 @@ export default function Component(props: Props) {
           placeholder="Store Link"
         />
 
-        <View style={containerStyles.row}>
-          <Text>Purchase Date</Text>
-
-          <DateTimePicker
-            value={purchaseDateValue}
-            onChange={(_, date) => {
-              if (date) setPurchaseDate(date);
-            }}
-          />
-        </View>
+        <DateSelector value={purchaseDateValue} setFn={setPurchaseDate} />
 
         <CurrencyPriceSelector
           data={currencyPriceValue}

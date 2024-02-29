@@ -4,13 +4,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import * as Haptics from "expo-haptics";
 import styles from "./styles";
-import {
-  containerStyles,
-  typographyStyles,
-  buttonStyles,
-} from "@/features/shared/styles/index";
-import appStyles from "@/features/shared/styles/styles";
-import CoffeeBag from "../icons/CoffeeBag";
+import { buttonStyles } from "@/styles";
 
 type Item = { label: string; value: string | number };
 

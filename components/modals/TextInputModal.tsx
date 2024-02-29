@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, Modal, StyleSheet, TextInput } from "react-native";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import {
-  typographyStyles,
-  inputStyles,
-  containerStyles,
-} from "@/features/shared/styles";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import { typographyStyles, inputStyles, containerStyles } from "@/styles";
 import { buttonSecondary } from "@/constants/button-types";
 
 type ModalProps = {

@@ -1,7 +1,7 @@
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import { containerStyles, inputStyles } from "@/features/shared/styles";
+import { containerStyles, inputStyles } from "@/styles";
 
 type Props = {
   value: number;

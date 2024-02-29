@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { View, TextInput } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
-import Dropdown from "@/components/dropdowns/DropdownWrapper";
-import weights from "@/constants/weights";
-import temperatures from "@/constants/temperatures";
-import { User } from "@/types/user";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
-import { inputStyles } from "@/features/shared/styles";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { validateTextInput } from "@/utils/input-validation";
 import { updateUser } from "@/api/user";
+import Dropdown from "@/components/dropdowns/DropdownWrapper";
 import { Scale, Temperature } from "@/components/icons/index";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import temperatures from "@/constants/temperatures";
+import weights from "@/constants/weights";
+import { inputStyles } from "@/styles";
+import appStyles from "@/styles/styles";
+import { User } from "@/types/user";
+import { validateTextInput } from "@/utils/input-validation";
+import React, { useEffect, useState } from "react";
+import { TextInput, View } from "react-native";
 
 type Props = {
   user: User;

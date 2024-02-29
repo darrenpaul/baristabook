@@ -9,7 +9,7 @@ import CoffeeCollage from "@/components/illustrations/CoffeeCollage";
 import SignUpForm from "@/components/forms/SignUpForm";
 import { useAuthService } from "@/services/auth-service";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { containerStyles } from "@/features/shared/styles";
+import { containerStyles } from "@/styles";
 
 export default function App() {
   const router = useRouter();

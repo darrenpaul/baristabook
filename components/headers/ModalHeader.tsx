@@ -6,7 +6,7 @@ import {
   buttonStyles,
   paddingStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 
 type HeaderProps = {
   text: string;

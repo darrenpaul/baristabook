@@ -1,6 +1,6 @@
 import { View, ScrollView } from "react-native";
 import PageHeader from "@/components/headers/PageHeader";
-import { containerStyles, paddingStyles } from "@/features/shared/styles/index";
+import { containerStyles, paddingStyles } from "@/styles";
 
 type Props = {
   title?: string;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import Slider from "@/components/Slider";
 import { Brewer } from "@/types/brewer";
 import { coffeeBrewMethods } from "@/constants/coffee-brew-methods";
@@ -20,9 +20,9 @@ import {
 } from "@/constants/temperature-settings";
 import { TemperatureSetting } from "@/types/temperature-setting";
 import { celsius } from "@/constants/temperatures";
-import { inputStyles } from "@/features/shared/styles/index";
+import { inputStyles } from "@/styles";
 import weights from "@/constants/weights";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type ComponentProps = {
   instructions: Instructions;

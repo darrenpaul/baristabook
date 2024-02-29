@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import { buttonStyles, typographyStyles } from "@/features/shared/styles";
+import { buttonStyles, typographyStyles } from "@/styles";
 import { buttonDanger, buttonSecondary } from "@/constants/button-types";
 
 type Props = {

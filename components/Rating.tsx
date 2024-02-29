@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 
 type DropdownActionButtonProps = {
   value: number;

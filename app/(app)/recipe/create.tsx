@@ -11,8 +11,8 @@ import {
   grindImagesBucket,
   recipeImagesBucket,
 } from "@/constants/storage-buckets";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import PageWrapper from "@/components/wrappers/PageWrapper";
 import {
   useAuthService,
   useBrewerService,

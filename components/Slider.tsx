@@ -9,7 +9,7 @@ import {
   containerStyles,
   inputStyles,
   typographyStyles,
-} from "@/features/shared/styles";
+} from "@/styles";
 
 type Props = {
   title: string;

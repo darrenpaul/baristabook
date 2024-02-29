@@ -1,5 +1,5 @@
 import { Modal, View } from "react-native";
-import ModalHeader from "@/features/shared/components/headers/ModalHeader";
+import ModalHeader from "@/components/headers/ModalHeader";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 type ModalProps = {

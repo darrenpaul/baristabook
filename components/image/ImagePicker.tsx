@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { View, Image, Dimensions } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
-import { containerStyles, paddingStyles } from "@/features/shared/styles/index";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import { containerStyles, paddingStyles } from "@/styles";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { buttonSecondary } from "@/constants/button-types";
 
 type ComponentProps = {

@@ -13,7 +13,7 @@ import {
   inputStyles,
   buttonStyles,
   marginStyles,
-} from "@/features/shared/styles/index";
+} from "@/styles";
 import {
   validateTextInput,
   validateEmail,
@@ -23,7 +23,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { signUp } from "@/api/auth";
 import Toast from "react-native-toast-message";
 import { buttonSecondary } from "@/constants/button-types";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 
 type ComponentProps = {
   toggleForm: Function;

@@ -1,12 +1,12 @@
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
+import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
+import { buttonSecondary } from "@/constants/button-types";
+import SuggestionModal from "@/features/account/modals/SuggestionModal";
+import { useModal } from "@/services/modal-service";
+import appStyles from "@/styles/styles";
+import { User } from "@/types/user";
 import React from "react";
 import { View } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
-import { User } from "@/types/user";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import { buttonSecondary } from "@/constants/button-types";
-import { useModal } from "@/services/modal-service";
-import SuggestionModal from "@/features/account/modals/SuggestionModal";
 
 type Props = {
   user: User;

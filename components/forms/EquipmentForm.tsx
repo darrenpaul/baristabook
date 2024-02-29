@@ -2,12 +2,12 @@ import React, { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
 import DropdownActionButton from "@/components/dropdowns/DropdownActionButton";
 import Dropdown from "@/components/dropdowns/DropdownWrapper";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { Coffee } from "@/types/coffee";
 import { waterHardnessLevels } from "@/constants/water-hardness-data";
-import CoffeeModal from "@/features/shared/components/modals/CoffeeModal";
-import GrinderModal from "@/features/shared/components/modals/GrinderModal";
-import BrewerModal from "@/features/shared/components/modals/BrewerModal";
+import CoffeeModal from "@/components/modals/CoffeeModal";
+import GrinderModal from "@/components/modals/GrinderModal";
+import BrewerModal from "@/components/modals/BrewerModal";
 import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
 import { useModal } from "@/services/modal-service";
@@ -19,7 +19,7 @@ import {
   WaterDrop,
 } from "@/components/icons/index";
 import { frenchPress } from "@/constants/coffee-brew-methods";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   userId: string;

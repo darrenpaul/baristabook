@@ -1,7 +1,7 @@
 import BrewerList from "@/features/collection/BrewerList";
 import CoffeeList from "@/features/collection/CoffeeList";
 import GrinderList from "@/features/collection/GrinderList";
-import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
+import PageWrapper from "@/components/wrappers/PageWrapper";
 import { useAuthService } from "@/services/auth-service";
 import React from "react";
 

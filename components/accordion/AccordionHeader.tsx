@@ -1,11 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import {
-  containerStyles,
-  marginStyles,
-  typographyStyles,
-} from "@/features/shared/styles";
+import { containerStyles, marginStyles, typographyStyles } from "@/styles";
 
 type ComponentProps = {
   title: string;

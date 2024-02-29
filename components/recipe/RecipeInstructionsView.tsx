@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import appStyles from "@/features/shared/styles/styles";
+import appStyles from "@/styles/styles";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { findObject } from "@/utils/array-helpers";
@@ -18,7 +18,7 @@ import {
   Temperature,
   PressureGauge,
 } from "@/components/icons";
-import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
+import AccordionWrapper from "@/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;

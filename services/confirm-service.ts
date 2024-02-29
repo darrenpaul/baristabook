@@ -1,4 +1,3 @@
-import { set } from "date-fns";
 import { Alert } from "react-native";
 
 type Props = {

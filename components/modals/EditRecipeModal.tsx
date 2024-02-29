@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { View, ScrollView, TouchableOpacity, Text, Modal } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import appStyles from "@/features/shared/styles/styles";
-import containerStyles from "@/features/shared/styles/containers";
-import ModalHeader from "@/features/shared/components/headers/ModalHeader";
-import { BrewerCreateData } from "@/types/brewer";
+import appStyles from "@/styles/styles";
+import containerStyles from "@/styles/containers";
+import ModalHeader from "@/components/headers/ModalHeader";
 import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
 import { handleImageUpload } from "@/utils/image-storage";
