@@ -8,5 +8,8 @@ if (!process.env.DB_CONNECTION_STRING) {
 export default {
   schema: "./drizzle/schema.ts",
   out: "./drizzle/migrations",
-  connectionString: process.env.DB_CONNECTION_STRING,
+  driver: "pg",
+  dbCredentials: {
+    connectionString: process.env.DB_CONNECTION_STRING,
+  },
 } satisfies Config;

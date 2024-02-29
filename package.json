@@ -1,5 +1,5 @@
 {
-  "name": "brew-log",
+  "name": "baristabook",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -7,17 +7,15 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "dev": "tsx watch -r dotenv/config drizzle/index.ts",
     "introspect": "drizzle-kit introspect:pg",
     "generate": "drizzle-kit generate:pg",
-    "migrate": "tsx -r dotenv/config src/migrate.ts"
+    "migrate": "tsx -r dotenv/config drizzle/migrate.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.21.0",
     "@react-native-community/datetimepicker": "7.6.2",
     "@react-native-community/slider": "4.5.0",
     "@supabase/supabase-js": "^2.39.6",
-    "@types/validator": "^13.11.9",
     "aes-js": "^3.1.2",
     "base64-arraybuffer": "^1.0.2",
     "date-fns": "^3.3.1",
