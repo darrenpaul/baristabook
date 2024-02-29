@@ -56,9 +56,7 @@
       "indexes": {
         "brewer_id_key": {
           "name": "brewer_id_key",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -166,9 +164,7 @@
       "indexes": {
         "coffee_id_key": {
           "name": "coffee_id_key",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -222,9 +218,7 @@
       "indexes": {
         "grinder_id_key": {
           "name": "grinder_id_key",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -598,9 +592,7 @@
       "indexes": {
         "suggestion_id_key": {
           "name": "suggestion_id_key",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },

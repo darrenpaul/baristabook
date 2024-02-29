@@ -9,8 +9,6 @@ import { createBrewer } from "@/api/brewers";
 import { brewerImagesBucket } from "@/constants/storage-buckets";
 import { handleImageUpload } from "@/utils/image-storage";
 import { validateTextInput } from "@/utils/input-validation";
-import RecipeCoffeeForm from "@/components/forms/RecipeCoffeeEditForm";
-import RecipeInstructionsEditForm from "@/components/forms/RecipeInstructionsEditForm";
 import {
   RecipeInstructions,
   RecipeCoffee,
@@ -82,7 +80,7 @@ export default function Component(props: ModalProps) {
 
     const { data, error, status } = await updateRecipe(
       props.recipe.id,
-      newRecipe
+      newRecipe,
     );
 
     // const { error } = await createBrewer(data);
@@ -110,10 +108,6 @@ export default function Component(props: ModalProps) {
               paddingBottom: 48,
             }}
           >
-            {coffeeValue && (
-              <RecipeCoffeeForm coffee={coffeeValue} setFn={setCoffee} />
-            )}
-
             {instructionsValue && (
               <InstructionsForm
                 instructions={instructionsValue}

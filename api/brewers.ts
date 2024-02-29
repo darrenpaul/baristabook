@@ -1,5 +1,5 @@
 import { brewerTable } from "@/constants/database";
-import { Brewer, BrewerCreateData } from "@/types/brewer";
+import { BrewerCreateData } from "@/types/brewer";
 import { supabase } from "@/utils/supabase";
 
 export function createBrewer(data: BrewerCreateData) {

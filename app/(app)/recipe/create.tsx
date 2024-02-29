@@ -1,42 +1,42 @@
-import { useMemo, useState } from "react";
-import Toast from "react-native-toast-message";
+import { createRecipe } from "@/api/recipe";
+import { fetchUser } from "@/api/user";
 import EquipmentForm from "@/components/forms/EquipmentForm";
 import GrindForm from "@/components/forms/GrindForm";
 import InstructionsForm from "@/components/forms/InstructionsForm";
-import { useRouter } from "expo-router";
-import {
-  RecipeCreate,
-  RecipeEquipment,
-  RecipeGrind,
-  RecipeCoffee,
-  RecipeGrinder,
-  RecipeBrewer,
-  RecipeInstructions,
-  RecipeInformation,
-} from "@/types/recipe";
-import { createRecipe } from "@/api/recipe";
-import { handleImageDuplicate, handleImageUpload } from "@/utils/image-storage";
+import RecipeCreateForm from "@/components/forms/RecipeCreateForm";
+import PageLoader from "@/components/loaders/PageLoader";
 import {
   brewerImagesBucket,
   coffeeImagesBucket,
   grindImagesBucket,
   recipeImagesBucket,
 } from "@/constants/storage-buckets";
-import RecipeCreateForm from "@/components/forms/RecipeCreateForm";
+import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
-import { fetchUser } from "@/api/user";
 import {
   useAuthService,
-  useCoffeeService,
-  useGrinderService,
   useBrewerService,
-  useUserService,
+  useCoffeeService,
   useGrindStateService,
+  useGrinderService,
   useInstructionStateService,
   useRecipeInformationStateService,
-} from "@/features/shared/services";
-import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
-import PageLoader from "@/components/loaders/PageLoader";
+  useUserService,
+} from "@/services";
+import {
+  RecipeBrewer,
+  RecipeCoffee,
+  RecipeCreate,
+  RecipeEquipment,
+  RecipeGrind,
+  RecipeGrinder,
+  RecipeInformation,
+  RecipeInstructions,
+} from "@/types/recipe";
+import { handleImageDuplicate, handleImageUpload } from "@/utils/image-storage";
+import { useRouter } from "expo-router";
+import { useMemo, useState } from "react";
+import Toast from "react-native-toast-message";
 
 export default function Page() {
   const router = useRouter();

@@ -86,7 +86,7 @@ export default function Component(props: ComponentProps) {
 
   return (
     <View style={[containerStyles.column, paddingStyles.horizontalGutter]}>
-      <Text style={typographyStyles.heading}>Sign Up For BrewLog</Text>
+      <Text style={typographyStyles.heading}>Sign Up For Barista Book</Text>
 
       <TextInput
         autoComplete="name"

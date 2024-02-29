@@ -21,7 +21,7 @@ import {
 } from "@/features/shared/styles/index";
 import { AeroPress, CoffeeMachine, FrenchPress } from "@/components/icons";
 import { ModalProps } from "./props";
-import { useConfirmService } from "@/features/shared/services/confirm-service";
+import { useConfirmService } from "@/services/confirm-service";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { buttonDanger } from "@/constants/button-types";
 import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";

@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
-import { Taste } from "@/components/icons";
 
 type Props = {
   icon: ReactNode;

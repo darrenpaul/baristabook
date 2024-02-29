@@ -5,7 +5,7 @@ import { User } from "@/types/user";
 import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { buttonSecondary } from "@/constants/button-types";
-import { useModal } from "@/features/shared/services/modal-service";
+import { useModal } from "@/services/modal-service";
 import SuggestionModal from "@/features/account/modals/SuggestionModal";
 
 type Props = {

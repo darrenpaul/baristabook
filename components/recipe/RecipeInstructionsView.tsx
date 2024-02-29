@@ -26,7 +26,6 @@ type Props = {
 };
 
 export default function Component(props: Props) {
-  console.log(props);
   useEffect(() => {
     if (props.recipe) {
       const matchedWeightMeasurement = findObject(

@@ -1,34 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text } from "react-native";
 import appStyles from "@/features/shared/styles/styles";
-import Accordion from "react-native-collapsible/Accordion";
 import { Recipe } from "@/types/recipe";
 import RecipeListItem from "@/components/recipe/RecipeListItem";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
 import { Notes } from "@/components/icons";
-
-const SECTIONS = [
-  {
-    title: "RecipeGrinderView",
-    content: "recipeGrinderView",
-  },
-];
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
 type Props = {
   recipe: Recipe;
 };
 
 export default function Component(props: Props) {
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
-
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader title="Grinder" active={isActive} disabled={false} />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Grinder" disabled={false}>
       <View style={appStyles.accordionContent}>
         <Text style={appStyles.headerText}>{props.recipe.grinder_name}</Text>
 
@@ -40,17 +24,6 @@ export default function Component(props: Props) {
           bodyUnderTitle={true}
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      onChange={(value) => setActiveSectionsValue(value)}
-    />
+    </AccordionWrapper>
   );
 }

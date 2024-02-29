@@ -3,8 +3,8 @@ import BottomNavigation from "@/features/shared/components/navigation/BottomNavi
 import RecipeCard from "@/features/index/components/RecipeCard";
 import PageLoader from "@/components/loaders/PageLoader";
 import Heading from "@/features/shared/components/typography/Heading";
-import { useRecipeService } from "@/features/shared/services/recipe-service";
-import { useAuthService } from "@/features/shared/services/auth-service";
+import { useRecipeService } from "@/services/recipe-service";
+import { useAuthService } from "@/services/auth-service";
 import PageWrapper from "@/features/shared/components/wrappers/PageWrapper";
 
 export default function App() {

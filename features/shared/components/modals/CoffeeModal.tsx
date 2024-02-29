@@ -29,7 +29,7 @@ import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { createCoffee, deleteCoffee, updateCoffee } from "@/api/coffee";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
-import { useConfirmService } from "@/features/shared/services/confirm-service";
+import { useConfirmService } from "@/services/confirm-service";
 import RatingForm from "@/components/forms/RatingForm";
 
 type Props = {

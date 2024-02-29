@@ -10,7 +10,7 @@ import GrinderModal from "@/features/shared/components/modals/GrinderModal";
 import BrewerModal from "@/features/shared/components/modals/BrewerModal";
 import { Grinder } from "@/types/grinder";
 import { Brewer } from "@/types/brewer";
-import { useModal } from "@/features/shared/services/modal-service";
+import { useModal } from "@/services/modal-service";
 import {
   CoffeeBag,
   CoffeeGrinder,

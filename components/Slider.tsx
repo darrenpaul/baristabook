@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Slider from "@react-native-community/slider";
 import * as Haptics from "expo-haptics";
 import TextInputModal from "@/components/modals/TextInputModal";
-import { useModal } from "@/features/shared/services/modal-service";
+import { useModal } from "@/services/modal-service";
 import {
   buttonStyles,
   containerStyles,

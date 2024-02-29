@@ -7,7 +7,7 @@ import { homeRoute } from "@/constants/routes";
 import SignInForm from "@/components/forms/SignInForm";
 import CoffeeCollage from "@/components/illustrations/CoffeeCollage";
 import SignUpForm from "@/components/forms/SignUpForm";
-import { useAuthService } from "@/features/shared/services/auth-service";
+import { useAuthService } from "@/services/auth-service";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { containerStyles } from "@/features/shared/styles";
 

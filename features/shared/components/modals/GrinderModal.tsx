@@ -12,7 +12,7 @@ import { createGrinder, deleteGrinder, updateGrinder } from "@/api/grinder";
 import ButtonWrapper from "@/features/shared/components/wrappers/ButtonWrapper";
 import { buttonDanger } from "@/constants/button-types";
 import { ModalProps } from "./props";
-import { useConfirmService } from "@/features/shared/services/confirm-service";
+import { useConfirmService } from "@/services/confirm-service";
 import {
   grindImagesBucket,
   grinderImagesBucket,

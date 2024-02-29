@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Linking,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, Linking } from "react-native";
 import appStyles from "@/features/shared/styles/styles";
-import Accordion from "react-native-collapsible/Accordion";
 import { coffeeImagesBucket } from "@/constants/storage-buckets";
 import FontAwesome from "@expo/vector-icons/FontAwesome6";
 import { format } from "date-fns";
@@ -17,8 +10,7 @@ import RecipeListItem from "@/components/recipe/RecipeListItem";
 import { formatCurrency } from "@/utils/currency";
 import Toast from "react-native-toast-message";
 import ImageWrapper from "@/features/shared/components/wrappers/ImageWrapper";
-import AccordionHeader from "@/components/accordion/AccordionHeader";
-import { buttonStyles } from "@/features/shared/styles";
+import { buttonStyles, containerStyles } from "@/features/shared/styles";
 import {
   Calendar,
   CoffeeRoast,
@@ -29,21 +21,13 @@ import {
   Taste,
 } from "@/components/icons";
 import Rating from "@/components/Rating";
+import AccordionWrapper from "@/features/shared/components/wrappers/AccordionWrapper";
 
-const SECTIONS = [
-  {
-    title: "RecipeCoffeeView",
-    content: "recipeCoffeeView",
-  },
-];
-
-type RecipeCoffeeViewProps = {
+type Props = {
   recipe: Recipe;
 };
 
-export default function Component(props: RecipeCoffeeViewProps) {
-  const [activeSections, setActiveSectionsValue] = useState<number[]>([]);
-
+export default function Component(props: Props) {
   async function onLinkPress() {
     const supported = await Linking.canOpenURL(props.recipe.coffee_store_url);
 
@@ -58,21 +42,15 @@ export default function Component(props: RecipeCoffeeViewProps) {
     }
   }
 
-  function renderHeader(_content: Object, _index: number, isActive: boolean) {
-    return (
-      <AccordionHeader title="Coffee" active={isActive} disabled={false} />
-    );
-  }
-
-  function renderContent() {
-    return (
+  return (
+    <AccordionWrapper title="Coffee" disabled={false}>
       <View style={appStyles.accordionContent}>
         <ImageWrapper
           imageBucket={coffeeImagesBucket}
           imageUrl={props.recipe.coffee_image}
         />
 
-        <View style={styles.rowSpacedContainer}>
+        <View style={containerStyles.row}>
           <Text style={appStyles.headerText}>{props.recipe.coffee_name}</Text>
 
           <TouchableOpacity
@@ -100,7 +78,7 @@ export default function Component(props: RecipeCoffeeViewProps) {
           title="Price"
           body={formatCurrency(
             props.recipe.coffee_purchase_currency,
-            props.recipe.coffee_purchase_price
+            props.recipe.coffee_purchase_price,
           )}
         />
 
@@ -134,25 +112,6 @@ export default function Component(props: RecipeCoffeeViewProps) {
           bodyUnderTitle={true}
         />
       </View>
-    );
-  }
-
-  return (
-    <Accordion
-      sections={SECTIONS}
-      activeSections={activeSections}
-      renderHeader={renderHeader}
-      renderContent={renderContent}
-      underlayColor="transparent"
-      onChange={(value) => setActiveSectionsValue(value)}
-    />
+    </AccordionWrapper>
   );
 }
-
-const styles = StyleSheet.create({
-  rowSpacedContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
