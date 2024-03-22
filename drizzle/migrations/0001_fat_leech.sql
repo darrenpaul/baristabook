@@ -1,0 +1,1 @@
+ALTER TABLE "coffee" ADD COLUMN "roast_date" date;

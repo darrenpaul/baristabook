@@ -1,6 +1,7 @@
 export type CoffeeData = {
   name: string;
   roast: string;
+  roast_date?: Date;
   intensity: number;
   flavours: string[];
   store_name?: string;
@@ -19,6 +20,7 @@ export type Coffee = {
   created_at: string;
   name: string;
   roast: string;
+  roast_date?: Date;
   store_name: string;
   store_url: string;
   purchase_date: Date;

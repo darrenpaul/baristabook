@@ -1,6 +1,7 @@
 export type RecipeCoffee = {
   coffee_name: string;
   coffee_roast: string;
+  coffee_roast_date?: Date;
   coffee_store: string;
   coffee_store_url: string;
   coffee_purchase_date: Date;

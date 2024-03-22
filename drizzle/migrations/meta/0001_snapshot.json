@@ -1,6 +1,6 @@
 {
-  "id": "c30f07ed-c713-4a12-ac4a-0c4802fca823",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "8afd8489-609b-46e0-8b0b-189ae41b1ecb",
+  "prevId": "c30f07ed-c713-4a12-ac4a-0c4802fca823",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -95,6 +95,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "roast_date": {
+          "name": "roast_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
         },
         "store_name": {
           "name": "store_name",
