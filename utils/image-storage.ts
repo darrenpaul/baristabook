@@ -1,6 +1,7 @@
 import { supabase } from "@/utils/supabase";
 import { decode } from "base64-arraybuffer";
 import * as FileSystem from "expo-file-system";
+import Toast from "react-native-toast-message";
 
 const IMAGE_TYPE = "png";
 const CONTENT_TYPE = "image/png";
@@ -25,6 +26,11 @@ export async function handleImageUpload(props: ImageUploadProps) {
     .upload(filePath, decode(base64), { contentType: CONTENT_TYPE });
 
   if (error) {
+    Toast.show({
+      type: "error",
+      text1: "Error",
+      text2: error.message,
+    });
     return "";
   }
   return data.path;
@@ -97,9 +103,8 @@ type ImageDuplicateProps = {
 export async function handleImageDuplicate(props: ImageDuplicateProps) {
   if (!props.imagePath) return "";
 
-  const imageToPaste = `${props.userId}/${
-    props.subdirectory
-  }/${new Date().getTime()}.${IMAGE_TYPE}`;
+  const imageToPaste = `${props.userId}/${props.subdirectory
+    }/${new Date().getTime()}.${IMAGE_TYPE}`;
 
   return await handleImageCopy({
     directory: props.directory,

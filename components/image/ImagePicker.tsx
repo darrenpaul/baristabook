@@ -1,15 +1,18 @@
 import React, { useState } from "react";
-import { View, Image, Dimensions } from "react-native";
+import { View, Image, Dimensions, Text } from "react-native";
 import * as Haptics from "expo-haptics";
 import * as ImagePicker from "expo-image-picker";
 import { containerStyles, paddingStyles } from "@/styles";
 import ButtonWrapper from "@/components/wrappers/ButtonWrapper";
 import { buttonSecondary } from "@/constants/button-types";
+import typography from "@/styles/typography";
 
 type ComponentProps = {
   value: string | undefined;
   setFn: Function;
 };
+
+const MAX_IMAGE_SIZE = 5200000; // 5MB
 
 const windowWidth =
   Dimensions.get("window").width -
@@ -26,8 +29,11 @@ const options: ImagePicker.ImagePickerOptions = {
 
 export default function Component(props: ComponentProps) {
   const [imageUriValue, setImageUri] = useState<string>(); // Image URI for preview
+  const [errorValue, setError] = useState<string>();
 
   async function onImageSelect(isCamera: boolean = false) {
+    setError("");
+
     Haptics.selectionAsync();
 
     // REQUEST PERMISSIONS
@@ -41,6 +47,11 @@ export default function Component(props: ComponentProps) {
     // Save image if not cancelled
     if (!result.canceled) {
       const img = result.assets[0];
+
+      if (img.fileSize && img.fileSize > MAX_IMAGE_SIZE) {
+        setError("Image size must be less than 2MB");
+        return;
+      }
       setImageUri(img.uri);
       props.setFn(result.assets[0].uri);
     }
@@ -71,6 +82,8 @@ export default function Component(props: ComponentProps) {
           onPressFn={() => onImageSelect(true)}
         />
       </View>
+
+      <Text style={typography.error}>{errorValue}</Text>
     </View>
   );
 }

@@ -23,4 +23,9 @@ export default StyleSheet.create({
     color: "black",
     marginRight: 12,
   },
+  error: {
+    color: "red",
+    fontWeight: "bold",
+    textAlign: "center",
+  }
 });

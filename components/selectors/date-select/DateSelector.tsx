@@ -5,6 +5,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { containerStyles, inputStyles } from "@/styles";
 
 type Props = {
+  labelText: string;
   value: Date;
   setFn: Function;
 };
@@ -12,7 +13,7 @@ type Props = {
 export default function Component(props: Props) {
   return (
     <View style={[inputStyles.textInput, containerStyles.row]}>
-      <Text>Purchase Date</Text>
+      <Text>{props.labelText}</Text>
 
       <DateTimePicker
         value={props.value}

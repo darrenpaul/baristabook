@@ -41,6 +41,7 @@ export default function Component(props: Props) {
   const [nameValue, setName] = useState<string>();
   const [nameErrorValue, setNameError] = useState<boolean>(false);
   const [roastValue, setRoast] = useState<string>();
+  const [roastDateValue, setRoastDate] = useState<Date>(new Date());
   const [intensityValue, setIntensity] = useState<number>(5);
   const [flavoursValue, setFlavours] = useState<string[]>([]);
   const [storeNameValue, setStoreName] = useState<string>();
@@ -62,7 +63,10 @@ export default function Component(props: Props) {
 
   useEffect(() => {
     if (props.editData) {
-      const date = props.editData.purchase_date
+      const roastDate = props.editData.roast_date
+        ? new Date(props.editData.roast_date)
+        : new Date();
+      const purchaseDate = props.editData.purchase_date
         ? new Date(props.editData.purchase_date)
         : new Date();
 
@@ -73,11 +77,12 @@ export default function Component(props: Props) {
 
       setName(props.editData.name);
       setRoast(props.editData.roast);
+      setRoastDate(roastDate);
       setIntensity(props.editData.intensity);
       setFlavours(props.editData.flavours);
       setStoreName(props.editData.store_name);
       setStoreUrl(props.editData.store_url);
-      setPurchaseDate(date);
+      setPurchaseDate(purchaseDate);
       setCurrencyPrice({
         price: price,
         currency: currency,
@@ -97,6 +102,7 @@ export default function Component(props: Props) {
   function clearStates() {
     setName("");
     setRoast("");
+    setRoastDate(new Date());
     setIntensity(5);
     setFlavours([]);
     setStoreName("");
@@ -140,9 +146,12 @@ export default function Component(props: Props) {
 
     if (imagePath === undefined) return;
 
+    console.log(imagePath)
+
     const coffeeData: CoffeeData = {
       name: nameValue,
       roast: roastValue,
+      roast_date: roastDateValue,
       intensity: intensityValue,
       flavours: flavoursValue,
       store_name: storeNameValue,
@@ -203,6 +212,8 @@ export default function Component(props: Props) {
           placeholder="Select Roast Type"
         />
 
+        <DateSelector labelText="Roast Date" value={roastDateValue} setFn={setRoastDate} />
+
         <Slider
           title="Intensity"
           minValue={0}
@@ -235,7 +246,7 @@ export default function Component(props: Props) {
           placeholder="Store Link"
         />
 
-        <DateSelector value={purchaseDateValue} setFn={setPurchaseDate} />
+        <DateSelector labelText="Purchase Date" value={purchaseDateValue} setFn={setPurchaseDate} />
 
         <CurrencyPriceSelector
           data={currencyPriceValue}
